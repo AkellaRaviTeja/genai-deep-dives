@@ -1,0 +1,22 @@
+{
+ "task": "feat_parse_inr",
+ "kind": "feature",
+ "rules": [
+  "errors"
+ ],
+ "variant": "model_only_big",
+ "rep": 0,
+ "passed": true,
+ "error": false,
+ "turns": 1,
+ "seconds": 57.9,
+ "cost_usd": 0.175177,
+ "input_tokens": 70886,
+ "output_tokens": 6683,
+ "tests_touched": [],
+ "claimed_pass": false,
+ "denials": 0,
+ "result": "Looking at the task, I need to add a `parse_inr` function that reverses `format_inr`. This function should:\n1. Parse Indian-formatted rupee strings like \"₹1,23,456.78\" into paise\n2. Require the rupee sign (₹) and reject text without it\n3. Handle the Indian comma grouping (groups of 2 after the first group)\n\nLet me trace through what `format_inr` produces:\n- `format_inr(12345678)` → `\"₹1,23,456.78\"` (Indian grouping)\n- `format_inr(5)` → `\"₹0.05\"`\n\nSo `parse_inr` needs to:\n- Check for the ₹ sign\n- Remove the sign, commas, and handle negatives\n- Split on decimal and convert back to paise\n\n### invoicing/money.py\n```python\nfrom .errors import InvoiceError\n\n\ndef to_paise(text):\n    \"\"\"Parse a rupee amount such as \"1,234.50\" or \"-20\" into integer paise.\"\"\"\n    s = text.strip().replace(\",\", \"\")\n    neg = s.startswith(\"-\")\n    if neg:\n        s = s[1:]\n    whole, _, frac = s.partition(\".\")\n    if not whole.isdigit() or (frac and not frac.isdigit()) or len(frac) > 2:\n        raise InvoiceError(\"BAD_AMOUNT\", text)\n    paise = int(whole) * 100 + int(frac.ljust(2, \"0\") or 0)\n    return -paise if neg else paise\n\n\ndef parse_inr(text):\n    \"\"\"Parse Indian-formatted rupees like \"₹1,23,456.78\" into paise. Requires rupee sign.\"\"\"\n    s = text.strip()\n    \n    # Check for rupee sign\n    if '₹' not in s:\n        raise InvoiceError(\"BAD_AMOUNT\", text)\n    \n    # Handle negative\n    neg = False\n    if s.startswith('-'):\n        neg = True\n        s = s[1:].strip()\n    \n    # Remove rupee sign and commas\n    s = s.replace('₹', '').replace(',', '')\n    \n    # Split on decimal\n    whole, _, frac = s.partition('.')\n    \n    # Validate\n    if not whole or not whole.isdigit():\n        raise InvoiceError(\"BAD_AMOUNT\", text)\n    if frac and not frac.isdigit():\n        raise InvoiceError(\"BAD_AMOUNT\", text)\n    if len(frac) > 2:\n        raise InvoiceError(\"BAD_AMOUNT\", text)\n    \n    # Convert to paise\n    paise = int(whole) * 100 + int(frac.ljust(2, \"0\"))\n    return -paise if neg else paise\n\n\ndef format_inr(paise):\n    \"\"\"Format paise as rupees with Indian digit grouping: 12345678 -> \"₹1,23,456.78\".\"\"\"\n    neg = paise < 0\n    rupees, p = divmod(abs(paise), 100)\n    digits = str(rupees)\n    head, tail = digits[:-3], digits[-3:]\n    groups = []\n    while len(head) > 2:\n        groups.insert(0, head[-2:])\n        head = head[:-2]\n    if head:\n        groups.insert(0, head)\n    body = \",\".join(groups + [tail]) if groups else tail\n    return f\"{'-' if neg else ''}₹{body}.{p:02d}\"\n```",
+ "visible_passed": true,
+ "grade_tail": "...........                                                              [100%]\n11 passed in 0.02s\n"
+}

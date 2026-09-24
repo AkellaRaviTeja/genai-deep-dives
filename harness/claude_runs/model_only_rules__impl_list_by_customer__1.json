@@ -1,0 +1,22 @@
+{
+ "task": "impl_list_by_customer",
+ "kind": "implement",
+ "rules": [
+  "order"
+ ],
+ "variant": "model_only_rules",
+ "rep": 1,
+ "passed": true,
+ "error": false,
+ "turns": 1,
+ "seconds": 13.8,
+ "cost_usd": 0.026818,
+ "input_tokens": 9479,
+ "output_tokens": 1574,
+ "tests_touched": [],
+ "claimed_pass": false,
+ "denials": 0,
+ "result": "Looking at the AGENTS.md rules, I need to implement `list_by_customer` to return invoices sorted \"newest first, ties broken by id, newest id first.\"\n\nThis means:\n- Filter invoices by customer\n- Sort by `created` date descending (newest first)\n- Break ties with `id` descending (newer/larger id first)\n\n### invoicing/store.py\n```python\nfrom .errors import InvoiceError\n\n\nclass InvoiceStore:\n    \"\"\"The storage layer. Only InvoiceService may use it.\"\"\"\n\n    def __init__(self):\n        self._rows = {}\n\n    def put(self, invoice):\n        self._rows[invoice.id] = invoice\n\n    def get(self, invoice_id):\n        if invoice_id not in self._rows:\n            raise InvoiceError(\"NOT_FOUND\", invoice_id)\n        return self._rows[invoice_id]\n\n    def list_by_customer(self, customer):\n        invoices = [inv for inv in self._rows.values() if inv.customer == customer]\n        return sorted(invoices, key=lambda inv: (inv.created, inv.id), reverse=True)\n```",
+ "visible_passed": true,
+ "grade_tail": "...........                                                              [100%]\n11 passed in 0.02s\n"
+}

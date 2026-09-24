@@ -1,0 +1,23 @@
+{
+ "task": "impl_get_handler",
+ "kind": "implement",
+ "rules": [
+  "layering",
+  "iso",
+  "errors"
+ ],
+ "variant": "hook",
+ "rep": 2,
+ "passed": true,
+ "error": false,
+ "turns": 17,
+ "seconds": 36.3,
+ "cost_usd": 0.0602518,
+ "input_tokens": 237039,
+ "output_tokens": 2715,
+ "tests_touched": [],
+ "claimed_pass": true,
+ "denials": 0,
+ "result": "Perfect! The implementation is complete and all tests pass. \n\nThe `get_invoice_handler` function:\n1. Calls `service.get()` to fetch the invoice and verify ownership (handles 404 and 403 cases via permission checks in the service layer)\n2. Calls `service.total()` to calculate the total with GST\n3. Returns a 200 response with id, customer, created date (ISO 8601), total in paise, and display_total formatted as Indian currency\n4. Catches `InvoiceError` exceptions and returns appropriate error status codes (404, 403, etc.)\n\n**All 10 tests pass.**",
+ "grade_tail": "...........                                                              [100%]\n11 passed in 0.04s\n"
+}

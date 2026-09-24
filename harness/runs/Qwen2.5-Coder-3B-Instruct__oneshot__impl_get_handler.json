@@ -1,0 +1,28 @@
+{
+ "task": "impl_get_handler",
+ "kind": "implement",
+ "rules": [
+  "layering",
+  "iso",
+  "errors"
+ ],
+ "variant": "oneshot",
+ "model": "Qwen/Qwen2.5-Coder-3B-Instruct",
+ "passed": false,
+ "seconds": 8.4,
+ "tests_touched": [],
+ "grade_tail": "          \"created\": inv.created.isoformat(),\n>                   \"total\": inv.total(),\n                             ^^^^^^^^^\n                    \"display_total\": format_inr(inv.total()),\n                },\n            )\nE           AttributeError: 'Invoice' object has no attribute 'total'\n\ninvoicing/api.py:19: AttributeError\n=========================== short test summary info ============================\nFAILED tests/test_api.py::test_get - AttributeError: 'Invoice' object has no ...\nFAILED tests/test_hidden.py::test_hidden - AttributeError: 'Invoice' object h...\n2 failed, 9 passed in 0.04s\n",
+ "turns": 1,
+ "tokens_in": 2254,
+ "tokens_out": 256,
+ "calls": {},
+ "parse_errors": 0,
+ "claimed_done": true,
+ "prompt_tokens_first": 2254,
+ "transcript": [
+  {
+   "role": "assistant",
+   "content": "### invoicing/api.py\n```python\nfrom .errors import InvoiceError\nfrom .money import format_inr\n\n\ndef _status(err):\n    return {\"NOT_FOUND\": 404, \"FORBIDDEN\": 403}.get(err.code, 400)\n\n\ndef get_invoice_handler(service, invoice_id, user):\n    \"\"\"GET /invoices/{id}: returns (status, body).\"\"\"\n    try:\n        inv = service.get(invoice_id, user)\n        return (\n            200,\n            {\n                \"id\": inv.id,\n                \"customer\": inv.customer,\n                \"created\": inv.created.isoformat(),\n                \"total\": inv.total(),\n                \"display_total\": format_inr(inv.total()),\n            },\n        )\n    except InvoiceError as err:\n        return _status(err), {\"error\": err.code}\n```\n\nThis implementation of `get_invoice_handler` uses the `service.get` method to retrieve the invoice. If the invoice exists and belongs to the specified user, it returns a 200 OK response with the invoice details. If the invoice does not exist or belongs to another user, it returns a 404 Not Found or 403 Forbidden response with an appropriate error message."
+  }
+ ]
+}

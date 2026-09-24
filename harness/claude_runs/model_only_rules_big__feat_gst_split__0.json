@@ -1,0 +1,23 @@
+{
+ "task": "feat_gst_split",
+ "kind": "feature",
+ "rules": [
+  "split",
+  "rounding"
+ ],
+ "variant": "model_only_rules_big",
+ "rep": 0,
+ "passed": true,
+ "error": false,
+ "turns": 1,
+ "seconds": 17.4,
+ "cost_usd": 0.150649,
+ "input_tokens": 71207,
+ "output_tokens": 1649,
+ "tests_touched": [],
+ "claimed_pass": false,
+ "denials": 0,
+ "result": "Looking at the task, I need to add a `gst_split` function that splits GST into CGST and SGST, with any odd paise going to CGST.\n\nThe logic is straightforward: divide the total GST by 2 (with integer division for SGST), and let CGST be the remainder. This ensures the odd paise (if any) goes to CGST.\n\n### invoicing/tax.py\n```python\ndef round_half_even(numerator, denominator):\n    \"\"\"Integer division rounded to nearest, ties to even (banker's rounding).\"\"\"\n    q, r = divmod(numerator, denominator)\n    if 2 * r > denominator or (2 * r == denominator and q % 2 == 1):\n        q += 1\n    return q\n\n\ndef gst(amount_paise, rate_bp):\n    \"\"\"GST on `amount_paise` at `rate_bp` basis points (1800 = 18%), in paise.\"\"\"\n    return round_half_even(amount_paise * rate_bp, 10000)\n\n\ndef gst_split(amount_paise, rate_bp):\n    \"\"\"Split GST into CGST and SGST for intra-state sale.\n    Each is half; an odd paise goes to CGST. Returns (cgst, sgst).\"\"\"\n    total_gst = gst(amount_paise, rate_bp)\n    sgst = total_gst // 2\n    cgst = total_gst - sgst\n    return (cgst, sgst)\n```",
+ "visible_passed": true,
+ "grade_tail": "...........                                                              [100%]\n11 passed in 0.02s\n"
+}

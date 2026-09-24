@@ -1,0 +1,24 @@
+{
+ "task": "impl_get_handler",
+ "kind": "implement",
+ "rules": [
+  "layering",
+  "iso",
+  "errors"
+ ],
+ "variant": "model_only_rules_big",
+ "rep": 1,
+ "passed": true,
+ "error": false,
+ "turns": 1,
+ "seconds": 44.4,
+ "cost_usd": 0.16631,
+ "input_tokens": 71105,
+ "output_tokens": 4822,
+ "tests_touched": [],
+ "claimed_pass": false,
+ "denials": 0,
+ "result": "Looking at this task, I need to implement `get_invoice_handler` to:\n1. Fetch the invoice using `service.get()` (which enforces permission checks)\n2. Compute the total using `service.total()` (which includes GST)\n3. Return the invoice details with the created date in ISO 8601 format\n4. Include both the raw total (in paise) and a formatted display total\n5. Handle errors by catching `InvoiceError` and mapping to appropriate HTTP status codes\n\nLet me trace through the test to verify the calculation:\n- LineItem(\"pen\", 1, 10000) = subtotal of 10000 paise (₹100)\n- No discount code, so net = 10000\n- GST at 1800 basis points (18%) = 1800 paise\n- Total = 10000 + 1800 = 11800 paise (₹118.00)\n\n### invoicing/api.py\n```python\nfrom .errors import InvoiceError\nfrom .money import format_inr\n\n\ndef _status(err):\n    return {\"NOT_FOUND\": 404, \"FORBIDDEN\": 403}.get(err.code, 400)\n\n\ndef get_invoice_handler(service, invoice_id, user):\n    \"\"\"GET /invoices/{id}: returns (status, body).\"\"\"\n    try:\n        inv = service.get(invoice_id, user)\n        total = service.total(invoice_id, user)\n        return 200, {\n            \"id\": inv.id,\n            \"customer\": inv.customer,\n            \"created\": inv.created.isoformat(),\n            \"total\": total,\n            \"total_display\": format_inr(total)\n        }\n    except InvoiceError as err:\n        return _status(err), {\"error\": err.code}\n```",
+ "visible_passed": true,
+ "grade_tail": "...........                                                              [100%]\n11 passed in 0.02s\n"
+}

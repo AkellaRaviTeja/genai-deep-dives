@@ -1,0 +1,19 @@
+{
+ "task": "bug_flat_discount",
+ "kind": "bugfix",
+ "rules": [],
+ "variant": "rules",
+ "rep": 0,
+ "passed": true,
+ "error": false,
+ "turns": 7,
+ "seconds": 19.7,
+ "cost_usd": 0.032206399999999996,
+ "input_tokens": 89864,
+ "output_tokens": 1538,
+ "tests_touched": [],
+ "claimed_pass": true,
+ "denials": 0,
+ "result": "Fixed! The bug was in `discount.py:18`. The code was treating flat discounts (like FLAT500) as percentages, multiplying them by the subtotal. Flat discounts are already specified in paise, so they should be applied directly without the percentage calculation.\n\n**All tests pass** ✓",
+ "grade_tail": "...........                                                              [100%]\n11 passed in 0.05s\n"
+}

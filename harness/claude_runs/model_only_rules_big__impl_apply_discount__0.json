@@ -1,0 +1,24 @@
+{
+ "task": "impl_apply_discount",
+ "kind": "implement",
+ "rules": [
+  "case",
+  "cap",
+  "errors"
+ ],
+ "variant": "model_only_rules_big",
+ "rep": 0,
+ "passed": false,
+ "error": false,
+ "turns": 1,
+ "seconds": 29.9,
+ "cost_usd": 0.157389,
+ "input_tokens": 71117,
+ "output_tokens": 3033,
+ "tests_touched": [],
+ "claimed_pass": false,
+ "denials": 0,
+ "result": "Looking at the task, I need to implement `apply_discount` in `invoicing/discount.py` to:\n1. Handle no code (return 0)\n2. Match codes case-insensitively after trimming spaces\n3. Apply percent or flat discounts from the DISCOUNTS table\n4. Cap the discount at the subtotal (so it never goes negative)\n\nExamining the tests and the service code, I can see:\n- Test expects 10% of 100000 = 10000 paise\n- Test expects flat 50000 paise discount\n- Invoice can have `discount_code: str | None`, so None must be handled\n- The service calls `apply_discount(inv.subtotal(), inv.discount_code)`\n\n### invoicing/discount.py\n```python\nfrom .errors import InvoiceError\n\n# code -> (kind, value). \"percent\" values are whole percent; \"flat\" values are paise.\nDISCOUNTS = {\n    \"WELCOME10\": (\"percent\", 10),\n    \"FLAT500\": (\"flat\", 50000),\n}\n\n\ndef apply_discount(subtotal, code):\n    \"\"\"Return the discount in paise for `code` on `subtotal` paise. No code means 0.\"\"\"\n    if not code:\n        return 0\n    \n    normalized_code = code.strip().upper()\n    \n    if normalized_code not in DISCOUNTS:\n        return 0\n    \n    kind, value = DISCOUNTS[normalized_code]\n    \n    if kind == \"percent\":\n        discount = subtotal * value // 100\n    else:  # flat\n        discount = value\n    \n    return min(discount, subtotal)\n```",
+ "visible_passed": true,
+ "grade_tail": "unt(100000, \"WELCOME10\") == 10000\n        assert apply_discount(100000, \" welcome10 \") == 10000\n        assert apply_discount(30000, \"FLAT500\") == 30000\n>       with pytest.raises(InvoiceError):\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       Failed: DID NOT RAISE InvoiceError\n\ntests/test_hidden.py:10: Failed\n=========================== short test summary info ============================\nFAILED tests/test_hidden.py::test_hidden - Failed: DID NOT RAISE InvoiceError\n1 failed, 10 passed in 0.03s\n"
+}

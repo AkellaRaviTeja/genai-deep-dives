@@ -1,0 +1,24 @@
+{
+ "task": "feat_list_handler",
+ "kind": "feature",
+ "rules": [
+  "layering",
+  "iso",
+  "order"
+ ],
+ "variant": "model_only_rules_big",
+ "rep": 1,
+ "passed": true,
+ "error": false,
+ "turns": 1,
+ "seconds": 27.2,
+ "cost_usd": 0.15677799999999997,
+ "input_tokens": 71204,
+ "output_tokens": 2876,
+ "tests_touched": [],
+ "claimed_pass": false,
+ "denials": 0,
+ "result": "Looking at the existing `get_invoice_handler` pattern and the AGENTS.md rules (dates as ISO 8601 strings, lists newest first), I need to add a handler that lists all invoices for a user. The `service.list(user)` already returns invoices sorted correctly (newest first, ties by id descending).\n\n### invoicing/api.py\n```python\nfrom .errors import InvoiceError\nfrom .money import format_inr\n\n\ndef _status(err):\n    return {\"NOT_FOUND\": 404, \"FORBIDDEN\": 403}.get(err.code, 400)\n\n\ndef get_invoice_handler(service, invoice_id, user):\n    \"\"\"GET /invoices/{id}: returns (status, body).\"\"\"\n    try:\n        inv = service.get(invoice_id, user)\n        total = service.total(invoice_id, user)\n    except InvoiceError as e:\n        return _status(e), {\"error\": e.code}\n    return 200, {\n        \"id\": inv.id,\n        \"customer\": inv.customer,\n        \"created\": inv.created.isoformat(),\n        \"total\": total,\n        \"total_display\": format_inr(total),\n    }\n\n\ndef list_invoices_handler(service, user):\n    \"\"\"GET /invoices: returns (status, body).\"\"\"\n    try:\n        invoices = service.list(user)\n        body = []\n        for inv in invoices:\n            total = service.total(inv.id, user)\n            body.append({\n                \"id\": inv.id,\n                \"created\": inv.created.isoformat(),\n                \"total\": total,\n            })\n    except InvoiceError as e:\n        return _status(e), {\"error\": e.code}\n    return 200, body\n```",
+ "visible_passed": true,
+ "grade_tail": "...........                                                              [100%]\n11 passed in 0.02s\n"
+}

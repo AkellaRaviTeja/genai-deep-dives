@@ -1,0 +1,23 @@
+{
+ "task": "feat_list_handler",
+ "kind": "feature",
+ "rules": [
+  "layering",
+  "iso",
+  "order"
+ ],
+ "variant": "hook",
+ "rep": 0,
+ "passed": true,
+ "error": false,
+ "turns": 14,
+ "seconds": 35.3,
+ "cost_usd": 0.0531583,
+ "input_tokens": 180991,
+ "output_tokens": 2653,
+ "tests_touched": [],
+ "claimed_pass": true,
+ "denials": 0,
+ "result": "Perfect! All tests pass. I've successfully added the `list_invoices_handler` function to `invoicing/api.py`. \n\nThe handler:\n- Takes `service` and `user` as parameters\n- Calls `service.list(user)` to get invoices (already sorted newest-first by id)\n- For each invoice, fetches the total using `service.total(invoice_id, user)`\n- Returns a 200 status with a list of invoices, each containing `id`, `created` (ISO 8601 format), and `total` (in paise)\n- Follows the existing API pattern used by `get_invoice_handler`\n\n**Tests: ✅ All 10 tests pass**",
+ "grade_tail": "...........                                                              [100%]\n11 passed in 0.06s\n"
+}

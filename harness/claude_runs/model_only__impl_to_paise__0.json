@@ -1,0 +1,21 @@
+{
+ "task": "impl_to_paise",
+ "kind": "implement",
+ "rules": [
+  "errors"
+ ],
+ "variant": "model_only",
+ "rep": 0,
+ "passed": true,
+ "error": false,
+ "turns": 1,
+ "seconds": 59.4,
+ "cost_usd": 0.052555000000000004,
+ "input_tokens": 9095,
+ "output_tokens": 6875,
+ "tests_touched": [],
+ "claimed_pass": false,
+ "denials": 0,
+ "result": "gits\n        decimal_part = decimal_part.ljust(2, '0')\n    else:\n        integer_part = text\n        decimal_part = \"00\"\n    \n    # Convert to paise\n    try:\n        rupees = int(integer_part)\n        paise = int(decimal_part)\n        total_paise = rupees * 100 + paise\n        return -total_paise if is_negative else total_paise\n    except ValueError:\n        raise InvoiceError(\"INVALID_AMOUNT\", original)\n\n\ndef format_inr(paise):\n    \"\"\"Format paise as rupees with Indian digit grouping: 12345678 -> \"₹1,23,456.78\".\"\"\"\n    neg = paise < 0\n    rupees, p = divmod(abs(paise), 100)\n    digits = str(rupees)\n    head, tail = digits[:-3], digits[-3:]\n    groups = []\n    while len(head) > 2:\n        groups.insert(0, head[-2:])\n        head = head[:-2]\n    if head:\n        groups.insert(0, head)\n    body = \",\".join(groups + [tail]) if groups else tail\n    return f\"{'-' if neg else ''}₹{body}.{p:02d}\"\n```\n\nThe implementation:\n1. Strips whitespace and handles negative sign separately\n2. Removes commas for parsing\n3. Validates the format with regex (digits, optional decimal)\n4. Rejects more than 2 decimal places\n5. Pads the decimal part to 2 digits and converts to paise with correct sign handling",
+ "grade_tail": "...........                                                              [100%]\n11 passed in 0.03s\n"
+}

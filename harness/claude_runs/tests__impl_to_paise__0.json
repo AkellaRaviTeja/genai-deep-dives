@@ -1,0 +1,21 @@
+{
+ "task": "impl_to_paise",
+ "kind": "implement",
+ "rules": [
+  "errors"
+ ],
+ "variant": "tests",
+ "rep": 0,
+ "passed": true,
+ "error": false,
+ "turns": 9,
+ "seconds": 30.8,
+ "cost_usd": 0.047559199999999996,
+ "input_tokens": 105170,
+ "output_tokens": 3731,
+ "tests_touched": [],
+ "claimed_pass": true,
+ "denials": 0,
+ "result": "Perfect! All tests pass. The implementation correctly:\n\n1. **Parses valid rupee amounts**: Handles formats like \"1,234.50\" → 123450 paise and \"20\" → 2000 paise\n2. **Handles negative amounts**: Preserves the sign throughout the conversion\n3. **Validates decimal places**: Rejects amounts with more than 2 decimal places (e.g., \"1.234\")\n4. **Removes formatting**: Strips commas before parsing\n5. **Rejects non-numeric input**: Raises `InvoiceError` with code \"INVALID_AMOUNT\" for invalid input\n\n**All 3 tests pass** ✓",
+ "grade_tail": "...........                                                              [100%]\n11 passed in 0.03s\n"
+}

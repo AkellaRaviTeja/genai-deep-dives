@@ -1,0 +1,21 @@
+{
+ "task": "feat_parse_inr",
+ "kind": "feature",
+ "rules": [
+  "errors"
+ ],
+ "variant": "model_only",
+ "rep": 0,
+ "passed": true,
+ "error": false,
+ "turns": 1,
+ "seconds": 53.8,
+ "cost_usd": 0.04973000000000001,
+ "input_tokens": 9215,
+ "output_tokens": 6262,
+ "tests_touched": [],
+ "claimed_pass": false,
+ "denials": 0,
+ "result": "    groups = []\n    while len(head) > 2:\n        groups.insert(0, head[-2:])\n        head = head[:-2]\n    if head:\n        groups.insert(0, head)\n    body = \",\".join(groups + [tail]) if groups else tail\n    return f\"{'-' if neg else ''}₹{body}.{p:02d}\"\n\n\ndef parse_inr(text):\n    \"\"\"Parse a formatted rupee amount like \"₹1,23,456.78\" into integer paise. Rejects text without ₹.\"\"\"\n    original = text\n    text = text.strip()\n    \n    if \"₹\" not in text:\n        raise InvoiceError(\"BAD_AMOUNT\", original)\n    \n    neg = text.startswith(\"-\")\n    if neg:\n        text = text[1:].strip()\n    \n    if not text.startswith(\"₹\"):\n        raise InvoiceError(\"BAD_AMOUNT\", original)\n    text = text[1:].strip()\n    \n    if \".\" not in text:\n        raise InvoiceError(\"BAD_AMOUNT\", original)\n    \n    body, paise_str = text.rsplit(\".\", 1)\n    \n    if len(paise_str) != 2 or not paise_str.isdigit():\n        raise InvoiceError(\"BAD_AMOUNT\", original)\n    \n    body = body.replace(\",\", \"\")\n    if not body or not body.isdigit():\n        raise InvoiceError(\"BAD_AMOUNT\", original)\n    \n    rupees = int(body)\n    paise = int(paise_str)\n    total = rupees * 100 + paise\n    \n    return -total if neg else total\n```",
+ "grade_tail": "...........                                                              [100%]\n11 passed in 0.04s\n"
+}

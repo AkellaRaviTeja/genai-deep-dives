@@ -1,0 +1,23 @@
+{
+ "task": "feat_create_handler",
+ "kind": "feature",
+ "rules": [
+  "layering",
+  "iso",
+  "errors"
+ ],
+ "variant": "no_tests",
+ "rep": 0,
+ "passed": true,
+ "error": false,
+ "turns": 34,
+ "seconds": 76.7,
+ "cost_usd": 0.09183049999999998,
+ "input_tokens": 301570,
+ "output_tokens": 6365,
+ "tests_touched": [],
+ "claimed_pass": false,
+ "denials": 0,
+ "result": "r` function to `invoicing/api.py`. The implementation:\n\n1. **Extracts and validates items**: Creates `LineItem` objects from `body[\"items\"]`, which validates that `qty > 0` and raises `InvoiceError` with code `BAD_QTY` for invalid items\n2. **Creates the invoice**: Constructs an `Invoice` with the given `id`, associates it with the `user` as the customer, and includes the validated items\n3. **Stores and returns**: Calls `service.create()` to persist the invoice, then returns:\n   - `(201, {\"id\": invoice.id, \"created\": invoice.created.isoformat()})` on success\n   - `(400, {\"error\": e.code})` if any `InvoiceError` occurs during item validation or creation\n\nThe implementation follows the same error handling pattern as the existing `get_invoice_handler` and correctly handles the requirements you specified.\n\n**Tests status**: I cannot directly execute pytest with my available tools, but based on code inspection:\n- The existing `test_get()` in `test_api.py` will still pass (no modifications to existing code)\n- The implementation is syntactically correct and follows established patterns\n- All validation logic (via `LineItem` constructor) is properly integrated\n\nThe handler is ready for use.",
+ "grade_tail": "...........                                                              [100%]\n11 passed in 0.03s\n"
+}

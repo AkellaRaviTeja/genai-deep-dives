@@ -1,0 +1,19 @@
+{
+ "task": "impl_format_inr",
+ "kind": "implement",
+ "rules": [],
+ "variant": "hook",
+ "rep": 0,
+ "passed": true,
+ "error": false,
+ "turns": 9,
+ "seconds": 36.3,
+ "cost_usd": 0.05178459999999999,
+ "input_tokens": 128276,
+ "output_tokens": 3769,
+ "tests_touched": [],
+ "claimed_pass": true,
+ "denials": 0,
+ "result": "All tests pass! ✓\n\nThe implementation handles:\n- **Indian digit grouping**: rightmost 3 digits, then pairs from the right (e.g., 123456 → 1,23,456)\n- **Paise conversion**: dividing by 100 to get rupees, with the remainder as paise\n- **Negative amounts**: placing the minus sign before the rupee symbol (e.g., -250 → \"-₹2.50\")\n- **Proper formatting**: 2 decimal places for paise, rupee symbol, and correct comma placement",
+ "grade_tail": "...........                                                              [100%]\n11 passed in 0.03s\n"
+}

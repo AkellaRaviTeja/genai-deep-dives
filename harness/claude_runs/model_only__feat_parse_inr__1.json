@@ -1,0 +1,23 @@
+{
+ "task": "feat_parse_inr",
+ "kind": "feature",
+ "rules": [
+  "errors"
+ ],
+ "variant": "model_only",
+ "rep": 1,
+ "passed": true,
+ "error": false,
+ "turns": 1,
+ "seconds": 34.3,
+ "cost_usd": 0.037308999999999995,
+ "input_tokens": 9217,
+ "output_tokens": 3777,
+ "tests_touched": [
+  "test_money.py"
+ ],
+ "claimed_pass": false,
+ "denials": 0,
+ "result": "tition(\".\")\n    if not whole or not whole.isdigit() or not frac or not frac.isdigit() or len(frac) != 2:\n        raise InvoiceError(\"BAD_AMOUNT\", text)\n    paise = int(whole) * 100 + int(frac)\n    return -paise if neg else paise\n```\n\n### tests/test_money.py\n```python\nimport pytest\nfrom invoicing.money import to_paise, format_inr, parse_inr\nfrom invoicing.errors import InvoiceError\n\ndef test_to_paise():\n    assert to_paise(\"1,234.50\") == 123450\n    assert to_paise(\"20\") == 2000\n\ndef test_to_paise_rejects_three_decimals():\n    with pytest.raises(InvoiceError):\n        to_paise(\"1.234\")\n\ndef test_format_inr():\n    assert format_inr(12345678) == \"₹1,23,456.78\"\n    assert format_inr(5) == \"₹0.05\"\n\ndef test_parse_inr():\n    assert parse_inr(\"₹1,23,456.78\") == 12345678\n    assert parse_inr(\"₹0.05\") == 5\n    assert parse_inr(\"-₹1,23,456.78\") == -12345678\n\ndef test_parse_inr_rejects_no_rupee_sign():\n    with pytest.raises(InvoiceError):\n        parse_inr(\"1,23,456.78\")\n\ndef test_parse_inr_roundtrip():\n    for amount in [0, 5, 100, 12345678, 1000000]:\n        assert parse_inr(format_inr(amount)) == amount\n        if amount > 0:\n            assert parse_inr(format_inr(-amount)) == -amount\n```",
+ "grade_tail": "...........                                                              [100%]\n11 passed in 0.03s\n"
+}

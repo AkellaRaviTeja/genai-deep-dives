@@ -1,0 +1,24 @@
+{
+ "task": "bug_tax_order",
+ "kind": "bugfix",
+ "rules": [],
+ "variant": "oneshot",
+ "model": "Qwen/Qwen2.5-Coder-3B-Instruct",
+ "passed": false,
+ "seconds": 8.4,
+ "tests_touched": [],
+ "grade_tail": "== 106200\nE       AssertionError: assert 91800 == 106200\nE        +  where 91800 = total('A1', 'asha')\nE        +    where total = <invoicing.service.InvoiceService object at 0x7999a40bad50>.total\nE        +      where <invoicing.service.InvoiceService object at 0x7999a40bad50> = svc()\n\ntests/test_service.py:14: AssertionError\n=========================== short test summary info ============================\nFAILED tests/test_api.py::test_get - AssertionError: assert (200 == 200 and '...\nFAILED tests/test_service.py::test_total - AssertionError: assert 91800 == 10...\n2 failed, 9 passed in 0.04s\n",
+ "turns": 1,
+ "tokens_in": 2315,
+ "tokens_out": 241,
+ "calls": {},
+ "parse_errors": 0,
+ "claimed_done": true,
+ "prompt_tokens_first": 2315,
+ "transcript": [
+  {
+   "role": "assistant",
+   "content": "### invoicing/service.py\n```python\nfrom .discount import apply_discount\nfrom .errors import InvoiceError\nfrom .tax import gst\n\nGST_BP = 1800\n\n\nclass InvoiceService:\n    \"\"\"All business rules and permission checks live here.\"\"\"\n\n    def __init__(self, store):\n        self.store = store\n\n    def _owned(self, invoice_id, user):\n        inv = self.store.get(invoice_id)\n        if inv.customer != user:\n            raise InvoiceError(\"FORBIDDEN\", invoice_id)\n        return inv\n\n    def get(self, invoice_id, user):\n        return self._owned(invoice_id, user)\n\n    def create(self, invoice):\n        self.store.put(invoice)\n        return invoice\n\n    def list(self, user):\n        return self.store.list_by_customer(user)\n\n    def total(self, invoice_id, user):\n        \"\"\"Subtotal, minus the discount, plus GST on the discounted amount.\"\"\"\n        inv = self._owned(invoice_id, user)\n        discount = apply_discount(inv.subtotal(), inv.discount_code)\n        gross = inv.subtotal() - discount + gst(discount, GST_BP)\n        return gross\n```"
+  }
+ ]
+}

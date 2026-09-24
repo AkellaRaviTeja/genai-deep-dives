@@ -1,0 +1,21 @@
+{
+ "task": "impl_gst",
+ "kind": "implement",
+ "rules": [
+  "rounding"
+ ],
+ "variant": "tests",
+ "rep": 2,
+ "passed": true,
+ "error": false,
+ "turns": 9,
+ "seconds": 23.9,
+ "cost_usd": 0.0381675,
+ "input_tokens": 133123,
+ "output_tokens": 1749,
+ "tests_touched": [],
+ "claimed_pass": true,
+ "denials": 0,
+ "result": "All tests pass! The implementation calculates GST by multiplying the amount in paise by the rate in basis points and dividing by 10000 (since basis points are out of 10000), using banker's rounding for the result.",
+ "grade_tail": "...........                                                              [100%]\n11 passed in 0.05s\n"
+}

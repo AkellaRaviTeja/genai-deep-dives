@@ -1,0 +1,25 @@
+{
+ "task": "feat_expiry",
+ "kind": "feature",
+ "rules": [
+  "errors"
+ ],
+ "variant": "model_only_big",
+ "rep": 0,
+ "passed": true,
+ "error": false,
+ "turns": 1,
+ "seconds": 57.8,
+ "cost_usd": 0.171964,
+ "input_tokens": 70897,
+ "output_tokens": 6036,
+ "tests_touched": [
+  "test_discount.py",
+  "test_service.py"
+ ],
+ "claimed_pass": false,
+ "denials": 0,
+ "result": "Looking at this task, I need to:\n1. Add an `EXPIRY` dictionary mapping codes to their last valid dates\n2. Update `apply_discount()` to accept an optional `today` parameter and check expiry\n3. Update the service to pass the invoice's `created` date when applying discounts\n4. Add tests for the expiry behavior\n\nLet me trace through the code: the service's `total()` method calls `apply_discount()`. For consistency and testability, I should pass the invoice's `created` date so expiry is checked against when the invoice was created, not when it's queried.\n\n### invoicing/discount.py\n```python\nfrom datetime import date\nfrom .errors import InvoiceError\n\n# code -> (kind, value). \"percent\" values are whole percent; \"flat\" values are paise.\nDISCOUNTS = {\n    \"WELCOME10\": (\"percent\", 10),\n    \"FLAT500\": (\"flat\", 50000),\n}\n\nEXPIRY = {\n    \"WELCOME10\": date(2026, 12, 31),\n}\n\n\ndef apply_discount(subtotal, code, today=None):\n    \"\"\"Return the discount in paise for `code` on `subtotal` paise. No code means 0.\"\"\"\n    if not code:\n        return 0\n    \n    if today is None:\n        today = date.today()\n    \n    key = code.strip().upper()\n    if key not in DISCOUNTS:\n        raise InvoiceError(\"UNKNOWN_DISCOUNT\", code)\n    \n    if key in EXPIRY and today > EXPIRY[key]:\n        raise InvoiceError(\"EXPIRED\", code)\n    \n    kind, value = DISCOUNTS[key]\n    off = subtotal * value // 100 if kind == \"percent\" else value\n    return min(off, subtotal)\n```\n\n### invoicing/service.py\n```python\nfrom .discount import apply_discount\nfrom .errors import InvoiceError\nfrom .tax import gst\n\nGST_BP = 1800\n\n\nclass InvoiceService:\n    \"\"\"All business rules and permission checks live here.\"\"\"\n\n    def __init__(self, store):\n        self.store = store\n\n    def _owned(self, invoice_id, user):\n        inv = self.store.get(invoice_id)\n        if inv.customer != user:\n            raise InvoiceError(\"FORBIDDEN\", invoice_id)\n        return inv\n\n    def get(self, invoice_id, user):\n        return self._owned(invoice_id, user)\n\n    def create(self, invoice):\n        self.store.put(invoice)\n        return invoice\n\n    def list(self, user):\n        return self.store.list_by_customer(user)\n\n    def total(self, invoice_id, user):\n        \"\"\"Subtotal, minus the discount, plus GST on the discounted amount.\"\"\"\n        inv = self._owned(invoice_id, user)\n        net = inv.subtotal() - apply_discount(inv.subtotal(), inv.discount_code, inv.created)\n        return net + gst(net, GST_BP)\n```\n\n### tests/test_discount.py\n```python\nfrom datetime import date\nimport pytest\nfrom invoicing.discount import apply_discount\nfrom invoicing.errors import InvoiceError\n\ndef test_percent():\n    assert apply_discount(100000, \"WELCOME10\", date(2026, 9, 1)) == 10000\n\ndef test_flat():\n    assert apply_discount(100000, \"FLAT500\", date(2026, 9, 1)) == 50000\n\ndef test_expired():\n    with pytest.raises(InvoiceError) as exc:\n        apply_discount(100000, \"WELCOME10\", date(2027, 1, 1))\n    assert exc.value.code == \"EXPIRED\"\n\ndef test_not_expired_on_last_day():\n    assert apply_discount(100000, \"WELCOME10\", date(2026, 12, 31)) == 10000\n```\n\n### tests/test_service.py\n```python\nfrom datetime import date\nimport pytest\nfrom invoicing.invoice import Invoice, LineItem\nfrom invoicing.service import InvoiceService\nfrom invoicing.store import InvoiceStore\nfrom invoicing.errors import InvoiceError\n\ndef svc():\n    s = InvoiceService(InvoiceStore())\n    s.create(Invoice(\"A1\", \"asha\", [LineItem(\"pen\", 10, 10000)], date(2026, 9, 1), \"WELCOME10\"))\n    return s\n\ndef test_total():\n    assert svc().total(\"A1\", \"asha\") == 106200\n\ndef test_forbidden():\n    with pytest.raises(InvoiceError):\n        svc().get(\"A1\", \"ravi\")\n\ndef test_expired_discount():\n    s = InvoiceService(InvoiceStore())\n    s.create(Invoice(\"A2\", \"asha\", [LineItem(\"pen\", 10, 10000)], date(2027, 1, 1), \"WELCOME10\"))\n    with pytest.raises(InvoiceError) as exc:\n        s.total(\"A2\", \"asha\")\n    assert exc.value.code == \"EXPIRED\"\n```",
+ "visible_passed": true,
+ "grade_tail": "...........                                                              [100%]\n11 passed in 0.02s\n"
+}

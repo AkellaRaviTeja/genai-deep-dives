@@ -1,0 +1,14 @@
+{
+ "model": "haiku",
+ "run_at": "2026-09-24T22:15:26",
+ "answers": {
+  "go": {
+   "question": "In Go, what does `go test ./internal/api` print, and what exit code does it return, when that package has no _test.go files? Answer in two sentences.",
+   "answer": "When `go test ./internal/api` runs on a package with no test files, it prints a line like `?   \t./internal/api\t[no test files]` and returns exit code 0 (success), since the absence of tests is not an error condition."
+  },
+  "postgres": {
+   "question": "In PostgreSQL, does a plain CREATE INDEX on a large table block concurrent INSERTs while it builds? What should a migration use instead? Answer in two sentences.",
+   "answer": "Yes, a plain `CREATE INDEX` blocks concurrent INSERTs because it acquires an exclusive lock on the table during the index build. Migrations should use `CREATE INDEX CONCURRENTLY` instead, which builds the index without blocking writes, though it's slower and cannot be used inside a transaction."
+  }
+ }
+}

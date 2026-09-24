@@ -1,0 +1,176 @@
+{
+ "meta": {
+  "model": "Qwen/Qwen2.5-1.5B",
+  "torch": "2.14.0+cu130",
+  "transformers": "5.17.0",
+  "device": "NVIDIA GeForce RTX 5050 Laptop GPU",
+  "dtype": "bfloat16",
+  "run_at": "2026-09-24T18:54:20"
+ },
+ "file_head": "package api\n\nimport (\n\t\"context\"\n\t\"net/http\"\n)\n\n",
+ "interface": "// InvoiceService is the only place that touches the database.\ntype InvoiceService interface {\n\tGet(ctx context.Context, id int64) (Invoice, error)\n\tList(ctx context.Context, f Filter) ([]Invoice, error)\n\tCreateCreditNote(ctx context.Context, invoiceID int64, cents int64, reason string) (CreditNote, error)\n}\n\n",
+ "renamed_interface": "// InvoiceService is the only place that touches the database.\ntype InvoiceService interface {\n\tGet(ctx context.Context, id int64) (Invoice, error)\n\tList(ctx context.Context, f Filter) ([]Invoice, error)\n\tMintCreditNote(ctx context.Context, invoiceID int64, cents int64, reason string) (CreditNote, error)\n}\n\n",
+ "handler": "type InvoiceHandler struct {\n\tsvc InvoiceService\n}\n\n// Refund issues a credit note for an invoice.\nfunc (h *InvoiceHandler) Refund(w http.ResponseWriter, r *http.Request) {\n\tid, err := parseID(r)\n\tif err != nil {\n\t\thttp.Error(w, \"bad invoice id\", http.StatusBadRequest)\n\t\treturn\n\t}\n\tnote, err := h.svc.",
+ "without_interface": {
+  "prompt_tokens": 94,
+  "top": [
+   {
+    "id": 18427,
+    "text": "issues",
+    "logit": 19.95,
+    "p": 0.64344
+   },
+   {
+    "id": 4121,
+    "text": "Ob",
+    "logit": 17.441,
+    "p": 0.05236
+   },
+   {
+    "id": 5996,
+    "text": "REF",
+    "logit": 16.981,
+    "p": 0.03307
+   },
+   {
+    "id": 19466,
+    "text": "Quote",
+    "logit": 16.949,
+    "p": 0.03201
+   },
+   {
+    "id": 1004,
+    "text": "void",
+    "logit": 16.531,
+    "p": 0.02109
+   },
+   {
+    "id": 1038,
+    "text": "iss",
+    "logit": 16.023,
+    "p": 0.01268
+   },
+   {
+    "id": 66817,
+    "text": "issuer",
+    "logit": 15.733,
+    "p": 0.00949
+   },
+   {
+    "id": 9673,
+    "text": "Impl",
+    "logit": 15.412,
+    "p": 0.00689
+   }
+  ],
+  "greedy": "issuesCreditNote(context.Background(), id)"
+ },
+ "with_interface": {
+  "prompt_tokens": 167,
+  "top": [
+   {
+    "id": 4230,
+    "text": "␣Create",
+    "logit": 18.389,
+    "p": 0.50005
+   },
+   {
+    "id": 18427,
+    "text": "issues",
+    "logit": 16.862,
+    "p": 0.10861
+   },
+   {
+    "id": 19466,
+    "text": "Quote",
+    "logit": 16.329,
+    "p": 0.06371
+   },
+   {
+    "id": 5661,
+    "text": "\\\n",
+    "logit": 15.24,
+    "p": 0.02144
+   },
+   {
+    "id": 2126,
+    "text": "␣Get",
+    "logit": 15.009,
+    "p": 0.01702
+   },
+   {
+    "id": 75569,
+    "text": "\tCreate",
+    "logit": 14.947,
+    "p": 0.016
+   },
+   {
+    "id": 151643,
+    "text": "<|endoftext|>",
+    "logit": 14.934,
+    "p": 0.0158
+   },
+   {
+    "id": 1006,
+    "text": "(\n",
+    "logit": 14.871,
+    "p": 0.01483
+   }
+  ],
+  "greedy": " CreateCreditNote(context.Background(), id, 0, \"Refund"
+ },
+ "with_renamed_method": {
+  "prompt_tokens": 168,
+  "top": [
+   {
+    "id": 41310,
+    "text": "␣Mint",
+    "logit": 17.314,
+    "p": 0.45891
+   },
+   {
+    "id": 19466,
+    "text": "Quote",
+    "logit": 16.156,
+    "p": 0.14416
+   },
+   {
+    "id": 515,
+    "text": "{\n",
+    "logit": 15.069,
+    "p": 0.04859
+   },
+   {
+    "id": 5661,
+    "text": "\\\n",
+    "logit": 14.772,
+    "p": 0.03611
+   },
+   {
+    "id": 4121,
+    "text": "Ob",
+    "logit": 14.536,
+    "p": 0.02851
+   },
+   {
+    "id": 151643,
+    "text": "<|endoftext|>",
+    "logit": 13.847,
+    "p": 0.01432
+   },
+   {
+    "id": 18427,
+    "text": "issues",
+    "logit": 13.683,
+    "p": 0.01216
+   },
+   {
+    "id": 1006,
+    "text": "(\n",
+    "logit": 13.543,
+    "p": 0.01057
+   }
+  ],
+  "greedy": " MintCreditNote(r.Context(), id, 100, \""
+ }
+}

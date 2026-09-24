@@ -1,0 +1,27 @@
+{
+ "task": "bug_gst_float",
+ "kind": "bugfix",
+ "rules": [
+  "rounding",
+  "float"
+ ],
+ "variant": "oneshot",
+ "model": "Qwen/Qwen2.5-Coder-3B-Instruct",
+ "passed": false,
+ "seconds": 5.5,
+ "tests_touched": [],
+ "grade_tail": "...F.......                                                              [100%]\n=================================== FAILURES ===================================\n_________________________________ test_hidden __________________________________\n\n    def test_hidden():\n>       assert gst(25, 1800) == 4\nE       assert 5 == 4\nE        +  where 5 = gst(25, 1800)\n\ntests/test_hidden.py:4: AssertionError\n=========================== short test summary info ============================\nFAILED tests/test_hidden.py::test_hidden - assert 5 == 4\n1 failed, 10 passed in 0.05s\n",
+ "turns": 1,
+ "tokens_in": 2309,
+ "tokens_out": 147,
+ "calls": {},
+ "parse_errors": 0,
+ "claimed_done": true,
+ "prompt_tokens_first": 2309,
+ "transcript": [
+  {
+   "role": "assistant",
+   "content": "### invoicing/tax.py\n```python\ndef round_half_up(numerator, denominator):\n    \"\"\"Integer division rounded to nearest, ties to up (rounding away from zero).\"\"\"\n    q, r = divmod(numerator, denominator)\n    if 2 * r > denominator or (2 * r == denominator and q % 2 == 1):\n        q += 1\n    return q\n\n\ndef gst(amount_paise, rate_bp):\n    \"\"\"GST on `amount_paise` at `rate_bp` basis points (1800 = 18%), in paise.\"\"\"\n    return int(amount_paise * rate_bp / 10000 + 0.5)\n```"
+  }
+ ]
+}

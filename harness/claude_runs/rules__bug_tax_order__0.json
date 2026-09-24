@@ -1,0 +1,19 @@
+{
+ "task": "bug_tax_order",
+ "kind": "bugfix",
+ "rules": [],
+ "variant": "rules",
+ "rep": 0,
+ "passed": true,
+ "error": false,
+ "turns": 10,
+ "seconds": 40.2,
+ "cost_usd": 0.0534945,
+ "input_tokens": 162308,
+ "output_tokens": 3288,
+ "tests_touched": [],
+ "claimed_pass": true,
+ "denials": 0,
+ "result": "All tests pass! The fix correctly addresses the bug. The original code was applying the discount after adding GST (discounting the tax amount), but now it calculates GST on the discounted amount, which is the correct business logic for Indian invoicing.",
+ "grade_tail": "...........                                                              [100%]\n11 passed in 0.03s\n"
+}

@@ -1,0 +1,19 @@
+{
+ "task": "impl_format_inr",
+ "kind": "implement",
+ "rules": [],
+ "variant": "rules",
+ "rep": 2,
+ "passed": true,
+ "error": false,
+ "turns": 11,
+ "seconds": 51.2,
+ "cost_usd": 0.07734260000000001,
+ "input_tokens": 184514,
+ "output_tokens": 6439,
+ "tests_touched": [],
+ "claimed_pass": true,
+ "denials": 0,
+ "result": "**All tests pass!** ✓\n\nThe `format_inr` function has been successfully implemented. It:\n- Converts paise (integer) to rupees with proper decimal formatting\n- Applies Indian digit grouping: the rightmost 3 digits form the first group, then groups of 2 digits from the left (e.g., 123456 → \"1,23,456\")\n- Adds the rupee symbol (₹) and handles negative amounts with a leading minus sign\n- Correctly formats both the test cases: `12345678` → `\"₹1,23,456.78\"` and `5` → `\"₹0.05\"`",
+ "grade_tail": "...........                                                              [100%]\n11 passed in 0.03s\n"
+}

@@ -1,0 +1,23 @@
+{
+ "task": "impl_get_handler",
+ "kind": "implement",
+ "rules": [
+  "layering",
+  "iso",
+  "errors"
+ ],
+ "variant": "hook",
+ "rep": 1,
+ "passed": true,
+ "error": false,
+ "turns": 13,
+ "seconds": 36.8,
+ "cost_usd": 0.05241660000000001,
+ "input_tokens": 166361,
+ "output_tokens": 3002,
+ "tests_touched": [],
+ "claimed_pass": true,
+ "denials": 0,
+ "result": "Perfect! The tests pass. Here's a summary of the implementation:\n\n## Implementation Complete\n\nI implemented `get_invoice_handler` in `invoicing/api.py` with the following features:\n\n- **Retrieves the invoice** using `service.get()`, which checks ownership (raises 403 FORBIDDEN if wrong user)\n- **Calculates the total** using `service.total()` which includes discount and GST calculations\n- **Returns a 200 response** with a JSON body containing:\n  - `id` - the invoice ID\n  - `customer` - the customer identifier\n  - `created` - ISO 8601 date string\n  - `total` - total amount in paise (integer)\n  - `display_total` - formatted rupee string (e.g., \"₹1,18,00.00\")\n- **Handles errors gracefully**:\n  - 404 for missing invoices\n  - 403 for unauthorized access\n  - Catches `InvoiceError` exceptions and returns appropriate HTTP status codes\n\n**All tests pass** (10/10 tests in the suite).",
+ "grade_tail": "...........                                                              [100%]\n11 passed in 0.02s\n"
+}

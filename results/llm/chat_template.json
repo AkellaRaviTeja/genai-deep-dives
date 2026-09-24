@@ -1,0 +1,23 @@
+{
+ "meta": {
+  "model": "Qwen/Qwen2.5-1.5B",
+  "torch": "2.14.0+cu130",
+  "transformers": "5.17.0",
+  "device": "NVIDIA GeForce RTX 5050 Laptop GPU",
+  "dtype": "bfloat16",
+  "run_at": "2026-09-24T18:54:47",
+  "tokenizer": "Qwen/Qwen2.5-1.5B-Instruct"
+ },
+ "messages": [
+  {
+   "role": "system",
+   "content": "You are a billing assistant."
+  },
+  {
+   "role": "user",
+   "content": "What is the total on invoice 4471?"
+  }
+ ],
+ "text": "<|im_start|>system\nYou are a billing assistant.<|im_end|>\n<|im_start|>user\nWhat is the total on invoice 4471?<|im_end|>\n<|im_start|>assistant\n",
+ "tokens": 31
+}

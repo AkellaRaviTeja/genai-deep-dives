@@ -1,0 +1,24 @@
+{
+ "task": "feat_create_handler",
+ "kind": "feature",
+ "rules": [
+  "layering",
+  "iso",
+  "errors"
+ ],
+ "variant": "model_only_rules_big",
+ "rep": 0,
+ "passed": true,
+ "error": false,
+ "turns": 1,
+ "seconds": 59.7,
+ "cost_usd": 0.17694200000000002,
+ "input_tokens": 71241,
+ "output_tokens": 6894,
+ "tests_touched": [],
+ "claimed_pass": false,
+ "denials": 0,
+ "result": "Looking at the task, I need to add a `create_invoice_handler` function that:\n1. Accepts a service, user, and request body with \"id\" and \"items\"\n2. Creates LineItem objects from each item (which validates qty > 0)\n3. Creates and stores an Invoice\n4. Returns (201, {\"id\", \"created\"}) on success\n5. Returns (400, {\"error\": code}) on validation errors\n\nI'll follow the pattern from `get_invoice_handler`: catch `InvoiceError` for business logic errors and handle structural validation errors separately.\n\n### invoicing/api.py\n```python\nfrom .errors import InvoiceError\nfrom .money import format_inr\nfrom .invoice import Invoice, LineItem\n\n\ndef _status(err):\n    return {\"NOT_FOUND\": 404, \"FORBIDDEN\": 403}.get(err.code, 400)\n\n\ndef get_invoice_handler(service, invoice_id, user):\n    \"\"\"GET /invoices/{id}: returns (status, body).\"\"\"\n    try:\n        inv = service.get(invoice_id, user)\n        total = service.total(invoice_id, user)\n    except InvoiceError as e:\n        return _status(e), {\"error\": e.code}\n    return 200, {\n        \"id\": inv.id,\n        \"customer\": inv.customer,\n        \"created\": inv.created.isoformat(),\n        \"total\": total,\n        \"total_display\": format_inr(total),\n    }\n\n\ndef create_invoice_handler(service, user, body):\n    \"\"\"POST /invoices: returns (status, body).\"\"\"\n    try:\n        items = []\n        for item_dict in body.get(\"items\", []):\n            items.append(LineItem(\n                sku=item_dict[\"sku\"],\n                qty=item_dict[\"qty\"],\n                unit_paise=item_dict[\"unit_paise\"]\n            ))\n        \n        invoice = Invoice(id=body[\"id\"], customer=user, items=items)\n        service.create(invoice)\n        \n        return 201, {\"id\": invoice.id, \"created\": invoice.created.isoformat()}\n    except InvoiceError as e:\n        return _status(e), {\"error\": e.code}\n    except (KeyError, TypeError):\n        return 400, {\"error\": \"BAD_REQUEST\"}\n```\n\nThe handler:\n- Iterates through items in the request body, creating `LineItem` objects (which validates qty > 0, raising `InvoiceError(\"BAD_QTY\", ...)` if invalid)\n- Creates an `Invoice` with the authenticated user as the customer\n- Stores it via `service.create()`\n- Returns 201 with id and ISO 8601 created date on success\n- Returns 400 with error code for any `InvoiceError` or structural validation errors (missing keys, non-iterable items)",
+ "visible_passed": true,
+ "grade_tail": "...........                                                              [100%]\n11 passed in 0.02s\n"
+}

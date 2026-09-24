@@ -1,0 +1,73 @@
+{
+ "meta": {
+  "model": "Qwen/Qwen2.5-1.5B",
+  "torch": "2.14.0+cu130",
+  "transformers": "5.17.0",
+  "device": "NVIDIA GeForce RTX 5050 Laptop GPU",
+  "dtype": "bfloat16",
+  "run_at": "2026-09-24T19:07:46",
+  "new_tokens": 512
+ },
+ "prompt": "The invoice total is",
+ "batch_1_repeated_6_distinct": 1,
+ "max_logit": 21.5,
+ "top2_gap": 0.5,
+ "batches": [
+  {
+   "batch": 1,
+   "max_logit_diff_vs_1": 0.0,
+   "first_token_that_differs_from_batch_1": null,
+   "rows_identical_within_batch": true,
+   "text_at_divergence": null,
+   "text_batch_1": null
+  },
+  {
+   "batch": 2,
+   "max_logit_diff_vs_1": 0.25,
+   "first_token_that_differs_from_batch_1": 19,
+   "rows_identical_within_batch": true,
+   "text_at_divergence": " in cash. The cashier should refuse to handle it.\nA. Correct",
+   "text_batch_1": " in cash. The cashier should ____.\nA. Refuse to accept"
+  },
+  {
+   "batch": 4,
+   "max_logit_diff_vs_1": 0.1953,
+   "first_token_that_differs_from_batch_1": 38,
+   "rows_identical_within_batch": true,
+   "text_at_divergence": " Accept cash payment\nC. Refuse to accept cash payment and issue",
+   "text_batch_1": " Accept cash payment\nC. Accept cash payment after approval\nD."
+  },
+  {
+   "batch": 8,
+   "max_logit_diff_vs_1": 0.25,
+   "first_token_that_differs_from_batch_1": 38,
+   "rows_identical_within_batch": true,
+   "text_at_divergence": " Accept cash payment\nC. Refuse to accept cash payment, but",
+   "text_batch_1": " Accept cash payment\nC. Accept cash payment after approval\nD."
+  },
+  {
+   "batch": 16,
+   "max_logit_diff_vs_1": 0.25,
+   "first_token_that_differs_from_batch_1": null,
+   "rows_identical_within_batch": true,
+   "text_at_divergence": null,
+   "text_batch_1": null
+  },
+  {
+   "batch": 32,
+   "max_logit_diff_vs_1": 0.207,
+   "first_token_that_differs_from_batch_1": 38,
+   "rows_identical_within_batch": true,
+   "text_at_divergence": " Accept cash payment\nC. Refuse to accept cash payment, but",
+   "text_batch_1": " Accept cash payment\nC. Accept cash payment after approval\nD."
+  },
+  {
+   "batch": 64,
+   "max_logit_diff_vs_1": 0.25,
+   "first_token_that_differs_from_batch_1": 38,
+   "rows_identical_within_batch": true,
+   "text_at_divergence": " Accept cash payment\nC. Refuse to accept cash payment and issue",
+   "text_batch_1": " Accept cash payment\nC. Accept cash payment after approval\nD."
+  }
+ ]
+}

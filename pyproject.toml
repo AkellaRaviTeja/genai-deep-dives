@@ -1,0 +1,13 @@
+[project]
+name = "ravi-teja-studio-research"
+version = "0.1.0"
+description = "Experiments whose results drive the episodes' visuals. Every number on screen comes from a run here."
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "torch",
+    "transformers",
+    "tiktoken",
+    "accelerate",
+    "pytest>=9.1.1",
+    "psycopg[binary]>=3.3.6",
+]

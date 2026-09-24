@@ -1,0 +1,19 @@
+{
+ "task": "bug_grouping",
+ "kind": "bugfix",
+ "rules": [],
+ "variant": "tests",
+ "rep": 0,
+ "passed": true,
+ "error": false,
+ "turns": 8,
+ "seconds": 53.3,
+ "cost_usd": 0.0606948,
+ "input_tokens": 128265,
+ "output_tokens": 5142,
+ "tests_touched": [],
+ "claimed_pass": true,
+ "denials": 0,
+ "result": "Perfect! All tests pass. The issue was in the digit grouping logic on line 24. The condition `while len(head) > 3:` should have been `while len(head) > 2:`. \n\nIn the Indian numbering system, the rightmost group has 3 digits (ones, tens, hundreds), but all other groups must have exactly 2 digits (representing lakhs, crores, etc.). By changing the condition to `> 2`, the algorithm now correctly extracts 2-digit pairs from the remaining digits, ensuring proper formatting like \"₹1,23,456.78\" instead of \"₹123,456.78\".\n\n**The tests pass successfully.**",
+ "grade_tail": "...........                                                              [100%]\n11 passed in 0.05s\n"
+}

@@ -1,0 +1,21 @@
+{
+ "task": "feat_festive",
+ "kind": "feature",
+ "rules": [
+  "case"
+ ],
+ "variant": "hook",
+ "rep": 2,
+ "passed": true,
+ "error": false,
+ "turns": 8,
+ "seconds": 29.1,
+ "cost_usd": 0.0342174,
+ "input_tokens": 120077,
+ "output_tokens": 1281,
+ "tests_touched": [],
+ "claimed_pass": true,
+ "denials": 0,
+ "result": "Done! I've added the FESTIVE15 discount code with 15% off to the DISCOUNTS dictionary in `/tmp/h-feat_festive-00_io5_z/invoicing/discount.py`.\n\n**All tests pass** ✓ (10/10 tests passing)\n\nThe discount code follows the same pattern as the existing WELCOME10 code and will work with the case-insensitive matching as per the project rules.",
+ "grade_tail": "...........                                                              [100%]\n11 passed in 0.03s\n"
+}

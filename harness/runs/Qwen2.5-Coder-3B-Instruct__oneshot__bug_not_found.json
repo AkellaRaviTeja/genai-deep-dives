@@ -1,0 +1,29 @@
+{
+ "task": "bug_not_found",
+ "kind": "bugfix",
+ "rules": [
+  "errors"
+ ],
+ "variant": "oneshot",
+ "model": "Qwen/Qwen2.5-Coder-3B-Instruct",
+ "passed": false,
+ "seconds": 18.0,
+ "tests_touched": [
+  "test_api.py",
+  "test_service.py"
+ ],
+ "grade_tail": "pytest.raises(InvoiceError) as e:\n>           InvoiceStore().get(\"nope\")\n\ntests/test_hidden.py:7: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = <invoicing.store.InvoiceStore object at 0x7332aeaba450>\ninvoice_id = 'nope'\n\n    def get(self, invoice_id):\n>       return self._rows[invoice_id]\n               ^^^^^^^^^^^^^^^^^^^^^^\nE       KeyError: 'nope'\n\ninvoicing/store.py:14: KeyError\n=========================== short test summary info ============================\nFAILED tests/test_hidden.py::test_hidden - KeyError: 'nope'\n1 failed, 10 passed in 0.04s\n",
+ "turns": 1,
+ "tokens_in": 2288,
+ "tokens_out": 589,
+ "calls": {},
+ "parse_errors": 0,
+ "claimed_done": true,
+ "prompt_tokens_first": 2288,
+ "transcript": [
+  {
+   "role": "assistant",
+   "content": "### invoicing/api.py\n```python\nfrom .errors import InvoiceError\nfrom .money import format_inr\n\n\ndef _status(err):\n    return {\"NOT_FOUND\": 404, \"FORBIDDEN\": 403}.get(err.code, 400)\n\n\ndef get_invoice_handler(service, invoice_id, user):\n    \"\"\"GET /invoices/{id}: returns (status, body).\"\"\"\n    try:\n        inv = service.get(invoice_id, user)\n        total = service.total(invoice_id, user)\n    except InvoiceError as e:\n        return _status(e), {\"error\": e.code}\n    return 200, {\n        \"id\": inv.id,\n        \"customer\": inv.customer,\n        \"created\": inv.created.isoformat(),\n        \"total\": total,\n        \"total_display\": format_inr(total),\n    }\n```\n\n### tests/test_api.py\n```python\nfrom datetime import date\nfrom invoicing.api import get_invoice_handler\nfrom invoicing.invoice import Invoice, LineItem\nfrom invoicing.service import InvoiceService\nfrom invoicing.store import InvoiceStore\n\ndef test_get():\n    s = InvoiceService(InvoiceStore())\n    s.create(Invoice(\"A1\", \"asha\", [LineItem(\"pen\", 1, 10000)], date(2026, 9, 1)))\n    status, body = get_invoice_handler(s, \"A1\", \"asha\")\n    assert status == 200 and body[\"created\"] == \"2026-09-01\" and body[\"total\"] == 11800\n\ndef test_not_found():\n    s = InvoiceService(InvoiceStore())\n    status, body = get_invoice_handler(s, \"A2\", \"asha\")\n    assert status == 404 and body[\"error\"] == \"NOT_FOUND\"\n```\n\n### tests/test_service.py\n```python\nfrom datetime import date\nimport pytest\nfrom invoicing.invoice import Invoice, LineItem\nfrom invoicing.service import InvoiceService\nfrom invoicing.store import InvoiceStore\nfrom invoicing.errors import InvoiceError\n\ndef svc():\n    s = InvoiceService(InvoiceStore())\n    s.create(Invoice(\"A1\", \"asha\", [LineItem(\"pen\", 10, 10000)], date(2026, 9, 1), \"WELCOME10\"))\n    return s\n\ndef test_total():\n    assert svc().total(\"A1\", \"asha\") == 106200\n\ndef test_forbidden():\n    with pytest.raises(InvoiceError):\n        svc().get(\"A1\", \"ravi\")\n\ndef test_not_found():\n    s = InvoiceService(InvoiceStore())\n    with pytest.raises(InvoiceError):\n        s.get(\"A2\", \"asha\")\n```"
+  }
+ ]
+}

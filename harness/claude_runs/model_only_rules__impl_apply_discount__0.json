@@ -1,0 +1,24 @@
+{
+ "task": "impl_apply_discount",
+ "kind": "implement",
+ "rules": [
+  "case",
+  "cap",
+  "errors"
+ ],
+ "variant": "model_only_rules",
+ "rep": 0,
+ "passed": true,
+ "error": false,
+ "turns": 1,
+ "seconds": 64.8,
+ "cost_usd": 0.054332000000000005,
+ "input_tokens": 9446,
+ "output_tokens": 7090,
+ "tests_touched": [],
+ "claimed_pass": false,
+ "denials": 0,
+ "result": "Looking at the task, I need to implement `apply_discount` to:\n1. Handle None code (return 0)\n2. Match discount codes case-insensitively after trimming spaces\n3. Calculate percent-based or flat discounts\n4. Cap the discount at the subtotal\n\nLet me trace through the tests to verify my understanding:\n- `apply_discount(100000, \"WELCOME10\")`: 10% of 100000 = 10000 ✓\n- `apply_discount(100000, \"FLAT500\")`: flat 50000 ✓\n\nAnd from the service test, it's used in `total()` where a 10% discount reduces 100000 to 90000, then GST is applied to the net amount.\n\n### invoicing/discount.py\n```python\nfrom .errors import InvoiceError\n\n# code -> (kind, value). \"percent\" values are whole percent; \"flat\" values are paise.\nDISCOUNTS = {\n    \"WELCOME10\": (\"percent\", 10),\n    \"FLAT500\": (\"flat\", 50000),\n}\n\n\ndef apply_discount(subtotal, code):\n    \"\"\"Return the discount in paise for `code` on `subtotal` paise. No code means 0.\"\"\"\n    if code is None:\n        return 0\n    \n    normalized_code = code.strip().upper()\n    \n    if normalized_code not in DISCOUNTS:\n        raise InvoiceError(\"BAD_CODE\")\n    \n    kind, value = DISCOUNTS[normalized_code]\n    \n    if kind == \"percent\":\n        discount = subtotal * value // 100\n    else:  # kind == \"flat\"\n        discount = value\n    \n    return min(discount, subtotal)\n```",
+ "visible_passed": true,
+ "grade_tail": "...........                                                              [100%]\n11 passed in 0.02s\n"
+}

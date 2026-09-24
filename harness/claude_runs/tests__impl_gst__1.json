@@ -1,0 +1,21 @@
+{
+ "task": "impl_gst",
+ "kind": "implement",
+ "rules": [
+  "rounding"
+ ],
+ "variant": "tests",
+ "rep": 1,
+ "passed": true,
+ "error": false,
+ "turns": 8,
+ "seconds": 23.2,
+ "cost_usd": 0.035832,
+ "input_tokens": 116409,
+ "output_tokens": 1789,
+ "tests_touched": [],
+ "claimed_pass": true,
+ "denials": 0,
+ "result": "Perfect! The tests pass. All 10 tests pass including the gst test.\n\nThe implementation calculates GST using the formula: `(amount_paise * rate_bp) / 10000` with banker's rounding (round-half-even). For the test case of 10000 paise at 1800 basis points (18%), it correctly returns 1800 paise.",
+ "grade_tail": "...........                                                              [100%]\n11 passed in 0.03s\n"
+}

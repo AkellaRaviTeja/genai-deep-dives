@@ -1,0 +1,208 @@
+{
+ "claude_code": "2.1.281 (Claude Code)",
+ "model": "haiku",
+ "prompt": "Reply with the single word OK.",
+ "claude_md_line": "- Use integer paise for money; tax rounds half to even; api talks only to the service layer; run `make test` before finishing.",
+ "run_at": "2026-09-24T20:41:45",
+ "tokens_per_claude_md_line": 31.0,
+ "conditions": [
+  {
+   "name": "my_setup",
+   "lines": 0,
+   "tools": 0,
+   "runs": [
+    {
+     "total_input": 38969,
+     "input": 10,
+     "cache_write": 16935,
+     "cache_read": 22024,
+     "result": "OK"
+    },
+    {
+     "total_input": 39518,
+     "input": 10,
+     "cache_write": 13507,
+     "cache_read": 26001,
+     "result": "OK"
+    }
+   ],
+   "total_input": 38969
+  },
+  {
+   "name": "clean",
+   "lines": 0,
+   "tools": 0,
+   "runs": [
+    {
+     "total_input": 34717,
+     "input": 10,
+     "cache_write": 34707,
+     "cache_read": 0,
+     "result": "OK"
+    },
+    {
+     "total_input": 34716,
+     "input": 10,
+     "cache_write": 2300,
+     "cache_read": 32406,
+     "result": "OK"
+    }
+   ],
+   "total_input": 34716
+  },
+  {
+   "name": "clean_no_tools",
+   "lines": 0,
+   "tools": 0,
+   "runs": [
+    {
+     "total_input": 6675,
+     "input": 10,
+     "cache_write": 6665,
+     "cache_read": 0,
+     "result": "OK"
+    },
+    {
+     "total_input": 6676,
+     "input": 10,
+     "cache_write": 482,
+     "cache_read": 6184,
+     "result": "OK"
+    }
+   ],
+   "total_input": 6675
+  },
+  {
+   "name": "claudemd_50",
+   "lines": 50,
+   "tools": 0,
+   "runs": [
+    {
+     "total_input": 36364,
+     "input": 10,
+     "cache_write": 7884,
+     "cache_read": 28470,
+     "result": "OK"
+    },
+    {
+     "total_input": 36365,
+     "input": 10,
+     "cache_write": 3946,
+     "cache_read": 32409,
+     "result": "OK"
+    }
+   ],
+   "total_input": 36364
+  },
+  {
+   "name": "claudemd_200",
+   "lines": 200,
+   "tools": 0,
+   "runs": [
+    {
+     "total_input": 41016,
+     "input": 10,
+     "cache_write": 12536,
+     "cache_read": 28470,
+     "result": "OK"
+    },
+    {
+     "total_input": 41016,
+     "input": 10,
+     "cache_write": 8597,
+     "cache_read": 32409,
+     "result": "OK"
+    }
+   ],
+   "total_input": 41016
+  },
+  {
+   "name": "claudemd_800",
+   "lines": 800,
+   "tools": 0,
+   "runs": [
+    {
+     "total_input": 59623,
+     "input": 10,
+     "cache_write": 31143,
+     "cache_read": 28470,
+     "result": "OK"
+    },
+    {
+     "total_input": 59621,
+     "input": 10,
+     "cache_write": 27200,
+     "cache_read": 32411,
+     "result": "OK"
+    }
+   ],
+   "total_input": 59621
+  },
+  {
+   "name": "mcp_5",
+   "lines": 0,
+   "tools": 5,
+   "runs": [
+    {
+     "total_input": 34775,
+     "input": 10,
+     "cache_write": 6295,
+     "cache_read": 28470,
+     "result": "OK"
+    },
+    {
+     "total_input": 34775,
+     "input": 10,
+     "cache_write": 2358,
+     "cache_read": 32407,
+     "result": "OK"
+    }
+   ],
+   "total_input": 34775
+  },
+  {
+   "name": "mcp_50",
+   "lines": 0,
+   "tools": 50,
+   "runs": [
+    {
+     "total_input": 35282,
+     "input": 10,
+     "cache_write": 6802,
+     "cache_read": 28470,
+     "result": "OK"
+    },
+    {
+     "total_input": 35274,
+     "input": 10,
+     "cache_write": 2855,
+     "cache_read": 32409,
+     "result": "OK"
+    }
+   ],
+   "total_input": 35274
+  },
+  {
+   "name": "mcp_200",
+   "lines": 0,
+   "tools": 200,
+   "runs": [
+    {
+     "total_input": 36922,
+     "input": 10,
+     "cache_write": 8442,
+     "cache_read": 28470,
+     "result": "OK"
+    },
+    {
+     "total_input": 36921,
+     "input": 10,
+     "cache_write": 4503,
+     "cache_read": 32408,
+     "result": "OK"
+    }
+   ],
+   "total_input": 36921
+  }
+ ]
+}

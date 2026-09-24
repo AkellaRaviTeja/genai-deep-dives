@@ -1,0 +1,21 @@
+{
+ "task": "impl_list_by_customer",
+ "kind": "implement",
+ "rules": [
+  "order"
+ ],
+ "variant": "rules",
+ "rep": 0,
+ "passed": true,
+ "error": false,
+ "turns": 15,
+ "seconds": 43.1,
+ "cost_usd": 0.0635714,
+ "input_tokens": 243588,
+ "output_tokens": 3370,
+ "tests_touched": [],
+ "claimed_pass": true,
+ "denials": 0,
+ "result": "Done! I've implemented `InvoiceStore.list_by_customer` to:\n1. Filter invoices by the specified customer\n2. Sort by created date (newest first), with ties broken by id (newest id first in reverse order)\n\n**All tests pass.**",
+ "grade_tail": "...........                                                              [100%]\n11 passed in 0.02s\n"
+}

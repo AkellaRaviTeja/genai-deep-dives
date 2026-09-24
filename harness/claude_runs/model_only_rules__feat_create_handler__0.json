@@ -1,0 +1,24 @@
+{
+ "task": "feat_create_handler",
+ "kind": "feature",
+ "rules": [
+  "layering",
+  "iso",
+  "errors"
+ ],
+ "variant": "model_only_rules",
+ "rep": 0,
+ "passed": true,
+ "error": false,
+ "turns": 1,
+ "seconds": 63.3,
+ "cost_usd": 0.052833000000000005,
+ "input_tokens": 9574,
+ "output_tokens": 6739,
+ "tests_touched": [],
+ "claimed_pass": false,
+ "denials": 0,
+ "result": "Looking at the task, I need to add a `create_invoice_handler` function that:\n1. Extracts id and items from the request body\n2. Creates LineItem objects (validation happens in LineItem.__post_init__)\n3. Creates an Invoice with customer=user\n4. Calls service.create() to persist it\n5. Returns (201, {\"id\", \"created\"}) on success\n6. Returns (400, {\"error\": code}) on validation errors\n\nI'll need to import `Invoice` and `LineItem` to create them, then catch `InvoiceError` from LineItem validation (e.g., qty <= 0) and `KeyError` for malformed request bodies.\n\n### invoicing/api.py\n```python\nfrom .errors import InvoiceError\nfrom .invoice import Invoice, LineItem\nfrom .money import format_inr\n\n\ndef _status(err):\n    return {\"NOT_FOUND\": 404, \"FORBIDDEN\": 403}.get(err.code, 400)\n\n\ndef get_invoice_handler(service, invoice_id, user):\n    \"\"\"GET /invoices/{id}: returns (status, body).\"\"\"\n    try:\n        inv = service.get(invoice_id, user)\n        total = service.total(invoice_id, user)\n    except InvoiceError as e:\n        return _status(e), {\"error\": e.code}\n    return 200, {\n        \"id\": inv.id,\n        \"customer\": inv.customer,\n        \"created\": inv.created.isoformat(),\n        \"total\": total,\n        \"total_display\": format_inr(total),\n    }\n\n\ndef create_invoice_handler(service, user, body):\n    \"\"\"POST /invoices: create an invoice, return (status, body).\"\"\"\n    try:\n        invoice_id = body[\"id\"]\n        items_data = body[\"items\"]\n        \n        items = []\n        for item_data in items_data:\n            item = LineItem(\n                sku=item_data[\"sku\"],\n                qty=item_data[\"qty\"],\n                unit_paise=item_data[\"unit_paise\"]\n            )\n            items.append(item)\n        \n        invoice = Invoice(id=invoice_id, customer=user, items=items)\n        service.create(invoice)\n        \n        return 201, {\n            \"id\": invoice.id,\n            \"created\": invoice.created.isoformat()\n        }\n    except KeyError:\n        return 400, {\"error\": \"BAD_AMOUNT\"}\n    except InvoiceError as e:\n        return _status(e), {\"error\": e.code}\n```",
+ "visible_passed": true,
+ "grade_tail": "...........                                                              [100%]\n11 passed in 0.02s\n"
+}

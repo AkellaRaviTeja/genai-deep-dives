@@ -1,0 +1,28 @@
+{
+ "task": "impl_apply_discount",
+ "kind": "implement",
+ "rules": [
+  "case",
+  "cap",
+  "errors"
+ ],
+ "variant": "oneshot",
+ "model": "Qwen/Qwen2.5-Coder-3B-Instruct",
+ "passed": false,
+ "seconds": 6.5,
+ "tests_touched": [],
+ "grade_tail": "____________________________ test_hidden __________________________________\n\n    def test_hidden():\n        assert apply_discount(100000, None) == 0\n        assert apply_discount(100000, \"WELCOME10\") == 10000\n>       assert apply_discount(100000, \" welcome10 \") == 10000\nE       AssertionError: assert 0 == 10000\nE        +  where 0 = apply_discount(100000, ' welcome10 ')\n\ntests/test_hidden.py:8: AssertionError\n=========================== short test summary info ============================\nFAILED tests/test_hidden.py::test_hidden - AssertionError: assert 0 == 10000\n1 failed, 10 passed in 0.04s\n",
+ "turns": 1,
+ "tokens_in": 2252,
+ "tokens_out": 184,
+ "calls": {},
+ "parse_errors": 0,
+ "claimed_done": true,
+ "prompt_tokens_first": 2252,
+ "transcript": [
+  {
+   "role": "assistant",
+   "content": "### invoicing/discount.py\n```python\nfrom .errors import InvoiceError\n\n# code -> (kind, value). \"percent\" values are whole percent; \"flat\" values are paise.\nDISCOUNTS = {\n    \"WELCOME10\": (\"percent\", 10),\n    \"FLAT500\": (\"flat\", 50000),\n}\n\n\ndef apply_discount(subtotal, code):\n    \"\"\"Return the discount in paise for `code` on `subtotal` paise. No code means 0.\"\"\"\n    if code not in DISCOUNTS:\n        return 0\n    kind, value = DISCOUNTS[code]\n    if kind == \"percent\":\n        return int(subtotal * value / 100)\n    elif kind == \"flat\":\n        return value\n    else:\n        raise InvoiceError(\"BAD_DISCOUNT_CODE\", code)\n```"
+  }
+ ]
+}

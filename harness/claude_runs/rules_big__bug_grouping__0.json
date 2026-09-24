@@ -1,0 +1,20 @@
+{
+ "task": "bug_grouping",
+ "kind": "bugfix",
+ "rules": [],
+ "variant": "rules_big",
+ "rep": 0,
+ "passed": true,
+ "error": false,
+ "turns": 7,
+ "seconds": 39.2,
+ "cost_usd": 0.04952310000000001,
+ "input_tokens": 115790,
+ "output_tokens": 3512,
+ "tests_touched": [],
+ "claimed_pass": true,
+ "denials": 0,
+ "result": "Perfect! **All tests pass.** \n\nThe bug was on line 24 of `invoicing/money.py`. The condition `while len(head) > 3:` should have been `while len(head) > 2:`. \n\nIn Indian digit grouping, the pattern is: last 3 digits form a group, then groups of 2 from right to left. The original code only extracted 2-digit groups when there were *more than* 3 digits remaining, but it should extract when there are *more than* 2 digits. This meant that a head with exactly 3 digits (like \"123\" from 123456 rupees) never got split into \"1\" and \"23\".\n\nThe fix now correctly formats 12345678 paise as \"₹1,23,456.78\" instead of \"₹123,456.78\".",
+ "visible_passed": true,
+ "grade_tail": "...........                                                              [100%]\n11 passed in 0.02s\n"
+}

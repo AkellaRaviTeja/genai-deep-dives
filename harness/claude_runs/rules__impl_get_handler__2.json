@@ -1,0 +1,23 @@
+{
+ "task": "impl_get_handler",
+ "kind": "implement",
+ "rules": [
+  "layering",
+  "iso",
+  "errors"
+ ],
+ "variant": "rules",
+ "rep": 2,
+ "passed": true,
+ "error": false,
+ "turns": 16,
+ "seconds": 29.7,
+ "cost_usd": 0.0537284,
+ "input_tokens": 185185,
+ "output_tokens": 2720,
+ "tests_touched": [],
+ "claimed_pass": true,
+ "denials": 0,
+ "result": "All tests pass! ✓\n\nThe implementation of `get_invoice_handler`:\n1. Calls `service.get()` which handles permission checks (403 FORBIDDEN) and missing invoices (404 NOT_FOUND)\n2. Computes the total using `service.total()` which accounts for discounts and GST\n3. Returns a response body with id, customer, ISO-formatted created date, total (in paise), and display_total (formatted as ₹)\n4. Catches `InvoiceError` exceptions and returns appropriate HTTP status codes",
+ "grade_tail": "...........                                                              [100%]\n11 passed in 0.04s\n"
+}

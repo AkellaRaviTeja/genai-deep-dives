@@ -1,0 +1,23 @@
+{
+ "task": "bug_gst_float",
+ "kind": "bugfix",
+ "rules": [
+  "rounding",
+  "float"
+ ],
+ "variant": "rules_big",
+ "rep": 0,
+ "passed": true,
+ "error": false,
+ "turns": 12,
+ "seconds": 44.0,
+ "cost_usd": 0.0621015,
+ "input_tokens": 200529,
+ "output_tokens": 3769,
+ "tests_touched": [],
+ "claimed_pass": true,
+ "denials": 0,
+ "result": "Perfect! **All tests pass.** \n\nThe bug was in the `gst()` function which was using floating-point arithmetic:\n```python\nreturn int(amount_paise * rate_bp / 10000 + 0.5)\n```\n\nThis violates the core rule that \"Money is integer paise everywhere. Never use float for money, not even in between.\" Floating-point arithmetic can introduce precision errors, causing off-by-one paise discrepancies.\n\nThe fix uses pure integer arithmetic with the proper banker's rounding function:\n```python\nreturn round_half_even(amount_paise * rate_bp, 10000)\n```\n\nThis ensures all GST calculations stay in the integer domain and apply correct half-to-even rounding as specified.",
+ "visible_passed": true,
+ "grade_tail": "...........                                                              [100%]\n11 passed in 0.02s\n"
+}

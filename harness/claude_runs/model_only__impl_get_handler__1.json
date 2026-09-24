@@ -1,0 +1,23 @@
+{
+ "task": "impl_get_handler",
+ "kind": "implement",
+ "rules": [
+  "layering",
+  "iso",
+  "errors"
+ ],
+ "variant": "model_only",
+ "rep": 1,
+ "passed": true,
+ "error": false,
+ "turns": 1,
+ "seconds": 19.8,
+ "cost_usd": 0.027927999999999998,
+ "input_tokens": 9114,
+ "output_tokens": 1942,
+ "tests_touched": [],
+ "claimed_pass": false,
+ "denials": 0,
+ "result": "permission checks)\n- Returns the invoice details plus the calculated total\n- Catches `InvoiceError` and maps to appropriate HTTP status codes\n\nLet me trace through the test: Invoice with 1 pen at ₹100 (10000 paise), no discount, with 18% GST = 10000 + 1800 = 11800 paise total.\n\n### invoicing/api.py\n```python\nfrom .errors import InvoiceError\nfrom .money import format_inr\n\n\ndef _status(err):\n    return {\"NOT_FOUND\": 404, \"FORBIDDEN\": 403}.get(err.code, 400)\n\n\ndef get_invoice_handler(service, invoice_id, user):\n    \"\"\"GET /invoices/{id}: returns (status, body).\"\"\"\n    try:\n        inv = service.get(invoice_id, user)\n        total = service.total(invoice_id, user)\n        return 200, {\n            \"id\": inv.id,\n            \"customer\": inv.customer,\n            \"created\": inv.created.isoformat(),\n            \"total\": total,\n            \"display_total\": format_inr(total),\n        }\n    except InvoiceError as err:\n        return _status(err), {\"error\": err.code}\n```\n\nThe handler calls `service.get()` which performs permission checks (raises 403 if customer mismatch or 404 if not found), then fetches the total with tax, and returns both the raw paise amount and a formatted display version.",
+ "grade_tail": "...........                                                              [100%]\n11 passed in 0.05s\n"
+}

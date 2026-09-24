@@ -1,0 +1,24 @@
+{
+ "task": "feat_parse_inr",
+ "kind": "feature",
+ "rules": [
+  "errors"
+ ],
+ "variant": "model_only_big",
+ "rep": 1,
+ "passed": true,
+ "error": false,
+ "turns": 1,
+ "seconds": 47.4,
+ "cost_usd": 0.17083099999999998,
+ "input_tokens": 70888,
+ "output_tokens": 5813,
+ "tests_touched": [
+  "test_money.py"
+ ],
+ "claimed_pass": false,
+ "denials": 0,
+ "result": "Looking at the task, I need to add a `parse_inr` function that reverses `format_inr`. It should parse strings like \"₹1,23,456.78\" back to paise (12345678) and reject text without the rupee sign.\n\nI'll trace through the format: `format_inr(12345678)` produces `\"₹1,23,456.78\"` with:\n- Rupee sign (required)\n- Indian digit grouping with commas\n- Exactly 2 decimal places for paise\n\nThe parser needs to:\n1. Require the ₹ sign\n2. Handle optional minus sign\n3. Remove commas\n4. Parse the rupee and paise parts\n5. Validate the format\n\nI'll also add tests to verify it's the true inverse of `format_inr`.\n\n### invoicing/money.py\n```python\nfrom .errors import InvoiceError\n\n\ndef to_paise(text):\n    \"\"\"Parse a rupee amount such as \"1,234.50\" or \"-20\" into integer paise.\"\"\"\n    s = text.strip().replace(\",\", \"\")\n    neg = s.startswith(\"-\")\n    if neg:\n        s = s[1:]\n    whole, _, frac = s.partition(\".\")\n    if not whole.isdigit() or (frac and not frac.isdigit()) or len(frac) > 2:\n        raise InvoiceError(\"BAD_AMOUNT\", text)\n    paise = int(whole) * 100 + int(frac.ljust(2, \"0\") or 0)\n    return -paise if neg else paise\n\n\ndef format_inr(paise):\n    \"\"\"Format paise as rupees with Indian digit grouping: 12345678 -> \"₹1,23,456.78\".\"\"\"\n    neg = paise < 0\n    rupees, p = divmod(abs(paise), 100)\n    digits = str(rupees)\n    head, tail = digits[:-3], digits[-3:]\n    groups = []\n    while len(head) > 2:\n        groups.insert(0, head[-2:])\n        head = head[:-2]\n    if head:\n        groups.insert(0, head)\n    body = \",\".join(groups + [tail]) if groups else tail\n    return f\"{'-' if neg else ''}₹{body}.{p:02d}\"\n\n\ndef parse_inr(text):\n    \"\"\"Parse Indian rupee format like \"₹1,23,456.78\" into integer paise.\"\"\"\n    s = text.strip()\n    \n    # Handle negative\n    neg = False\n    if s.startswith('-'):\n        neg = True\n        s = s[1:]\n    \n    # Check for rupee sign\n    if not s.startswith('₹'):\n        raise InvoiceError(\"BAD_AMOUNT\", text)\n    s = s[1:]\n    \n    # Remove commas\n    s = s.replace(',', '')\n    \n    # Split on decimal\n    whole, sep, frac = s.partition('.')\n    \n    # Validate\n    if not whole or not whole.isdigit():\n        raise InvoiceError(\"BAD_AMOUNT\", text)\n    if sep != '.' or not frac or not frac.isdigit() or len(frac) != 2:\n        raise InvoiceError(\"BAD_AMOUNT\", text)\n    \n    paise = int(whole) * 100 + int(frac)\n    return -paise if neg else paise\n```\n\n### tests/test_money.py\n```python\nimport pytest\nfrom invoicing.money import to_paise, format_inr, parse_inr\nfrom invoicing.errors import InvoiceError\n\ndef test_to_paise():\n    assert to_paise(\"1,234.50\") == 123450\n    assert to_paise(\"20\") == 2000\n\ndef test_to_paise_rejects_three_decimals():\n    with pytest.raises(InvoiceError):\n        to_paise(\"1.234\")\n\ndef test_format_inr():\n    assert format_inr(12345678) == \"₹1,23,456.78\"\n    assert format_inr(5) == \"₹0.05\"\n\ndef test_parse_inr():\n    assert parse_inr(\"₹1,23,456.78\") == 12345678\n    assert parse_inr(\"₹0.05\") == 5\n    assert parse_inr(\"-₹1,23,456.78\") == -12345678\n\ndef test_parse_inr_rejects_missing_rupee():\n    with pytest.raises(InvoiceError):\n        parse_inr(\"1,23,456.78\")\n\ndef test_parse_inr_rejects_missing_decimal():\n    with pytest.raises(InvoiceError):\n        parse_inr(\"₹1,23,456\")\n```",
+ "visible_passed": true,
+ "grade_tail": "...........                                                              [100%]\n11 passed in 0.02s\n"
+}

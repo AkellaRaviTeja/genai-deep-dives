@@ -1,0 +1,21 @@
+{
+ "task": "impl_gst",
+ "kind": "implement",
+ "rules": [
+  "rounding"
+ ],
+ "variant": "hook",
+ "rep": 2,
+ "passed": true,
+ "error": false,
+ "turns": 4,
+ "seconds": 17.4,
+ "cost_usd": 0.0257002,
+ "input_tokens": 57382,
+ "output_tokens": 1286,
+ "tests_touched": [],
+ "claimed_pass": true,
+ "denials": 0,
+ "result": "Perfect! All tests pass. The `gst` function is now implemented correctly. It calculates the GST by multiplying the amount in paise by the rate in basis points and dividing by 10000 (since 1 basis point = 0.01%, and we need to convert basis points to a decimal rate), using banker's rounding as required.",
+ "grade_tail": "...........                                                              [100%]\n11 passed in 0.02s\n"
+}

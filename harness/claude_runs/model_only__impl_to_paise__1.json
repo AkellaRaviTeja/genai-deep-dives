@@ -1,0 +1,21 @@
+{
+ "task": "impl_to_paise",
+ "kind": "implement",
+ "rules": [
+  "errors"
+ ],
+ "variant": "model_only",
+ "rep": 1,
+ "passed": true,
+ "error": false,
+ "turns": 1,
+ "seconds": 39.8,
+ "cost_usd": 0.04137,
+ "input_tokens": 9095,
+ "output_tokens": 4638,
+ "tests_touched": [],
+ "claimed_pass": false,
+ "denials": 0,
+ "result": "ommas\n    text = text.replace(',', '')\n    \n    # Split by decimal\n    parts = text.split('.')\n    \n    if len(parts) > 2:\n        raise InvoiceError(\"BAD_AMOUNT\", text)\n    \n    try:\n        if len(parts) == 1:\n            rupees = int(parts[0])\n            paise = rupees * 100\n        else:\n            rupees_str, decimal_str = parts\n            if len(decimal_str) > 2:\n                raise InvoiceError(\"BAD_AMOUNT\", text)\n            rupees = int(rupees_str) if rupees_str else 0\n            paise_value = int(decimal_str.ljust(2, '0'))\n            paise = rupees * 100 + paise_value\n    except ValueError:\n        raise InvoiceError(\"BAD_AMOUNT\", text)\n    \n    return -paise if neg else paise\n\n\ndef format_inr(paise):\n    \"\"\"Format paise as rupees with Indian digit grouping: 12345678 -> \"₹1,23,456.78\".\"\"\"\n    neg = paise < 0\n    rupees, p = divmod(abs(paise), 100)\n    digits = str(rupees)\n    head, tail = digits[:-3], digits[-3:]\n    groups = []\n    while len(head) > 2:\n        groups.insert(0, head[-2:])\n        head = head[:-2]\n    if head:\n        groups.insert(0, head)\n    body = \",\".join(groups + [tail]) if groups else tail\n    return f\"{'-' if neg else ''}₹{body}.{p:02d}\"\n```",
+ "grade_tail": "...........                                                              [100%]\n11 passed in 0.05s\n"
+}

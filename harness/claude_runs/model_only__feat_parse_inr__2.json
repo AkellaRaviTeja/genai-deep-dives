@@ -1,0 +1,21 @@
+{
+ "task": "feat_parse_inr",
+ "kind": "feature",
+ "rules": [
+  "errors"
+ ],
+ "variant": "model_only",
+ "rep": 2,
+ "passed": true,
+ "error": false,
+ "turns": 1,
+ "seconds": 28.1,
+ "cost_usd": 0.041133,
+ "input_tokens": 9219,
+ "output_tokens": 4541,
+ "tests_touched": [],
+ "claimed_pass": false,
+ "denials": 0,
+ "result": "rupees with Indian digit grouping: 12345678 -> \"₹1,23,456.78\".\"\"\"\n    neg = paise < 0\n    rupees, p = divmod(abs(paise), 100)\n    digits = str(rupees)\n    head, tail = digits[:-3], digits[-3:]\n    groups = []\n    while len(head) > 2:\n        groups.insert(0, head[-2:])\n        head = head[:-2]\n    if head:\n        groups.insert(0, head)\n    body = \",\".join(groups + [tail]) if groups else tail\n    return f\"{'-' if neg else ''}₹{body}.{p:02d}\"\n\n\ndef parse_inr(text):\n    \"\"\"Parse a formatted rupee amount such as \"₹1,23,456.78\" into integer paise.\n    \n    Requires the rupee sign (₹). Rejects text without it.\n    \"\"\"\n    s = text.strip()\n    \n    # Handle negative\n    neg = s.startswith(\"-\")\n    if neg:\n        s = s[1:]\n    \n    # Check for rupee sign\n    if not s.startswith(\"₹\"):\n        raise InvoiceError(\"BAD_AMOUNT\", text)\n    \n    s = s[1:]  # Remove ₹\n    s = s.replace(\",\", \"\")  # Remove commas\n    \n    # Parse rupees and paise\n    whole, _, frac = s.partition(\".\")\n    \n    if not whole.isdigit() or not frac or len(frac) != 2 or not frac.isdigit():\n        raise InvoiceError(\"BAD_AMOUNT\", text)\n    \n    paise = int(whole) * 100 + int(frac)\n    return -paise if neg else paise\n```",
+ "grade_tail": "...........                                                              [100%]\n11 passed in 0.02s\n"
+}

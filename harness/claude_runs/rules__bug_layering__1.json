@@ -1,0 +1,21 @@
+{
+ "task": "bug_layering",
+ "kind": "bugfix",
+ "rules": [
+  "layering"
+ ],
+ "variant": "rules",
+ "rep": 1,
+ "passed": true,
+ "error": false,
+ "turns": 7,
+ "seconds": 21.3,
+ "cost_usd": 0.032701299999999996,
+ "input_tokens": 75840,
+ "output_tokens": 1784,
+ "tests_touched": [],
+ "claimed_pass": true,
+ "denials": 0,
+ "result": "**All tests pass.** ✓\n\nThe vulnerability was in `get_invoice_handler` calling `service.store.get(invoice_id)` directly instead of `service.get(invoice_id, user)`. This bypassed the `_owned()` permission check in the service layer. The fix now ensures all invoice reads go through the service, which verifies the user owns the invoice before returning it (raises `FORBIDDEN` otherwise).",
+ "grade_tail": "...........                                                              [100%]\n11 passed in 0.02s\n"
+}

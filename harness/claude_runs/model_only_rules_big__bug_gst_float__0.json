@@ -1,0 +1,23 @@
+{
+ "task": "bug_gst_float",
+ "kind": "bugfix",
+ "rules": [
+  "rounding",
+  "float"
+ ],
+ "variant": "model_only_rules_big",
+ "rep": 0,
+ "passed": true,
+ "error": false,
+ "turns": 1,
+ "seconds": 21.9,
+ "cost_usd": 0.153139,
+ "input_tokens": 71187,
+ "output_tokens": 2155,
+ "tests_touched": [],
+ "claimed_pass": false,
+ "denials": 0,
+ "result": "Looking at the code and rules, the issue is that `gst()` uses standard rounding (`+ 0.5`) instead of banker's rounding (round-half-even) as specified in AGENTS.md.\n\nFor odd amounts where the GST calculation results in .5 paise, the current code rounds up, but banker's rounding should round to the nearest even number. For example:\n- 25 paise at 18% GST = 4.5 paise\n- Current code: 5 paise (incorrect)\n- Banker's rounding: 4 paise (correct, since 4 is even)\n\nThe fix is to use the existing `round_half_even` function instead of the `+ 0.5` trick.\n\n### invoicing/tax.py\n```python\ndef round_half_even(numerator, denominator):\n    \"\"\"Integer division rounded to nearest, ties to even (banker's rounding).\"\"\"\n    q, r = divmod(numerator, denominator)\n    if 2 * r > denominator or (2 * r == denominator and q % 2 == 1):\n        q += 1\n    return q\n\n\ndef gst(amount_paise, rate_bp):\n    \"\"\"GST on `amount_paise` at `rate_bp` basis points (1800 = 18%), in paise.\"\"\"\n    return round_half_even(amount_paise * rate_bp, 10000)\n```",
+ "visible_passed": true,
+ "grade_tail": "...........                                                              [100%]\n11 passed in 0.02s\n"
+}

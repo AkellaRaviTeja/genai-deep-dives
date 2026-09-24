@@ -1,0 +1,21 @@
+{
+ "task": "feat_parse_inr",
+ "kind": "feature",
+ "rules": [
+  "errors"
+ ],
+ "variant": "tests",
+ "rep": 2,
+ "passed": true,
+ "error": false,
+ "turns": 19,
+ "seconds": 42.5,
+ "cost_usd": 0.0755637,
+ "input_tokens": 306867,
+ "output_tokens": 4247,
+ "tests_touched": [],
+ "claimed_pass": true,
+ "denials": 3,
+ "result": "Perfect! I've successfully added the `parse_inr` function to `invoicing/money.py`. Here's what the function does:\n\n**Implementation highlights:**\n- Parses formatted Indian rupee strings like `\"₹1,23,456.78\"` back to paise (12345678)\n- **Rejects text without the rupee sign** by raising an `InvoiceError` with code `\"NO_RUPEE_SIGN\"`\n- Handles negative amounts (e.g., `\"-₹1,23,456.78\"` → -12345678)\n- Removes commas and validates the numeric format\n- Mirrors the logic of `format_inr` but in reverse\n\n**Tests status: All 10 tests pass** ✓\n\nThe function is now the perfect inverse of `format_inr`, allowing round-trip conversion between paise integers and formatted currency strings.",
+ "grade_tail": "...........                                                              [100%]\n11 passed in 0.03s\n"
+}

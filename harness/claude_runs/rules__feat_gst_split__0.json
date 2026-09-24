@@ -1,0 +1,22 @@
+{
+ "task": "feat_gst_split",
+ "kind": "feature",
+ "rules": [
+  "split",
+  "rounding"
+ ],
+ "variant": "rules",
+ "rep": 0,
+ "passed": true,
+ "error": false,
+ "turns": 11,
+ "seconds": 30.9,
+ "cost_usd": 0.0467724,
+ "input_tokens": 169396,
+ "output_tokens": 2370,
+ "tests_touched": [],
+ "claimed_pass": true,
+ "denials": 0,
+ "result": "Done! I've added the `gst_split(amount_paise, rate_bp)` function to `invoicing/tax.py`. It:\n- Calculates total GST using the existing `gst()` function\n- Splits it evenly into CGST and SGST\n- Gives any odd paise to CGST (using `(total_gst + 1) // 2` for CGST)\n\n**All 10 tests pass**, including the existing test suite.",
+ "grade_tail": "...........                                                              [100%]\n11 passed in 0.03s\n"
+}

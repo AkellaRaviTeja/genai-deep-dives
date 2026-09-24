@@ -1,0 +1,22 @@
+{
+ "task": "bug_gst_float",
+ "kind": "bugfix",
+ "rules": [
+  "rounding",
+  "float"
+ ],
+ "variant": "model_only",
+ "rep": 1,
+ "passed": true,
+ "error": false,
+ "turns": 1,
+ "seconds": 22.5,
+ "cost_usd": 0.030142000000000002,
+ "input_tokens": 9191,
+ "output_tokens": 2354,
+ "tests_touched": [],
+ "claimed_pass": false,
+ "denials": 0,
+ "result": "st()` function, I can see it uses floating-point arithmetic with `int(x + 0.5)` for rounding. This can lose precision for certain values, especially with odd amounts. The file already has a `round_half_even()` function that uses pure integer arithmetic—that's what should be used instead.\n\nThe issue is that the current implementation:\n```python\nreturn int(amount_paise * rate_bp / 10000 + 0.5)\n```\n\nPerforms floating-point division, which can introduce precision errors. The `round_half_even()` function does the same calculation using only integer arithmetic, avoiding precision loss.\n\n### invoicing/tax.py\n```python\ndef round_half_even(numerator, denominator):\n    \"\"\"Integer division rounded to nearest, ties to even (banker's rounding).\"\"\"\n    q, r = divmod(numerator, denominator)\n    if 2 * r > denominator or (2 * r == denominator and q % 2 == 1):\n        q += 1\n    return q\n\n\ndef gst(amount_paise, rate_bp):\n    \"\"\"GST on `amount_paise` at `rate_bp` basis points (1800 = 18%), in paise.\"\"\"\n    return round_half_even(amount_paise * rate_bp, 10000)\n```\n\nThis uses integer arithmetic throughout, eliminating floating-point precision issues while maintaining proper banker's rounding behavior.",
+ "grade_tail": "...........                                                              [100%]\n11 passed in 0.03s\n"
+}

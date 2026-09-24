@@ -1,0 +1,22 @@
+{
+ "task": "feat_expiry",
+ "kind": "feature",
+ "rules": [
+  "errors"
+ ],
+ "variant": "rules_big",
+ "rep": 1,
+ "passed": true,
+ "error": false,
+ "turns": 16,
+ "seconds": 32.6,
+ "cost_usd": 0.06127600000000001,
+ "input_tokens": 206786,
+ "output_tokens": 3307,
+ "tests_touched": [],
+ "claimed_pass": true,
+ "denials": 0,
+ "result": "Excellent! I've successfully added the discount code expiry feature. Here's what was implemented:\n\n## Changes Made\n\n**Modified `/tmp/h-feat_expiry-yqo9ikcg/invoicing/discount.py`:**\n\n1. Added `from datetime import date` import for date handling\n2. Created `EXPIRY` dictionary that maps discount codes to their last valid dates (inclusive)\n3. Set `WELCOME10` to expire on 2026-12-31\n4. Updated `apply_discount()` function to:\n   - Accept an optional `today` parameter (defaults to `date.today()` when not provided)\n   - Check if a code has expired before applying the discount\n   - Raise `InvoiceError(\"EXPIRED\", code)` when an expired code is used\n\n## Test Results\n\n**All 10 tests pass ✅**\n\nThe implementation:\n- Maintains backward compatibility (optional `today` parameter means existing code works unchanged)\n- Follows the project rules (raises `InvoiceError` with short uppercase code, not ValueError)\n- Supports case-insensitive codes with trimming (as per existing implementation)\n- Only checks expiry for codes that have an expiry date defined (FLAT500 has no expiry)",
+ "visible_passed": true,
+ "grade_tail": "...........                                                              [100%]\n11 passed in 0.02s\n"
+}

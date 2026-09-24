@@ -1,0 +1,23 @@
+{
+ "task": "bug_gst_float",
+ "kind": "bugfix",
+ "rules": [
+  "rounding",
+  "float"
+ ],
+ "variant": "model_only_big",
+ "rep": 0,
+ "passed": true,
+ "error": false,
+ "turns": 1,
+ "seconds": 23.7,
+ "cost_usd": 0.15355899999999997,
+ "input_tokens": 70857,
+ "output_tokens": 2371,
+ "tests_touched": [],
+ "claimed_pass": false,
+ "denials": 0,
+ "result": "Looking at the GST calculation, the issue is in `invoicing/tax.py`. The current `gst()` function uses floating-point arithmetic with a simple `+ 0.5` rounding, which can have precision errors. However, there's already a `round_half_even()` function defined that uses pure integer arithmetic to avoid floating-point issues.\n\nThe fix is to use `round_half_even()` in the `gst()` function:\n\n### invoicing/tax.py\n```python\ndef round_half_even(numerator, denominator):\n    \"\"\"Integer division rounded to nearest, ties to even (banker's rounding).\"\"\"\n    q, r = divmod(numerator, denominator)\n    if 2 * r > denominator or (2 * r == denominator and q % 2 == 1):\n        q += 1\n    return q\n\n\ndef gst(amount_paise, rate_bp):\n    \"\"\"GST on `amount_paise` at `rate_bp` basis points (1800 = 18%), in paise.\"\"\"\n    return round_half_even(amount_paise * rate_bp, 10000)\n```\n\nThis replaces the floating-point calculation with integer-only arithmetic, eliminating precision issues that were causing the off-by-one paise errors on odd amounts.",
+ "visible_passed": true,
+ "grade_tail": "...........                                                              [100%]\n11 passed in 0.02s\n"
+}

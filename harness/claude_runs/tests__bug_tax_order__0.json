@@ -1,0 +1,19 @@
+{
+ "task": "bug_tax_order",
+ "kind": "bugfix",
+ "rules": [],
+ "variant": "tests",
+ "rep": 0,
+ "passed": true,
+ "error": false,
+ "turns": 10,
+ "seconds": 46.2,
+ "cost_usd": 0.0551743,
+ "input_tokens": 128093,
+ "output_tokens": 4158,
+ "tests_touched": [],
+ "claimed_pass": true,
+ "denials": 0,
+ "result": "Perfect! **All tests pass.** ✓\n\nThe fix corrects the tax calculation order:\n- **Before:** Tax was calculated on the full amount, then the discount was applied to the taxed total\n- **After:** Discount is applied to the subtotal first, then tax is calculated on the discounted amount\n\nThis ensures GST is properly charged on the amount the customer actually pays, not on the original amount.",
+ "grade_tail": "...........                                                              [100%]\n11 passed in 0.04s\n"
+}

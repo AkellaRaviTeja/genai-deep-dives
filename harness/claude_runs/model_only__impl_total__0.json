@@ -1,0 +1,19 @@
+{
+ "task": "impl_total",
+ "kind": "implement",
+ "rules": [],
+ "variant": "model_only",
+ "rep": 0,
+ "passed": true,
+ "error": false,
+ "turns": 1,
+ "seconds": 14.5,
+ "cost_usd": 0.025502999999999998,
+ "input_tokens": 9159,
+ "output_tokens": 1439,
+ "tests_touched": [],
+ "claimed_pass": false,
+ "denials": 0,
+ "result": "discount import apply_discount\nfrom .errors import InvoiceError\nfrom .tax import gst\n\nGST_BP = 1800\n\n\nclass InvoiceService:\n    \"\"\"All business rules and permission checks live here.\"\"\"\n\n    def __init__(self, store):\n        self.store = store\n\n    def _owned(self, invoice_id, user):\n        inv = self.store.get(invoice_id)\n        if inv.customer != user:\n            raise InvoiceError(\"FORBIDDEN\", invoice_id)\n        return inv\n\n    def get(self, invoice_id, user):\n        return self._owned(invoice_id, user)\n\n    def create(self, invoice):\n        self.store.put(invoice)\n        return invoice\n\n    def list(self, user):\n        return self.store.list_by_customer(user)\n\n    def total(self, invoice_id, user):\n        \"\"\"Subtotal, minus the discount, plus GST on the discounted amount.\"\"\"\n        inv = self._owned(invoice_id, user)\n        subtotal = inv.subtotal()\n        discount = apply_discount(subtotal, inv.discount_code)\n        discounted = subtotal - discount\n        tax = gst(discounted, GST_BP)\n        return discounted + tax\n```\n\nThe implementation checks ownership first (via `_owned`), calculates the subtotal, applies the discount, and adds GST on the discounted amount.",
+ "grade_tail": "...........                                                              [100%]\n11 passed in 0.03s\n"
+}

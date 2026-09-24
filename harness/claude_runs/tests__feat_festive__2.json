@@ -1,0 +1,21 @@
+{
+ "task": "feat_festive",
+ "kind": "feature",
+ "rules": [
+  "case"
+ ],
+ "variant": "tests",
+ "rep": 2,
+ "passed": true,
+ "error": false,
+ "turns": 7,
+ "seconds": 16.8,
+ "cost_usd": 0.028726500000000002,
+ "input_tokens": 86330,
+ "output_tokens": 1211,
+ "tests_touched": [],
+ "claimed_pass": true,
+ "denials": 0,
+ "result": "Perfect! I've successfully added the FESTIVE15 discount code (15% off) to the discount system. The code was added to the `DISCOUNTS` dictionary in `/tmp/h-feat_festive-b4vliini/invoicing/discount.py`.\n\n**All tests pass** ✓ — All 10 tests in the test suite passed, including the existing discount tests.",
+ "grade_tail": "...........                                                              [100%]\n11 passed in 0.03s\n"
+}

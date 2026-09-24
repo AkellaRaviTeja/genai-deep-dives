@@ -1,0 +1,23 @@
+{
+ "task": "impl_get_handler",
+ "kind": "implement",
+ "rules": [
+  "layering",
+  "iso",
+  "errors"
+ ],
+ "variant": "model_only",
+ "rep": 0,
+ "passed": true,
+ "error": false,
+ "turns": 1,
+ "seconds": 17.9,
+ "cost_usd": 0.027171,
+ "input_tokens": 9108,
+ "output_tokens": 1793,
+ "tests_touched": [],
+ "claimed_pass": false,
+ "denials": 0,
+ "result": "Looking at the task and test, I need to implement `get_invoice_handler` to:\n- Fetch the invoice using `service.get()` (which validates ownership and permission)\n- Calculate the total using `service.total()` (which applies discounts and GST)\n- Return the invoice details with created date, total, and formatted display total\n- Handle errors (NOT_FOUND and FORBIDDEN) with appropriate status codes\n\n### invoicing/api.py\n```python\nfrom .errors import InvoiceError\nfrom .money import format_inr\n\n\ndef _status(err):\n    return {\"NOT_FOUND\": 404, \"FORBIDDEN\": 403}.get(err.code, 400)\n\n\ndef get_invoice_handler(service, invoice_id, user):\n    \"\"\"GET /invoices/{id}: returns (status, body).\"\"\"\n    try:\n        inv = service.get(invoice_id, user)\n        total = service.total(invoice_id, user)\n        return 200, {\n            \"id\": inv.id,\n            \"customer\": inv.customer,\n            \"created\": inv.created.isoformat(),\n            \"total\": total,\n            \"display_total\": format_inr(total),\n        }\n    except InvoiceError as err:\n        return _status(err), {\"error\": err.code}\n```",
+ "grade_tail": "...........                                                              [100%]\n11 passed in 0.04s\n"
+}

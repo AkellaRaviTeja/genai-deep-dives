@@ -1,0 +1,22 @@
+{
+ "task": "bug_gst_float",
+ "kind": "bugfix",
+ "rules": [
+  "rounding",
+  "float"
+ ],
+ "variant": "hook",
+ "rep": 2,
+ "passed": true,
+ "error": false,
+ "turns": 7,
+ "seconds": 31.0,
+ "cost_usd": 0.0402,
+ "input_tokens": 106546,
+ "output_tokens": 2468,
+ "tests_touched": [],
+ "claimed_pass": true,
+ "denials": 0,
+ "result": "**Tests pass.** ✓\n\nThe bug was in the `gst()` function at invoicing/tax.py:11. It used floating-point arithmetic (`int(amount_paise * rate_bp / 10000 + 0.5)`), which violates the project rule \"Never use float for money, not even in between\" and implements simple rounding instead of the required banker's rounding (round half to even).\n\nThe fix replaces it with a call to `round_half_even`, using pure integer arithmetic: `round_half_even(amount_paise * rate_bp, 10000)`. This correctly implements banker's rounding as specified in the requirements.",
+ "grade_tail": "...........                                                              [100%]\n11 passed in 0.05s\n"
+}

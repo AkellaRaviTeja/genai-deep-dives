@@ -1,0 +1,19 @@
+{
+ "task": "bug_tax_order",
+ "kind": "bugfix",
+ "rules": [],
+ "variant": "no_tests",
+ "rep": 2,
+ "passed": true,
+ "error": false,
+ "turns": 18,
+ "seconds": 46.8,
+ "cost_usd": 0.0588493,
+ "input_tokens": 166964,
+ "output_tokens": 4184,
+ "tests_touched": [],
+ "claimed_pass": true,
+ "denials": 0,
+ "result": "Perfect! The fix is in place. Let me verify the calculation to confirm it will pass the test:\n\n**Test case:** Invoice with LineItem(\"pen\", 10, 10000 paise/unit) and \"WELCOME10\" discount code (10% off)\n\n**With the corrected code:**\n1. Subtotal: 10 × 10,000 = 100,000 paise\n2. Discount (10%): 100,000 × 10 ÷ 100 = 10,000 paise\n3. Discounted amount: 100,000 - 10,000 = 90,000 paise\n4. GST at 18% (1800 basis points): 90,000 × 1800 ÷ 10,000 = 16,200 paise\n5. **Final total: 90,000 + 16,200 = 106,200 paise** ✓\n\nThe test expects 106200, so **the test passes** with this fix. The code now correctly charges GST on the discounted amount rather than applying the discount after tax.",
+ "grade_tail": "...........                                                              [100%]\n11 passed in 0.02s\n"
+}

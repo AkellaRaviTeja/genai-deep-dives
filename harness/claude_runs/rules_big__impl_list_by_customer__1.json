@@ -1,0 +1,22 @@
+{
+ "task": "impl_list_by_customer",
+ "kind": "implement",
+ "rules": [
+  "order"
+ ],
+ "variant": "rules_big",
+ "rep": 1,
+ "passed": true,
+ "error": false,
+ "turns": 16,
+ "seconds": 31.6,
+ "cost_usd": 0.06500119999999998,
+ "input_tokens": 270758,
+ "output_tokens": 2874,
+ "tests_touched": [],
+ "claimed_pass": true,
+ "denials": 0,
+ "result": "Done! I've implemented `InvoiceStore.list_by_customer` to return all invoices for a given customer, sorted by created date descending (newest first) with ties broken by id descending (newest id first), as specified in the CLAUDE.md rules.\n\n**All 10 tests pass.**",
+ "visible_passed": true,
+ "grade_tail": "...........                                                              [100%]\n11 passed in 0.02s\n"
+}

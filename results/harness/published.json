@@ -1,0 +1,162 @@
+{
+ "note": "Published results cited on screen. Each is VERIFIED in research/dossier.md, claim number in 'claim'.",
+ "terminal_bench": {
+  "claim": 5,
+  "benchmark": "Terminal-Bench 2.0 (89 tasks)",
+  "model": "Claude Haiku 4.5",
+  "rows": [
+   [
+    "Mini-SWE-Agent",
+    29.8
+   ],
+   [
+    "OpenHands",
+    13.3
+   ]
+  ],
+  "source": "Merrill et al., Terminal-Bench 2.0, arXiv 2601.11868, appendix table",
+  "also": {
+   "model": "Gemini 2.5 Pro",
+   "rows": [
+    [
+     "Terminus 2",
+     32.6
+    ],
+    [
+     "Gemini CLI",
+     19.6
+    ],
+    [
+     "OpenHands",
+     15.7
+    ]
+   ]
+  }
+ },
+ "terminal_bench_counter": {
+  "claim": 6,
+  "text": "model selection is usually more important than agent scaffold",
+  "source": "arXiv 2601.11868, section 4"
+ },
+ "swe_agent": {
+  "claim": 1,
+  "benchmark": "SWE-bench Lite",
+  "model": "GPT-4 Turbo",
+  "rows": [
+   [
+    "shell only",
+    11.0
+   ],
+   [
+    "SWE-agent interface",
+    18.0
+   ]
+  ],
+  "linter_ablation": [
+   [
+    "with linter on edit",
+    18.0
+   ],
+   [
+    "without",
+    15.0
+   ]
+  ],
+  "source": "Yang et al., SWE-agent, arXiv 2405.15793, table 3"
+ },
+ "tool_search": {
+  "claim": 19,
+  "model": "Claude Opus 4",
+  "rows": [
+   [
+    "all tools loaded",
+    49
+   ],
+   [
+    "tool search",
+    74
+   ]
+  ],
+  "source": "Anthropic engineering, advanced tool use (2025)"
+ },
+ "agents_md_eth": {
+  "claim": 31,
+  "text": "context files raised inference cost by over 20% without improving success",
+  "source": "ETH Zurich, Evaluating AGENTS.md (2026)"
+ },
+ "claude_md_docs": {
+  "claim": 34,
+  "text": "target under 200 lines per CLAUDE.md",
+  "source": "code.claude.com/docs, memory"
+ },
+ "metr": {
+  "claim": 38,
+  "model": "o3",
+  "rows": [
+   [
+    "no instruction",
+    80
+   ],
+   [
+    "\"Please do not cheat\"",
+    80
+   ],
+   [
+    "\"Please do not reward hack\"",
+    70
+   ]
+  ],
+  "source": "METR, Recent reward hacking (June 2025)"
+ },
+ "impossiblebench": {
+  "claim": 40,
+  "model": "GPT-5",
+  "rows": [
+   [
+    "no way out",
+    54
+   ],
+   [
+    "can flag for a human",
+    9
+   ]
+  ],
+  "source": "Zhong, Raghunathan, Carlini, ImpossibleBench, arXiv 2510.20270"
+ },
+ "system_card": {
+  "claim": 39,
+  "rows": [
+   [
+    "Claude Opus 4",
+    47,
+    5
+   ],
+   [
+    "Claude Sonnet 3.7",
+    78,
+    80
+   ]
+  ],
+  "cols": [
+   "no prompt",
+   "anti-hack prompt"
+  ],
+  "source": "Claude 4 system card, section 6.2"
+ },
+ "trifecta": {
+  "claim": 43,
+  "source": "Simon Willison, The lethal trifecta (June 2025)"
+ },
+ "github_mcp": {
+  "claim": 45,
+  "text": "a malicious public issue made an agent with the GitHub MCP server leak private repository data through a pull request",
+  "date": "May 2025",
+  "source": "Invariant Labs (May 26, 2025)"
+ },
+ "sandbox": {
+  "claim": 37,
+  "value": 84,
+  "text": "fewer permission prompts",
+  "source": "Anthropic engineering, Claude Code sandboxing (Oct 2025)"
+ }
+}

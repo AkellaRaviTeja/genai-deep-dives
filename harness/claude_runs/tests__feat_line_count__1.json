@@ -1,0 +1,19 @@
+{
+ "task": "feat_line_count",
+ "kind": "feature",
+ "rules": [],
+ "variant": "tests",
+ "rep": 1,
+ "passed": true,
+ "error": false,
+ "turns": 8,
+ "seconds": 18.3,
+ "cost_usd": 0.0314254,
+ "input_tokens": 115015,
+ "output_tokens": 1178,
+ "tests_touched": [],
+ "claimed_pass": true,
+ "denials": 0,
+ "result": "Perfect! I've added the `Invoice.units()` method that returns the total quantity across all line items. The implementation sums the `qty` field from each line item, similar to how `subtotal()` works.\n\n**All 10 tests pass.**",
+ "grade_tail": "...........                                                              [100%]\n11 passed in 0.02s\n"
+}

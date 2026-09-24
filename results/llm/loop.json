@@ -1,0 +1,295 @@
+{
+ "meta": {
+  "model": "Qwen/Qwen2.5-1.5B",
+  "torch": "2.14.0+cu130",
+  "transformers": "5.17.0",
+  "device": "NVIDIA GeForce RTX 5050 Laptop GPU",
+  "dtype": "bfloat16",
+  "run_at": "2026-09-24T19:31:07"
+ },
+ "prompt": "The invoice total is",
+ "eos_id": 151643,
+ "eos_text": "<|endoftext|>",
+ "steps": [
+  {
+   "text": "␣",
+   "id": 220,
+   "p": 0.2421,
+   "eos_p": 0.0,
+   "eos_rank": 4789
+  },
+  {
+   "text": "1",
+   "id": 16,
+   "p": 0.3438,
+   "eos_p": 0.0,
+   "eos_rank": 77014
+  },
+  {
+   "text": "0",
+   "id": 15,
+   "p": 0.3076,
+   "eos_p": 0.0,
+   "eos_rank": 826
+  },
+  {
+   "text": "0",
+   "id": 15,
+   "p": 0.5385,
+   "eos_p": 0.0,
+   "eos_rank": 1577
+  },
+  {
+   "text": "0",
+   "id": 15,
+   "p": 0.3888,
+   "eos_p": 0.0,
+   "eos_rank": 1845
+  },
+  {
+   "text": "␣yuan",
+   "id": 72283,
+   "p": 0.656,
+   "eos_p": 0.0,
+   "eos_rank": 1550
+  },
+  {
+   "text": ",",
+   "id": 11,
+   "p": 0.6733,
+   "eos_p": 0.0,
+   "eos_rank": 874
+  },
+  {
+   "text": "␣and",
+   "id": 323,
+   "p": 0.4339,
+   "eos_p": 0.0,
+   "eos_rank": 16675
+  },
+  {
+   "text": "␣the",
+   "id": 279,
+   "p": 0.8152,
+   "eos_p": 0.0,
+   "eos_rank": 17689
+  },
+  {
+   "text": "␣customer",
+   "id": 6002,
+   "p": 0.1114,
+   "eos_p": 0.0,
+   "eos_rank": 36581
+  },
+  {
+   "text": "␣requests",
+   "id": 7388,
+   "p": 0.1685,
+   "eos_p": 0.0,
+   "eos_rank": 14362
+  },
+  {
+   "text": "␣to",
+   "id": 311,
+   "p": 0.4299,
+   "eos_p": 0.0,
+   "eos_rank": 18632
+  },
+  {
+   "text": "␣pay",
+   "id": 2291,
+   "p": 0.3265,
+   "eos_p": 0.0,
+   "eos_rank": 18267
+  },
+  {
+   "text": "␣with",
+   "id": 448,
+   "p": 0.2539,
+   "eos_p": 0.0,
+   "eos_rank": 2752
+  },
+  {
+   "text": "␣a",
+   "id": 264,
+   "p": 0.6205,
+   "eos_p": 0.0,
+   "eos_rank": 18062
+  },
+  {
+   "text": "␣check",
+   "id": 1779,
+   "p": 0.2479,
+   "eos_p": 0.0,
+   "eos_rank": 12434
+  },
+  {
+   "text": ".",
+   "id": 13,
+   "p": 0.5717,
+   "eos_p": 0.0,
+   "eos_rank": 4124
+  },
+  {
+   "text": "␣The",
+   "id": 576,
+   "p": 0.3084,
+   "eos_p": 0.0,
+   "eos_rank": 3072
+  },
+  {
+   "text": "␣cashier",
+   "id": 90355,
+   "p": 0.4217,
+   "eos_p": 0.0,
+   "eos_rank": 30251
+  },
+  {
+   "text": "␣should",
+   "id": 1265,
+   "p": 0.2182,
+   "eos_p": 0.0,
+   "eos_rank": 19982
+  },
+  {
+   "text": "␣____",
+   "id": 30743,
+   "p": 0.1976,
+   "eos_p": 0.0,
+   "eos_rank": 10393
+  },
+  {
+   "text": ".\n",
+   "id": 624,
+   "p": 0.8902,
+   "eos_p": 0.0,
+   "eos_rank": 779
+  },
+  {
+   "text": "A",
+   "id": 32,
+   "p": 0.9757,
+   "eos_p": 0.0,
+   "eos_rank": 83775
+  },
+  {
+   "text": ".",
+   "id": 13,
+   "p": 0.9987,
+   "eos_p": 0.0,
+   "eos_rank": 147
+  },
+  {
+   "text": "␣Ref",
+   "id": 8550,
+   "p": 0.2943,
+   "eos_p": 0.0,
+   "eos_rank": 7118
+  },
+  {
+   "text": "use",
+   "id": 810,
+   "p": 0.998,
+   "eos_p": 0.0,
+   "eos_rank": 898
+  },
+  {
+   "text": "␣to",
+   "id": 311,
+   "p": 0.5303,
+   "eos_p": 0.0,
+   "eos_rank": 3189
+  },
+  {
+   "text": "␣accept",
+   "id": 4193,
+   "p": 0.4795,
+   "eos_p": 0.0,
+   "eos_rank": 7041
+  },
+  {
+   "text": "\n",
+   "id": 198,
+   "p": 0.3384,
+   "eos_p": 0.0,
+   "eos_rank": 3326
+  },
+  {
+   "text": "B",
+   "id": 33,
+   "p": 0.9998,
+   "eos_p": 0.0,
+   "eos_rank": 18279
+  },
+  {
+   "text": ".",
+   "id": 13,
+   "p": 1.0,
+   "eos_p": 0.0,
+   "eos_rank": 12
+  },
+  {
+   "text": "␣Accept",
+   "id": 20829,
+   "p": 0.2486,
+   "eos_p": 0.0,
+   "eos_rank": 6926
+  },
+  {
+   "text": "\n",
+   "id": 198,
+   "p": 0.2444,
+   "eos_p": 0.0,
+   "eos_rank": 5578
+  },
+  {
+   "text": "C",
+   "id": 34,
+   "p": 0.923,
+   "eos_p": 0.0,
+   "eos_rank": 15002
+  },
+  {
+   "text": ".",
+   "id": 13,
+   "p": 0.9999,
+   "eos_p": 0.0,
+   "eos_rank": 23
+  },
+  {
+   "text": "␣Ref",
+   "id": 8550,
+   "p": 0.0882,
+   "eos_p": 0.0,
+   "eos_rank": 7884
+  },
+  {
+   "text": "use",
+   "id": 810,
+   "p": 0.9264,
+   "eos_p": 0.0,
+   "eos_rank": 1223
+  },
+  {
+   "text": "␣to",
+   "id": 311,
+   "p": 0.7525,
+   "eos_p": 0.0,
+   "eos_rank": 4358
+  },
+  {
+   "text": "␣accept",
+   "id": 4193,
+   "p": 0.8922,
+   "eos_p": 0.0,
+   "eos_rank": 4778
+  },
+  {
+   "text": ",",
+   "id": 11,
+   "p": 0.4031,
+   "eos_p": 0.0,
+   "eos_rank": 5869
+  }
+ ]
+}

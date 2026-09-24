@@ -1,0 +1,20 @@
+{
+ "task": "bug_tax_order",
+ "kind": "bugfix",
+ "rules": [],
+ "variant": "rules_big",
+ "rep": 1,
+ "passed": true,
+ "error": false,
+ "turns": 9,
+ "seconds": 26.2,
+ "cost_usd": 0.0437269,
+ "input_tokens": 141926,
+ "output_tokens": 2176,
+ "tests_touched": [],
+ "claimed_pass": true,
+ "denials": 0,
+ "result": "Perfect! All tests pass. The bug is fixed.\n\n**The issue:** The code was calculating `gross = subtotal + tax`, then subtracting the discount, which meant tax was being charged on the full subtotal instead of the discounted amount.\n\n**The fix:** Now the code correctly:\n1. Calculates the discount on the subtotal\n2. Applies it to get the discounted amount\n3. Calculates GST on the discounted amount\n4. Returns the total (discounted amount + GST on discount)\n\nThis ensures GST is charged only on the amount after the discount is applied, which is the correct invoicing behavior.",
+ "visible_passed": true,
+ "grade_tail": "...........                                                              [100%]\n11 passed in 0.02s\n"
+}

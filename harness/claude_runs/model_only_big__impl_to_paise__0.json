@@ -1,0 +1,22 @@
+{
+ "task": "impl_to_paise",
+ "kind": "implement",
+ "rules": [
+  "errors"
+ ],
+ "variant": "model_only_big",
+ "rep": 0,
+ "passed": true,
+ "error": false,
+ "turns": 1,
+ "seconds": 20.5,
+ "cost_usd": 0.15256399999999998,
+ "input_tokens": 70762,
+ "output_tokens": 2210,
+ "tests_touched": [],
+ "claimed_pass": false,
+ "denials": 0,
+ "result": "Looking at the tests, I need to implement `to_paise` to:\n1. Parse rupee strings with Indian number formatting (commas) into paise\n2. Convert rupees to paise by multiplying by 100\n3. Reject amounts with more than 2 decimal places\n4. Handle negative numbers\n5. Raise `InvoiceError` for invalid input\n\nLet me trace through the test cases:\n- `\"1,234.50\"` → 1234.50 rupees → 123450 paise\n- `\"20\"` → 20 rupees → 2000 paise  \n- `\"1.234\"` → 3 decimals → should raise `InvoiceError`\n\n### invoicing/money.py\n```python\nfrom .errors import InvoiceError\n\n\ndef to_paise(text):\n    \"\"\"Parse a rupee amount such as \"1,234.50\" or \"-20\" into integer paise.\"\"\"\n    text = text.strip()\n    \n    if not text:\n        raise InvoiceError(\"INVALID_AMOUNT\", text)\n    \n    # Remove commas (Indian grouping)\n    text = text.replace(\",\", \"\")\n    \n    # Check decimal places before conversion\n    if '.' in text:\n        parts = text.split('.')\n        if len(parts) != 2 or len(parts[1]) > 2:\n            raise InvoiceError(\"INVALID_AMOUNT\", text)\n    \n    # Try to convert to float\n    try:\n        rupees = float(text)\n    except ValueError:\n        raise InvoiceError(\"INVALID_AMOUNT\", text)\n    \n    # Convert to paise\n    paise = round(rupees * 100)\n    \n    return int(paise)\n\n\ndef format_inr(paise):\n    \"\"\"Format paise as rupees with Indian digit grouping: 12345678 -> \"₹1,23,456.78\".\"\"\"\n    neg = paise < 0\n    rupees, p = divmod(abs(paise), 100)\n    digits = str(rupees)\n    head, tail = digits[:-3], digits[-3:]\n    groups = []\n    while len(head) > 2:\n        groups.insert(0, head[-2:])\n        head = head[:-2]\n    if head:\n        groups.insert(0, head)\n    body = \",\".join(groups + [tail]) if groups else tail\n    return f\"{'-' if neg else ''}₹{body}.{p:02d}\"\n```",
+ "visible_passed": true,
+ "grade_tail": "...........                                                              [100%]\n11 passed in 0.02s\n"
+}

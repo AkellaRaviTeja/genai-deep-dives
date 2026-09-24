@@ -1,0 +1,24 @@
+{
+ "task": "feat_void",
+ "kind": "feature",
+ "rules": [
+  "errors"
+ ],
+ "variant": "model_only_big",
+ "rep": 1,
+ "passed": true,
+ "error": false,
+ "turns": 1,
+ "seconds": 20.9,
+ "cost_usd": 0.152289,
+ "input_tokens": 70867,
+ "output_tokens": 2113,
+ "tests_touched": [
+  "test_service.py"
+ ],
+ "claimed_pass": false,
+ "denials": 0,
+ "result": "Looking at the code, I need to add a `void` method to `InvoiceService` that:\n1. Checks ownership using the existing `_owned` method\n2. Prevents voiding an already-void invoice\n3. Updates the invoice status to \"void\"\n\nI'll also add tests to verify the behavior.\n\n### invoicing/service.py\n```python\nfrom .discount import apply_discount\nfrom .errors import InvoiceError\nfrom .tax import gst\n\nGST_BP = 1800\n\n\nclass InvoiceService:\n    \"\"\"All business rules and permission checks live here.\"\"\"\n\n    def __init__(self, store):\n        self.store = store\n\n    def _owned(self, invoice_id, user):\n        inv = self.store.get(invoice_id)\n        if inv.customer != user:\n            raise InvoiceError(\"FORBIDDEN\", invoice_id)\n        return inv\n\n    def get(self, invoice_id, user):\n        return self._owned(invoice_id, user)\n\n    def create(self, invoice):\n        self.store.put(invoice)\n        return invoice\n\n    def list(self, user):\n        return self.store.list_by_customer(user)\n\n    def total(self, invoice_id, user):\n        \"\"\"Subtotal, minus the discount, plus GST on the discounted amount.\"\"\"\n        inv = self._owned(invoice_id, user)\n        net = inv.subtotal() - apply_discount(inv.subtotal(), inv.discount_code)\n        return net + gst(net, GST_BP)\n\n    def void(self, invoice_id, user):\n        \"\"\"Mark an invoice as void. Only its owner may void it.\"\"\"\n        inv = self._owned(invoice_id, user)\n        if inv.status == \"void\":\n            raise InvoiceError(\"ALREADY_VOID\", invoice_id)\n        inv.status = \"void\"\n        self.store.put(inv)\n        return inv\n```\n\n### tests/test_service.py\n```python\nfrom datetime import date\nimport pytest\nfrom invoicing.invoice import Invoice, LineItem\nfrom invoicing.service import InvoiceService\nfrom invoicing.store import InvoiceStore\nfrom invoicing.errors import InvoiceError\n\ndef svc():\n    s = InvoiceService(InvoiceStore())\n    s.create(Invoice(\"A1\", \"asha\", [LineItem(\"pen\", 10, 10000)], date(2026, 9, 1), \"WELCOME10\"))\n    return s\n\ndef test_total():\n    assert svc().total(\"A1\", \"asha\") == 106200\n\ndef test_forbidden():\n    with pytest.raises(InvoiceError):\n        svc().get(\"A1\", \"ravi\")\n\ndef test_void():\n    s = svc()\n    inv = s.void(\"A1\", \"asha\")\n    assert inv.status == \"void\"\n\ndef test_void_forbidden():\n    with pytest.raises(InvoiceError):\n        svc().void(\"A1\", \"ravi\")\n\ndef test_void_already_void():\n    s = svc()\n    s.void(\"A1\", \"asha\")\n    with pytest.raises(InvoiceError):\n        s.void(\"A1\", \"asha\")\n```",
+ "visible_passed": true,
+ "grade_tail": "...........                                                              [100%]\n11 passed in 0.02s\n"
+}

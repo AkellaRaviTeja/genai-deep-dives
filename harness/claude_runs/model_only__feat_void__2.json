@@ -1,0 +1,23 @@
+{
+ "task": "feat_void",
+ "kind": "feature",
+ "rules": [
+  "errors"
+ ],
+ "variant": "model_only",
+ "rep": 2,
+ "passed": true,
+ "error": false,
+ "turns": 1,
+ "seconds": 29.1,
+ "cost_usd": 0.033636,
+ "input_tokens": 9198,
+ "output_tokens": 3050,
+ "tests_touched": [
+  "test_service.py"
+ ],
+ "claimed_pass": false,
+ "denials": 0,
+ "result": "\"{invoice_id}: already void\")\n        inv.status = \"void\"\n        return inv\n```\n\n### tests/test_service.py\n```python\nfrom datetime import date\nimport pytest\nfrom invoicing.invoice import Invoice, LineItem\nfrom invoicing.service import InvoiceService\nfrom invoicing.store import InvoiceStore\nfrom invoicing.errors import InvoiceError\n\ndef svc():\n    s = InvoiceService(InvoiceStore())\n    s.create(Invoice(\"A1\", \"asha\", [LineItem(\"pen\", 10, 10000)], date(2026, 9, 1), \"WELCOME10\"))\n    return s\n\ndef test_total():\n    assert svc().total(\"A1\", \"asha\") == 106200\n\ndef test_forbidden():\n    with pytest.raises(InvoiceError):\n        svc().get(\"A1\", \"ravi\")\n\ndef test_void():\n    s = svc()\n    inv = s.void(\"A1\", \"asha\")\n    assert inv.status == \"void\"\n\ndef test_void_forbidden():\n    with pytest.raises(InvoiceError):\n        svc().void(\"A1\", \"ravi\")\n\ndef test_void_already_void():\n    s = svc()\n    s.void(\"A1\", \"asha\")\n    with pytest.raises(InvoiceError):\n        s.void(\"A1\", \"asha\")\n```\n\nThe `void()` method reuses `_owned()` for permission checks, then validates the invoice isn't already void before updating its status. Tests cover the happy path, ownership validation, and the double-void case.",
+ "grade_tail": "...........                                                              [100%]\n11 passed in 0.02s\n"
+}

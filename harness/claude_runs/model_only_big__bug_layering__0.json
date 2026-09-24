@@ -1,0 +1,22 @@
+{
+ "task": "bug_layering",
+ "kind": "bugfix",
+ "rules": [
+  "layering"
+ ],
+ "variant": "model_only_big",
+ "rep": 0,
+ "passed": true,
+ "error": false,
+ "turns": 1,
+ "seconds": 14.6,
+ "cost_usd": 0.148334,
+ "input_tokens": 70852,
+ "output_tokens": 1328,
+ "tests_touched": [],
+ "claimed_pass": false,
+ "denials": 0,
+ "result": "Looking at the security issue: the handler calls `service.store.get(invoice_id)` directly, which bypasses the ownership check. While `service.total()` does verify authorization and will raise a FORBIDDEN error, the proper fix is to check authorization first before retrieving any invoice data.\n\nThe handler should use `service.get(invoice_id, user)` instead, which performs the ownership check through `_owned()`.\n\n### invoicing/api.py\n```python\nfrom .errors import InvoiceError\nfrom .money import format_inr\n\n\ndef _status(err):\n    return {\"NOT_FOUND\": 404, \"FORBIDDEN\": 403}.get(err.code, 400)\n\n\ndef get_invoice_handler(service, invoice_id, user):\n    \"\"\"GET /invoices/{id}: returns (status, body).\"\"\"\n    try:\n        inv = service.get(invoice_id, user)\n        total = service.total(invoice_id, user)\n    except InvoiceError as e:\n        return _status(e), {\"error\": e.code}\n    return 200, {\n        \"id\": inv.id,\n        \"customer\": inv.customer,\n        \"created\": inv.created.isoformat(),\n        \"total\": total,\n        \"total_display\": format_inr(total),\n    }\n```\n\nThis ensures the ownership check happens before the invoice is retrieved, preventing unauthorized access.",
+ "visible_passed": true,
+ "grade_tail": "...........                                                              [100%]\n11 passed in 0.02s\n"
+}

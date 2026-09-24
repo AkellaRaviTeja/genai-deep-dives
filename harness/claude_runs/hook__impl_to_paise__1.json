@@ -1,0 +1,21 @@
+{
+ "task": "impl_to_paise",
+ "kind": "implement",
+ "rules": [
+  "errors"
+ ],
+ "variant": "hook",
+ "rep": 1,
+ "passed": true,
+ "error": false,
+ "turns": 9,
+ "seconds": 49.8,
+ "cost_usd": 0.06165940000000001,
+ "input_tokens": 121670,
+ "output_tokens": 5173,
+ "tests_touched": [],
+ "claimed_pass": true,
+ "denials": 0,
+ "result": "All tests pass! ✓\n\nThe `to_paise` function is now implemented and correctly:\n- Parses rupee amounts with Indian digit grouping (commas): \"1,234.50\" → 123450 paise\n- Handles integers: \"20\" → 2000 paise\n- Rejects more than 2 decimal places: \"1.234\" raises `InvoiceError`\n- Rejects invalid numbers\n- Uses only integer arithmetic (no floats) to avoid precision issues\n- Properly handles negative amounts",
+ "grade_tail": "...........                                                              [100%]\n11 passed in 0.02s\n"
+}

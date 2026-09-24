@@ -1,0 +1,20 @@
+{
+ "task": "bug_flat_discount",
+ "kind": "bugfix",
+ "rules": [],
+ "variant": "model_only_rules_big",
+ "rep": 0,
+ "passed": true,
+ "error": false,
+ "turns": 1,
+ "seconds": 11.3,
+ "cost_usd": 0.14899,
+ "input_tokens": 71170,
+ "output_tokens": 1332,
+ "tests_touched": [],
+ "claimed_pass": false,
+ "denials": 0,
+ "result": "Looking at the discount code, I can see the bug. The `apply_discount` function applies the same calculation for both percent and flat discounts:\n\n```python\noff = subtotal * value // 100\n```\n\nFor a flat discount of ₹500 (50000 paise), this multiplies the subtotal by 50000 and divides by 100, which is wrong. A flat discount should just use the fixed value, not multiply it by the subtotal.\n\nThe fix is to distinguish between percent and flat discounts:\n\n### invoicing/discount.py\n```python\nfrom .errors import InvoiceError\n\n# code -> (kind, value). \"percent\" values are whole percent; \"flat\" values are paise.\nDISCOUNTS = {\n    \"WELCOME10\": (\"percent\", 10),\n    \"FLAT500\": (\"flat\", 50000),\n}\n\n\ndef apply_discount(subtotal, code):\n    \"\"\"Return the discount in paise for `code` on `subtotal` paise. No code means 0.\"\"\"\n    if not code:\n        return 0\n    key = code.strip().upper()\n    if key not in DISCOUNTS:\n        raise InvoiceError(\"UNKNOWN_DISCOUNT\", code)\n    kind, value = DISCOUNTS[key]\n    if kind == \"percent\":\n        off = subtotal * value // 100\n    else:  # kind == \"flat\"\n        off = value\n    return min(off, subtotal)\n```",
+ "visible_passed": true,
+ "grade_tail": "...........                                                              [100%]\n11 passed in 0.02s\n"
+}

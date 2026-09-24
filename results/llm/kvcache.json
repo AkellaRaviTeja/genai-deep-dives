@@ -1,0 +1,47 @@
+{
+ "meta": {
+  "model": "Qwen/Qwen2.5-1.5B",
+  "torch": "2.14.0+cu130",
+  "transformers": "5.17.0",
+  "device": "NVIDIA GeForce RTX 5050 Laptop GPU",
+  "dtype": "bfloat16",
+  "run_at": "2026-09-24T19:16:59"
+ },
+ "layers": 28,
+ "attention_heads": 12,
+ "kv_heads": 2,
+ "head_dim": 128,
+ "bytes_per_token": 28672,
+ "bytes_per_token_without_gqa": 172032,
+ "mb_per_1k_tokens": 27.3,
+ "mb_at_32k_tokens": 896.0,
+ "weight_bytes": 3087428608,
+ "measured_bandwidth_gb_s": 328.5,
+ "ceiling_tok_s": 106.4,
+ "timing": [
+  {
+   "tokens": 32,
+   "cache_tok_s": 68.7,
+   "no_cache_tok_s": 65.8,
+   "speedup": 1.04
+  },
+  {
+   "tokens": 128,
+   "cache_tok_s": 69.9,
+   "no_cache_tok_s": 44.9,
+   "speedup": 1.56
+  },
+  {
+   "tokens": 512,
+   "cache_tok_s": 68.7,
+   "no_cache_tok_s": 17.3,
+   "speedup": 3.97
+  },
+  {
+   "tokens": 1024,
+   "cache_tok_s": 66.4,
+   "no_cache_tok_s": 9.6,
+   "speedup": 6.94
+  }
+ ]
+}

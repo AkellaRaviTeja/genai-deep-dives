@@ -1,0 +1,181 @@
+{
+ "meta": {
+  "model": "Qwen/Qwen2.5-1.5B",
+  "torch": "2.14.0+cu130",
+  "transformers": "5.17.0",
+  "device": "NVIDIA GeForce RTX 5050 Laptop GPU",
+  "dtype": "bfloat16",
+  "run_at": "2026-09-24T19:32:33",
+  "order_sources": "transformers generation/utils.py _get_logits_processor; llama.cpp common/common.h samplers (temperature last)"
+ },
+ "settings": {
+  "temperature": 0.7,
+  "top_k": 40,
+  "top_p": 0.95,
+  "min_p": 0.07
+ },
+ "transformers_order": {
+  "kept": 4,
+  "tokens": [
+   {
+    "text": "␣",
+    "p": 0.5307
+   },
+   {
+    "text": "␣the",
+    "p": 0.2922
+   },
+   {
+    "text": "␣$",
+    "p": 0.1332
+   },
+   {
+    "text": "␣calculated",
+    "p": 0.0438
+   }
+  ]
+ },
+ "llama_cpp_order": {
+  "kept": 8,
+  "tokens": [
+   {
+    "text": "␣",
+    "p": 0.4927
+   },
+   {
+    "text": "␣the",
+    "p": 0.2713
+   },
+   {
+    "text": "␣$",
+    "p": 0.1237
+   },
+   {
+    "text": "␣calculated",
+    "p": 0.0407
+   },
+   {
+    "text": "␣a",
+    "p": 0.0239
+   },
+   {
+    "text": "␣____",
+    "p": 0.0187
+   },
+   {
+    "text": "␣not",
+    "p": 0.0151
+   },
+   {
+    "text": "␣displayed",
+    "p": 0.014
+   }
+  ]
+ },
+ "verified_against_transformers_warpers": true,
+ "sweep": [
+  {
+   "temperature": 0.5,
+   "min_p": 0.02,
+   "transformers": 4,
+   "llama_cpp": 25
+  },
+  {
+   "temperature": 0.5,
+   "min_p": 0.05,
+   "transformers": 3,
+   "llama_cpp": 12
+  },
+  {
+   "temperature": 0.5,
+   "min_p": 0.1,
+   "transformers": 3,
+   "llama_cpp": 6
+  },
+  {
+   "temperature": 0.6,
+   "min_p": 0.02,
+   "transformers": 6,
+   "llama_cpp": 25
+  },
+  {
+   "temperature": 0.6,
+   "min_p": 0.05,
+   "transformers": 4,
+   "llama_cpp": 12
+  },
+  {
+   "temperature": 0.6,
+   "min_p": 0.1,
+   "transformers": 3,
+   "llama_cpp": 6
+  },
+  {
+   "temperature": 0.7,
+   "min_p": 0.02,
+   "transformers": 8,
+   "llama_cpp": 25
+  },
+  {
+   "temperature": 0.7,
+   "min_p": 0.05,
+   "transformers": 4,
+   "llama_cpp": 12
+  },
+  {
+   "temperature": 0.7,
+   "min_p": 0.1,
+   "transformers": 3,
+   "llama_cpp": 6
+  },
+  {
+   "temperature": 0.8,
+   "min_p": 0.02,
+   "transformers": 13,
+   "llama_cpp": 25
+  },
+  {
+   "temperature": 0.8,
+   "min_p": 0.05,
+   "transformers": 6,
+   "llama_cpp": 12
+  },
+  {
+   "temperature": 0.8,
+   "min_p": 0.1,
+   "transformers": 4,
+   "llama_cpp": 6
+  },
+  {
+   "temperature": 0.9,
+   "min_p": 0.02,
+   "transformers": 17,
+   "llama_cpp": 25
+  },
+  {
+   "temperature": 0.9,
+   "min_p": 0.05,
+   "transformers": 8,
+   "llama_cpp": 12
+  },
+  {
+   "temperature": 0.9,
+   "min_p": 0.1,
+   "transformers": 4,
+   "llama_cpp": 6
+  }
+ ],
+ "llama_cpp_keeps_more_in": "15 of 15",
+ "extra_tokens_mass_at_T1": 0.0921,
+ "extra_tokens_mass_when_sampled": 0.0716,
+ "min_p_margin": {
+  "cutoff": 0.03072,
+  "last_kept": 0.0362,
+  "first_dropped": 0.02125
+ },
+ "min_p_margin_llama_cpp": {
+  "cutoff": 0.01649,
+  "last_kept": 0.01945,
+  "first_dropped": 0.01518
+ }
+}

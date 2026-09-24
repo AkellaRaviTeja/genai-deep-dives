@@ -1,0 +1,19 @@
+{
+ "task": "impl_format_inr",
+ "kind": "implement",
+ "rules": [],
+ "variant": "model_only",
+ "rep": 1,
+ "passed": true,
+ "error": false,
+ "turns": 1,
+ "seconds": 28.6,
+ "cost_usd": 0.034022,
+ "input_tokens": 9086,
+ "output_tokens": 3172,
+ "tests_touched": [],
+ "claimed_pass": false,
+ "denials": 0,
+ "result": ":\n        raise InvoiceError(\"BAD_AMOUNT\", text)\n    paise = int(whole) * 100 + int(frac.ljust(2, \"0\") or 0)\n    return -paise if neg else paise\n\n\ndef format_inr(paise):\n    \"\"\"Format paise as rupees with Indian digit grouping: 12345678 -> \"₹1,23,456.78\".\"\"\"\n    is_negative = paise < 0\n    paise = abs(paise)\n    \n    rupees = paise // 100\n    paise_part = paise % 100\n    \n    rupees_str = str(rupees)\n    \n    if len(rupees_str) <= 3:\n        formatted_rupees = rupees_str\n    else:\n        last_3 = rupees_str[-3:]\n        remaining = rupees_str[:-3]\n        \n        groups = []\n        while len(remaining) > 2:\n            groups.append(remaining[-2:])\n            remaining = remaining[:-2]\n        if remaining:\n            groups.append(remaining)\n        \n        groups.reverse()\n        formatted_rupees = ','.join(groups) + ',' + last_3\n    \n    paise_str = f\"{paise_part:02d}\"\n    result = f\"₹{formatted_rupees}.{paise_str}\"\n    \n    if is_negative:\n        result = \"-\" + result\n    \n    return result\n```\n\nThe function extracts the rupee and paise parts, then applies Indian grouping where the last 3 digits stay together and remaining digits are grouped in pairs from right to left.",
+ "grade_tail": "...........                                                              [100%]\n11 passed in 0.03s\n"
+}

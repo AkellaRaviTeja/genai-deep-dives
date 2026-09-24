@@ -1,0 +1,26 @@
+{
+ "task": "impl_list_by_customer",
+ "kind": "implement",
+ "rules": [
+  "order"
+ ],
+ "variant": "oneshot",
+ "model": "Qwen/Qwen2.5-Coder-3B-Instruct",
+ "passed": false,
+ "seconds": 4.9,
+ "tests_touched": [],
+ "grade_tail": ", 1)), (\"A2\", date(2026, 3, 1)), (\"B1\", date(2026, 5, 1))]:\n            s.put(Invoice(i, \"asha\" if i[0] == \"A\" else \"ravi\", [], d))\n>       assert [r.id for r in s.list_by_customer(\"asha\")] == [\"A3\", \"A2\", \"A1\"]\nE       AssertionError: assert ['A1', 'A3', 'A2'] == ['A3', 'A2', 'A1']\nE         \nE         At index 0 diff: 'A1' != 'A3'\nE         Use -v to get more diff\n\ntests/test_hidden.py:9: AssertionError\n=========================== short test summary info ============================\nFAILED tests/test_hidden.py::test_hidden - AssertionError: assert ['A1', 'A3'...\n1 failed, 10 passed in 0.04s\n",
+ "turns": 1,
+ "tokens_in": 2270,
+ "tokens_out": 131,
+ "calls": {},
+ "parse_errors": 0,
+ "claimed_done": true,
+ "prompt_tokens_first": 2270,
+ "transcript": [
+  {
+   "role": "assistant",
+   "content": "### invoicing/store.py\n```python\nfrom .errors import InvoiceError\n\n\nclass InvoiceStore:\n    \"\"\"The storage layer. Only InvoiceService may use it.\"\"\"\n\n    def __init__(self):\n        self._rows = {}\n\n    def put(self, invoice):\n        self._rows[invoice.id] = invoice\n\n    def get(self, invoice_id):\n        if invoice_id not in self._rows:\n            raise InvoiceError(\"NOT_FOUND\", invoice_id)\n        return self._rows[invoice_id]\n\n    def list_by_customer(self, customer):\n        return [inv for inv in self._rows.values() if inv.customer == customer]\n```"
+  }
+ ]
+}

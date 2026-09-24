@@ -1,0 +1,23 @@
+{
+ "task": "feat_list_handler",
+ "kind": "feature",
+ "rules": [
+  "layering",
+  "iso",
+  "order"
+ ],
+ "variant": "tests",
+ "rep": 2,
+ "passed": true,
+ "error": false,
+ "turns": 14,
+ "seconds": 28.0,
+ "cost_usd": 0.0491465,
+ "input_tokens": 177395,
+ "output_tokens": 2317,
+ "tests_touched": [],
+ "claimed_pass": true,
+ "denials": 0,
+ "result": "Done! I've added the `list_invoices_handler(service, user)` function to `invoicing/api.py`. It:\n\n- Retrieves all invoices for the user via `service.list(user)`\n- Returns each invoice as `{\"id\", \"created\", \"total\"}` where `created` is in ISO format\n- Returns `(200, [...])` with the list of invoices\n\n**All tests pass** (10/10 ✓).",
+ "grade_tail": "...........                                                              [100%]\n11 passed in 0.03s\n"
+}

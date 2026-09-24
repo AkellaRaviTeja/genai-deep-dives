@@ -1,0 +1,23 @@
+{
+ "task": "impl_get_handler",
+ "kind": "implement",
+ "rules": [
+  "layering",
+  "iso",
+  "errors"
+ ],
+ "variant": "rules",
+ "rep": 0,
+ "passed": true,
+ "error": false,
+ "turns": 13,
+ "seconds": 33.7,
+ "cost_usd": 0.048511500000000006,
+ "input_tokens": 149186,
+ "output_tokens": 2591,
+ "tests_touched": [],
+ "claimed_pass": true,
+ "denials": 0,
+ "result": "Perfect! All tests pass. The `get_invoice_handler` implementation is complete.\n\nThe function:\n- Fetches the invoice using `service.get()` which handles authorization (raises 404 for missing, 403 for forbidden)\n- Calculates the total in paise using `service.total()`\n- Returns a 200 status with a JSON body containing: id, customer, created date (ISO 8601 format), total (integer paise), and display_total (formatted with Indian rupee formatting)\n- Catches `InvoiceError` exceptions and maps them to appropriate HTTP status codes (404 or 403)",
+ "grade_tail": "...........                                                              [100%]\n11 passed in 0.03s\n"
+}

@@ -1,0 +1,26 @@
+{
+ "task": "impl_to_paise",
+ "kind": "implement",
+ "rules": [
+  "errors"
+ ],
+ "variant": "oneshot",
+ "model": "Qwen/Qwen2.5-Coder-3B-Instruct",
+ "passed": false,
+ "seconds": 5.3,
+ "tests_touched": [],
+ "grade_tail": "portlib/__init__.py:90: in import_module\n    return _bootstrap._gcd_import(name[level:], package, level)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\ntests/test_money.py:2: in <module>\n    from invoicing.money import to_paise, format_inr\nE   ImportError: cannot import name 'format_inr' from 'invoicing.money' (/tmp/grade-n852gtq_/invoicing/money.py)\n=========================== short test summary info ============================\nERROR tests/test_api.py\nERROR tests/test_money.py\n!!!!!!!!!!!!!!!!!!! Interrupted: 2 errors during collection !!!!!!!!!!!!!!!!!!!!\n2 errors in 0.11s\n",
+ "turns": 1,
+ "tokens_in": 2239,
+ "tokens_out": 133,
+ "calls": {},
+ "parse_errors": 0,
+ "claimed_done": true,
+ "prompt_tokens_first": 2239,
+ "transcript": [
+  {
+   "role": "assistant",
+   "content": "### invoicing/money.py\n```python\nfrom .errors import InvoiceError\n\n\ndef to_paise(text):\n    \"\"\"Parse a rupee amount such as \"1,234.50\" or \"-20\" into integer paise.\"\"\"\n    try:\n        num = float(text.replace(',', ''))\n        if num.is_integer():\n            return int(num * 100)\n        elif 0 <= num < 100:\n            return int(num * 10000)\n        else:\n            raise InvoiceError(\"INVALID_AMOUNT\", text)\n    except ValueError:\n        raise InvoiceError(\"INVALID_AMOUNT\", text)\n```"
+  }
+ ]
+}

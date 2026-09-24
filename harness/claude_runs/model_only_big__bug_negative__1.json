@@ -1,0 +1,20 @@
+{
+ "task": "bug_negative",
+ "kind": "bugfix",
+ "rules": [],
+ "variant": "model_only_big",
+ "rep": 1,
+ "passed": true,
+ "error": false,
+ "turns": 1,
+ "seconds": 11.6,
+ "cost_usd": 0.146728,
+ "input_tokens": 70844,
+ "output_tokens": 1010,
+ "tests_touched": [],
+ "claimed_pass": false,
+ "denials": 0,
+ "result": "Looking at the `to_paise` function in `invoicing/money.py`, I can see the bug: the function extracts the `neg` flag from the input but never applies it to the result. The function calculates `paise` correctly but forgets to negate it when `neg` is True.\n\n### invoicing/money.py\n```python\nfrom .errors import InvoiceError\n\n\ndef to_paise(text):\n    \"\"\"Parse a rupee amount such as \"1,234.50\" or \"-20\" into integer paise.\"\"\"\n    s = text.strip().replace(\",\", \"\")\n    neg = s.startswith(\"-\")\n    if neg:\n        s = s[1:]\n    whole, _, frac = s.partition(\".\")\n    if not whole.isdigit() or (frac and not frac.isdigit()) or len(frac) > 2:\n        raise InvoiceError(\"BAD_AMOUNT\", text)\n    paise = int(whole) * 100 + int(frac.ljust(2, \"0\") or 0)\n    return -paise if neg else paise\n\n\ndef format_inr(paise):\n    \"\"\"Format paise as rupees with Indian digit grouping: 12345678 -> \"₹1,23,456.78\".\"\"\"\n    neg = paise < 0\n    rupees, p = divmod(abs(paise), 100)\n    digits = str(rupees)\n    head, tail = digits[:-3], digits[-3:]\n    groups = []\n    while len(head) > 2:\n        groups.insert(0, head[-2:])\n        head = head[:-2]\n    if head:\n        groups.insert(0, head)\n    body = \",\".join(groups + [tail]) if groups else tail\n    return f\"{'-' if neg else ''}₹{body}.{p:02d}\"\n```",
+ "visible_passed": true,
+ "grade_tail": "...........                                                              [100%]\n11 passed in 0.02s\n"
+}

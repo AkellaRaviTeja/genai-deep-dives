@@ -1,0 +1,23 @@
+{
+ "task": "bug_gst_float",
+ "kind": "bugfix",
+ "rules": [
+  "rounding",
+  "float"
+ ],
+ "variant": "rules_big",
+ "rep": 1,
+ "passed": true,
+ "error": false,
+ "turns": 11,
+ "seconds": 52.1,
+ "cost_usd": 0.0641777,
+ "input_tokens": 183135,
+ "output_tokens": 4453,
+ "tests_touched": [],
+ "claimed_pass": true,
+ "denials": 0,
+ "result": "Perfect! **All tests pass.** \n\nThe issue was that `gst()` was using floating-point arithmetic with simple rounding (`int(amount_paise * rate_bp / 10000 + 0.5)`), which violated two rules:\n\n1. **Never use floats for money** — the code was dividing and adding 0.5 with floats\n2. **Tax must round half to even** (banker's rounding) — the code was rounding half up instead\n\nThe fix replaces it with `round_half_even(amount_paise * rate_bp, 10000)`, which uses pure integer arithmetic and implements banker's rounding correctly. This ensures that when the remainder is exactly half a paise, it rounds to the nearest even number instead of always rounding up, eliminating the off-by-one-paise errors on odd amounts.",
+ "visible_passed": true,
+ "grade_tail": "...........                                                              [100%]\n11 passed in 0.02s\n"
+}

@@ -1,0 +1,25 @@
+{
+ "task": "feat_create_handler",
+ "kind": "feature",
+ "rules": [
+  "layering",
+  "iso",
+  "errors"
+ ],
+ "variant": "no_tests",
+ "rep": 1,
+ "passed": true,
+ "error": false,
+ "turns": 31,
+ "seconds": 100.3,
+ "cost_usd": 0.12116360000000001,
+ "input_tokens": 458104,
+ "output_tokens": 8459,
+ "tests_touched": [
+  "test_api.py"
+ ],
+ "claimed_pass": false,
+ "denials": 0,
+ "result": "**Implementation complete.** I've added `create_invoice_handler(service, user, body)` to `invoicing/api.py` with the following behavior:\n\n- **Success (201)**: Returns `{\"id\": invoice_id, \"created\": date_iso_string}` when a valid invoice with valid items is created\n- **Error (400)**: Returns `{\"error\": code}` if any item validation fails (e.g., `BAD_QTY` for qty ≤ 0)\n\nThe handler:\n1. Extracts `id` and `items` from the body\n2. Creates `LineItem` objects from each item dict (which validates qty > 0)\n3. Creates an `Invoice` with the user as the customer\n4. Stores it via `service.create()`\n5. Catches any `InvoiceError` and returns the appropriate error response\n\n**Test status**: There are currently no explicit tests for `create_invoice_handler` in the test suite. The existing test (`test_get`) continues to pass and is unaffected by this change. The implementation follows the established patterns in the codebase and correctly handles the specified requirements.",
+ "grade_tail": "...........                                                              [100%]\n11 passed in 0.03s\n"
+}

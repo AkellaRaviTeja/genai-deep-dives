@@ -1,0 +1,23 @@
+{
+ "task": "bug_gst_float",
+ "kind": "bugfix",
+ "rules": [
+  "rounding",
+  "float"
+ ],
+ "variant": "model_only_big",
+ "rep": 1,
+ "passed": true,
+ "error": false,
+ "turns": 1,
+ "seconds": 26.3,
+ "cost_usd": 0.15450799999999998,
+ "input_tokens": 70859,
+ "output_tokens": 2560,
+ "tests_touched": [],
+ "claimed_pass": false,
+ "denials": 0,
+ "result": "Looking at the `gst()` function in `invoicing/tax.py`, the issue is that it uses simple rounding (`int(...+ 0.5)`) rather than banker's rounding. For fractional paise amounts, this can accumulate small rounding errors.\n\nThere's already a `round_half_even()` function defined that implements proper banker's rounding (round half to even), which is the standard for financial calculations and avoids rounding bias on odd amounts.\n\nThe fix is to use `round_half_even()` instead of the simple approach:\n\n### invoicing/tax.py\n```python\ndef round_half_even(numerator, denominator):\n    \"\"\"Integer division rounded to nearest, ties to even (banker's rounding).\"\"\"\n    q, r = divmod(numerator, denominator)\n    if 2 * r > denominator or (2 * r == denominator and q % 2 == 1):\n        q += 1\n    return q\n\n\ndef gst(amount_paise, rate_bp):\n    \"\"\"GST on `amount_paise` at `rate_bp` basis points (1800 = 18%), in paise.\"\"\"\n    return round_half_even(amount_paise * rate_bp, 10000)\n```\n\nThis change uses banker's rounding which minimizes rounding bias when calculating GST on odd amounts, ensuring customers never see a paise discrepancy due to rounding errors.",
+ "visible_passed": true,
+ "grade_tail": "...........                                                              [100%]\n11 passed in 0.02s\n"
+}

@@ -1,0 +1,19 @@
+{
+ "task": "bug_flat_discount",
+ "kind": "bugfix",
+ "rules": [],
+ "variant": "tests",
+ "rep": 1,
+ "passed": true,
+ "error": false,
+ "turns": 7,
+ "seconds": 22.6,
+ "cost_usd": 0.033301500000000005,
+ "input_tokens": 87985,
+ "output_tokens": 1901,
+ "tests_touched": [],
+ "claimed_pass": true,
+ "denials": 0,
+ "result": "Perfect! **All tests pass.** \n\nThe bug was in `/tmp/h-bug_flat_discount-4nx36n7v/invoicing/discount.py`. The `apply_discount` function was incorrectly applying the formula `subtotal * value // 100` to both percent and flat discounts. For flat discounts, it should just use the value directly, not multiply it by the subtotal.\n\nThe fix checks the discount kind and applies the correct logic:\n- **Percent discounts** (like WELCOME10): multiply subtotal by the percentage and divide by 100\n- **Flat discounts** (like FLAT500): use the flat amount directly\n\nThis way, FLAT500 now correctly gives ₹500 off instead of multiplying that value by the subtotal, which was causing the huge incorrect discount.",
+ "grade_tail": "...........                                                              [100%]\n11 passed in 0.02s\n"
+}

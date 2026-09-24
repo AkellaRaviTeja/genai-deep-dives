@@ -1,0 +1,24 @@
+{
+ "task": "impl_get_handler",
+ "kind": "implement",
+ "rules": [
+  "layering",
+  "iso",
+  "errors"
+ ],
+ "variant": "rules_big",
+ "rep": 0,
+ "passed": true,
+ "error": false,
+ "turns": 18,
+ "seconds": 36.4,
+ "cost_usd": 0.0654462,
+ "input_tokens": 244654,
+ "output_tokens": 3320,
+ "tests_touched": [],
+ "claimed_pass": true,
+ "denials": 0,
+ "result": "Perfect! All tests pass. Here's a summary of the implementation:\n\nThe `get_invoice_handler` function:\n1. **Gets the invoice** via `service.get()` which enforces permission checks (raises 404 NOT_FOUND or 403 FORBIDDEN)\n2. **Calculates the total** via `service.total()` which applies discounts and adds GST\n3. **Returns (status, body)** on success with:\n   - `id`, `customer`, `created` (ISO 8601), `total` (paise), and `display_total` (formatted)\n4. **Catches errors** and returns appropriate HTTP status codes via the `_status` helper\n\nThe test validates that for an invoice with 10000 paise (₹100) in items, the total of 11800 paise (₹118.00 after 18% GST) is calculated and returned correctly.\n\n✅ **All tests pass** (10/10)",
+ "visible_passed": true,
+ "grade_tail": "...........                                                              [100%]\n11 passed in 0.02s\n"
+}

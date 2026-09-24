@@ -1,0 +1,30 @@
+{
+ "task": "feat_create_handler",
+ "kind": "feature",
+ "rules": [
+  "layering",
+  "iso",
+  "errors"
+ ],
+ "variant": "oneshot",
+ "model": "Qwen/Qwen2.5-Coder-3B-Instruct",
+ "passed": false,
+ "seconds": 19.6,
+ "tests_touched": [
+  "test_api.py"
+ ],
+ "grade_tail": ", body):\n        \"\"\"POST /invoices: creates an invoice for `user` from `body`. Returns (status, body).\"\"\"\n        try:\n>           invoice = Invoice(\n                      ^^^^^^^\n                id=body[\"id\"],\n                customer=user,\n                items=[LineItem(**item) for item in body[\"items\"]],\n            )\nE           NameError: name 'Invoice' is not defined\n\ninvoicing/api.py:28: NameError\n=========================== short test summary info ============================\nFAILED tests/test_hidden.py::test_hidden - NameError: name 'Invoice' is not d...\n1 failed, 10 passed in 0.05s\n",
+ "turns": 1,
+ "tokens_in": 2365,
+ "tokens_out": 633,
+ "calls": {},
+ "parse_errors": 0,
+ "claimed_done": true,
+ "prompt_tokens_first": 2365,
+ "transcript": [
+  {
+   "role": "assistant",
+   "content": "### invoicing/api.py\n```python\nfrom .errors import InvoiceError\nfrom .money import format_inr\n\n\ndef _status(err):\n    return {\"NOT_FOUND\": 404, \"FORBIDDEN\": 403, \"BAD_REQUEST\": 400}.get(err.code, 400)\n\n\ndef get_invoice_handler(service, invoice_id, user):\n    \"\"\"GET /invoices/{id}: returns (status, body).\"\"\"\n    try:\n        inv = service.get(invoice_id, user)\n        total = service.total(invoice_id, user)\n    except InvoiceError as e:\n        return _status(e), {\"error\": e.code}\n    return 200, {\n        \"id\": inv.id,\n        \"customer\": inv.customer,\n        \"created\": inv.created.isoformat(),\n        \"total\": total,\n        \"total_display\": format_inr(total),\n    }\n\n\ndef create_invoice_handler(service, user, body):\n    \"\"\"POST /invoices: creates an invoice for `user` from `body`. Returns (status, body).\"\"\"\n    try:\n        invoice = Invoice(\n            id=body[\"id\"],\n            customer=user,\n            items=[LineItem(**item) for item in body[\"items\"]],\n        )\n        service.create(invoice)\n    except InvoiceError as e:\n        return _status(e), {\"error\": e.code}\n    return 201, {\"id\": invoice.id, \"created\": invoice.created.isoformat()}\n```\n\n### tests/test_api.py\n```python\nfrom datetime import date\nfrom invoicing.api import create_invoice_handler, get_invoice_handler\nfrom invoicing.invoice import Invoice, LineItem\nfrom invoicing.service import InvoiceService\nfrom invoicing.store import InvoiceStore\n\ndef test_create():\n    s = InvoiceService(InvoiceStore())\n    status, body = create_invoice_handler(s, \"asha\", {\"id\": \"A2\", \"items\": [{\"sku\": \"pen\", \"qty\": 1, \"unit_paise\": 10000}]})\n    assert status == 201 and body[\"created\"] == date.today().isoformat()\n\ndef test_create_invalid_item():\n    s = InvoiceService(InvoiceStore())\n    status, body = create_invoice_handler(s, \"asha\", {\"id\": \"A2\", \"items\": [{\"sku\": \"pen\", \"qty\": 0, \"unit_paise\": 10000}]})\n    assert status == 400 and body[\"error\"] == \"BAD_QTY\"\n\ndef test_get():\n    s = InvoiceService(InvoiceStore())\n    s.create(Invoice(\"A1\", \"asha\", [LineItem(\"pen\", 1, 10000)], date(2026, 9, 1)))\n    status, body = get_invoice_handler(s, \"A1\", \"asha\")\n    assert status == 200 and body[\"created\"] == \"2026-09-01\" and body[\"total\"] == 11800\n```"
+  }
+ ]
+}

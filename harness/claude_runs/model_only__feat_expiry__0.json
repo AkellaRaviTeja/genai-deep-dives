@@ -1,0 +1,21 @@
+{
+ "task": "feat_expiry",
+ "kind": "feature",
+ "rules": [
+  "errors"
+ ],
+ "variant": "model_only",
+ "rep": 0,
+ "passed": true,
+ "error": false,
+ "turns": 1,
+ "seconds": 35.0,
+ "cost_usd": 0.035882,
+ "input_tokens": 9226,
+ "output_tokens": 3488,
+ "tests_touched": [],
+ "claimed_pass": false,
+ "denials": 0,
+ "result": "COME10\": (\"percent\", 10),\n    \"FLAT500\": (\"flat\", 50000),\n}\n\n# code -> last valid date (inclusive)\nEXPIRY = {\n    \"WELCOME10\": date(2026, 12, 31),\n}\n\n\ndef apply_discount(subtotal, code, today=None):\n    \"\"\"Return the discount in paise for `code` on `subtotal` paise. No code means 0.\"\"\"\n    if not code:\n        return 0\n    if today is None:\n        today = date.today()\n    key = code.strip().upper()\n    if key not in DISCOUNTS:\n        raise InvoiceError(\"UNKNOWN_DISCOUNT\", code)\n    if key in EXPIRY and today > EXPIRY[key]:\n        raise InvoiceError(\"EXPIRED\", code)\n    kind, value = DISCOUNTS[key]\n    off = subtotal * value // 100 if kind == \"percent\" else value\n    return min(off, subtotal)\n```\n\nThe changes:\n- Import `date` from datetime\n- Add `EXPIRY` dict mapping `WELCOME10` to its expiry date (2026-12-31)\n- Add `today=None` parameter; if not provided, defaults to `date.today()`\n- After checking if the code exists, check if it's expired and raise `InvoiceError(\"EXPIRED\", code)` if so\n- The check only applies to codes in the `EXPIRY` dict, so `FLAT500` has no expiration\n\nAll existing tests will still pass since today (2026-09-24) is before WELCOME10's expiry date (2026-12-31).",
+ "grade_tail": "...........                                                              [100%]\n11 passed in 0.03s\n"
+}

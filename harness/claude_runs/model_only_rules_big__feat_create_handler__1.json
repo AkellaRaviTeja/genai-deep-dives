@@ -1,0 +1,24 @@
+{
+ "task": "feat_create_handler",
+ "kind": "feature",
+ "rules": [
+  "layering",
+  "iso",
+  "errors"
+ ],
+ "variant": "model_only_rules_big",
+ "rep": 1,
+ "passed": true,
+ "error": false,
+ "turns": 1,
+ "seconds": 55.1,
+ "cost_usd": 0.172577,
+ "input_tokens": 71241,
+ "output_tokens": 6021,
+ "tests_touched": [],
+ "claimed_pass": false,
+ "denials": 0,
+ "result": "Looking at this task, I need to add a `create_invoice_handler` function to handle POST /invoices requests. The handler should:\n1. Extract id and items from the request body\n2. Create LineItem objects (which will validate qty via `__post_init__`)\n3. Create and persist an Invoice with the user as the customer\n4. Return 201 with the invoice id and created date on success\n5. Return 400 with an error code on any failure\n\nI'll follow the same error-handling pattern as `get_invoice_handler` and add the necessary imports.\n\n### invoicing/api.py\n```python\nfrom .errors import InvoiceError\nfrom .invoice import Invoice, LineItem\nfrom .money import format_inr\n\n\ndef _status(err):\n    return {\"NOT_FOUND\": 404, \"FORBIDDEN\": 403}.get(err.code, 400)\n\n\ndef get_invoice_handler(service, invoice_id, user):\n    \"\"\"GET /invoices/{id}: returns (status, body).\"\"\"\n    try:\n        inv = service.get(invoice_id, user)\n        total = service.total(invoice_id, user)\n    except InvoiceError as e:\n        return _status(e), {\"error\": e.code}\n    return 200, {\n        \"id\": inv.id,\n        \"customer\": inv.customer,\n        \"created\": inv.created.isoformat(),\n        \"total\": total,\n        \"total_display\": format_inr(total),\n    }\n\n\ndef create_invoice_handler(service, user, body):\n    \"\"\"POST /invoices: returns (status, body).\"\"\"\n    try:\n        invoice_id = body[\"id\"]\n        items_data = body[\"items\"]\n        \n        items = [LineItem(item[\"sku\"], item[\"qty\"], item[\"unit_paise\"]) for item in items_data]\n        \n        invoice = Invoice(invoice_id, user, items)\n        service.create(invoice)\n        \n        return 201, {\"id\": invoice.id, \"created\": invoice.created.isoformat()}\n    except InvoiceError as e:\n        return _status(e), {\"error\": e.code}\n    except (KeyError, TypeError):\n        return 400, {\"error\": \"BAD_AMOUNT\"}\n```",
+ "visible_passed": true,
+ "grade_tail": "...........                                                              [100%]\n11 passed in 0.02s\n"
+}

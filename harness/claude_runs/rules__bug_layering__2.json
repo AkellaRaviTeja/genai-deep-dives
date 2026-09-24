@@ -1,0 +1,21 @@
+{
+ "task": "bug_layering",
+ "kind": "bugfix",
+ "rules": [
+  "layering"
+ ],
+ "variant": "rules",
+ "rep": 2,
+ "passed": true,
+ "error": false,
+ "turns": 7,
+ "seconds": 17.5,
+ "cost_usd": 0.0297809,
+ "input_tokens": 74811,
+ "output_tokens": 1363,
+ "tests_touched": [],
+ "claimed_pass": true,
+ "denials": 0,
+ "result": "✅ **All tests pass.** \n\nThe fix enforces the layering rule: the API handler now calls `service.get(invoice_id, user)` instead of bypassing the service layer with `service.store.get(invoice_id)`. This ensures the ownership check in `service._owned()` runs, so only the invoice's customer can read it.",
+ "grade_tail": "...........                                                              [100%]\n11 passed in 0.03s\n"
+}

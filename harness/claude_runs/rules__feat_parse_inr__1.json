@@ -1,0 +1,21 @@
+{
+ "task": "feat_parse_inr",
+ "kind": "feature",
+ "rules": [
+  "errors"
+ ],
+ "variant": "rules",
+ "rep": 1,
+ "passed": true,
+ "error": false,
+ "turns": 14,
+ "seconds": 44.9,
+ "cost_usd": 0.061567899999999995,
+ "input_tokens": 196914,
+ "output_tokens": 4042,
+ "tests_touched": [],
+ "claimed_pass": true,
+ "denials": 2,
+ "result": "Perfect! The `parse_inr` function has been added to `invoicing/money.py`. The implementation:\n\n1. **Parses formatted rupee amounts** like \"₹1,23,456.78\" into integer paise (12345678)\n2. **Rejects strings without the rupee sign** by raising `InvoiceError(\"BAD_AMOUNT\", text)`\n3. **Handles negative amounts** like \"-₹1,23,456.78\" correctly\n4. **Removes commas** from the input and reuses the existing `to_paise` function for validation and parsing\n\n**All 10 tests pass**, including the existing tests and any tests using the new `parse_inr` function.",
+ "grade_tail": "...........                                                              [100%]\n11 passed in 0.02s\n"
+}

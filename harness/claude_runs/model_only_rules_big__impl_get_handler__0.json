@@ -1,0 +1,24 @@
+{
+ "task": "impl_get_handler",
+ "kind": "implement",
+ "rules": [
+  "layering",
+  "iso",
+  "errors"
+ ],
+ "variant": "model_only_rules_big",
+ "rep": 0,
+ "passed": true,
+ "error": false,
+ "turns": 1,
+ "seconds": 23.4,
+ "cost_usd": 0.15441000000000002,
+ "input_tokens": 71105,
+ "output_tokens": 2442,
+ "tests_touched": [],
+ "claimed_pass": false,
+ "denials": 0,
+ "result": "Looking at the test and requirements, I need to implement `get_invoice_handler` to:\n1. Get the invoice via `service.get()` (which handles permission checks)\n2. Get the total via `service.total()` \n3. Return (200, body) with invoice details including ISO 8601 date and total\n4. Handle errors via the existing `_status` function for 404/403 responses\n\nThe test expects `body[\"created\"]` as ISO 8601 string and `body[\"total\"]` as paise amount.\n\n### invoicing/api.py\n```python\nfrom .errors import InvoiceError\nfrom .money import format_inr\n\n\ndef _status(err):\n    return {\"NOT_FOUND\": 404, \"FORBIDDEN\": 403}.get(err.code, 400)\n\n\ndef get_invoice_handler(service, invoice_id, user):\n    \"\"\"GET /invoices/{id}: returns (status, body).\"\"\"\n    try:\n        invoice = service.get(invoice_id, user)\n        total = service.total(invoice_id, user)\n        return 200, {\n            \"id\": invoice.id,\n            \"customer\": invoice.customer,\n            \"created\": invoice.created.isoformat(),\n            \"total\": total,\n            \"display_total\": format_inr(total)\n        }\n    except InvoiceError as err:\n        return _status(err), {\"error\": err.code}\n```",
+ "visible_passed": true,
+ "grade_tail": "...........                                                              [100%]\n11 passed in 0.02s\n"
+}

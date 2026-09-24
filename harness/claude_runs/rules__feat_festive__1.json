@@ -1,0 +1,21 @@
+{
+ "task": "feat_festive",
+ "kind": "feature",
+ "rules": [
+  "case"
+ ],
+ "variant": "rules",
+ "rep": 1,
+ "passed": true,
+ "error": false,
+ "turns": 5,
+ "seconds": 13.5,
+ "cost_usd": 0.024971900000000002,
+ "input_tokens": 72058,
+ "output_tokens": 845,
+ "tests_touched": [],
+ "claimed_pass": true,
+ "denials": 0,
+ "result": "All tests pass! ✓\n\nI've successfully added the FESTIVE15 discount code with 15% off to the DISCOUNTS dictionary in `invoicing/discount.py`. The new code follows the existing pattern and integrates seamlessly with the discount application logic, which validates the code case-insensitively after trimming spaces, calculates the discount as a percentage of the subtotal, and caps it at the subtotal as required.",
+ "grade_tail": "...........                                                              [100%]\n11 passed in 0.02s\n"
+}

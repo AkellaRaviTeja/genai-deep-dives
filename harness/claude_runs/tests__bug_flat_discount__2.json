@@ -1,0 +1,19 @@
+{
+ "task": "bug_flat_discount",
+ "kind": "bugfix",
+ "rules": [],
+ "variant": "tests",
+ "rep": 2,
+ "passed": true,
+ "error": false,
+ "turns": 7,
+ "seconds": 23.5,
+ "cost_usd": 0.033375300000000004,
+ "input_tokens": 88073,
+ "output_tokens": 1895,
+ "tests_touched": [],
+ "claimed_pass": true,
+ "denials": 0,
+ "result": "**Fixed!** ✓ All tests pass.\n\n**The bug:** The `apply_discount` function was treating all discount types the same way—multiplying by value and dividing by 100. For FLAT500 (₹500 = 50000 paise), this calculated `subtotal * 50000 // 100`, resulting in a massive discount.\n\n**The fix:** I separated the logic so that:\n- **Percent discounts** (like WELCOME10): calculate `subtotal * value // 100`\n- **Flat discounts** (like FLAT500): use the value directly (already in paise)\n\nNow FLAT500 correctly applies a ₹500 flat discount instead of a huge percentage-based one. All 10 tests pass.",
+ "grade_tail": "...........                                                              [100%]\n11 passed in 0.03s\n"
+}

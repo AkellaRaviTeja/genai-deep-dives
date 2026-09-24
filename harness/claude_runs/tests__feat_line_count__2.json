@@ -1,0 +1,19 @@
+{
+ "task": "feat_line_count",
+ "kind": "feature",
+ "rules": [],
+ "variant": "tests",
+ "rep": 2,
+ "passed": true,
+ "error": false,
+ "turns": 8,
+ "seconds": 20.2,
+ "cost_usd": 0.0331321,
+ "input_tokens": 116207,
+ "output_tokens": 1391,
+ "tests_touched": [],
+ "claimed_pass": true,
+ "denials": 0,
+ "result": "Perfect! I've added the `Invoice.units()` method to the Invoice class. The method sums the `qty` field across all line items, following the same pattern as the existing `subtotal()` method.\n\n**All tests pass** ✓ (10/10 passing)\n\nThe implementation is straightforward:\n```python\ndef units(self):\n    return sum(item.qty for item in self.items)\n```\n\nThis method will return the total quantity across all line items in an invoice. For example, if an invoice has line items with quantities 2 and 1, `units()` will return 3.",
+ "grade_tail": "...........                                                              [100%]\n11 passed in 0.02s\n"
+}

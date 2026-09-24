@@ -1,0 +1,23 @@
+{
+ "task": "impl_apply_discount",
+ "kind": "implement",
+ "rules": [
+  "case",
+  "cap",
+  "errors"
+ ],
+ "variant": "model_only",
+ "rep": 0,
+ "passed": false,
+ "error": false,
+ "turns": 1,
+ "seconds": 26.1,
+ "cost_usd": 0.032144,
+ "input_tokens": 9122,
+ "output_tokens": 2782,
+ "tests_touched": [],
+ "claimed_pass": false,
+ "denials": 0,
+ "result": "Looking at the tests, I need to implement `apply_discount` to:\n1. Return 0 if code is None\n2. For percent discounts: calculate the percentage of subtotal\n3. For flat discounts: return the fixed amount in paise\n\nLet me verify against the test expectations:\n- `apply_discount(100000, \"WELCOME10\")` → 10% of 100000 = 10000 ✓\n- `apply_discount(100000, \"FLAT500\")` → 50000 flat ✓\n- In `test_service.py`, the total calculation: 100000 paise → 10000 discount → 90000 net → plus GST = 106200 ✓\n\n### invoicing/discount.py\n```python\nfrom .errors import InvoiceError\n\n# code -> (kind, value). \"percent\" values are whole percent; \"flat\" values are paise.\nDISCOUNTS = {\n    \"WELCOME10\": (\"percent\", 10),\n    \"FLAT500\": (\"flat\", 50000),\n}\n\n\ndef apply_discount(subtotal, code):\n    \"\"\"Return the discount in paise for `code` on `subtotal` paise. No code means 0.\"\"\"\n    if code is None:\n        return 0\n    \n    kind, value = DISCOUNTS[code]\n    \n    if kind == \"percent\":\n        return subtotal * value // 100\n    else:  # kind == \"flat\"\n        return value\n```",
+ "grade_tail": "def apply_discount(subtotal, code):\n        \"\"\"Return the discount in paise for `code` on `subtotal` paise. No code means 0.\"\"\"\n        if code is None:\n            return 0\n    \n>       kind, value = DISCOUNTS[code]\n                      ^^^^^^^^^^^^^^^\nE       KeyError: ' welcome10 '\n\ninvoicing/discount.py:15: KeyError\n=========================== short test summary info ============================\nFAILED tests/test_hidden.py::test_hidden - KeyError: ' welcome10 '\n1 failed, 10 passed in 0.04s\n"
+}

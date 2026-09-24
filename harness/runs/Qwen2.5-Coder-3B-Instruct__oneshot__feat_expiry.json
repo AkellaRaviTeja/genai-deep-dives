@@ -1,0 +1,28 @@
+{
+ "task": "feat_expiry",
+ "kind": "feature",
+ "rules": [
+  "errors"
+ ],
+ "variant": "oneshot",
+ "model": "Qwen/Qwen2.5-Coder-3B-Instruct",
+ "passed": false,
+ "seconds": 12.0,
+ "tests_touched": [
+  "test_discount.py"
+ ],
+ "grade_tail": "py:5: in <module>\n    \"WELCOME10\": (\"percent\", 10, date(2026, 12, 31)),\n                                 ^^^^\nE   NameError: name 'date' is not defined\n=========================== short test summary info ============================\nERROR tests/test_api.py - NameError: name 'date' is not defined\nERROR tests/test_discount.py - NameError: name 'date' is not defined\nERROR tests/test_hidden.py - NameError: name 'date' is not defined\nERROR tests/test_service.py - NameError: name 'date' is not defined\n!!!!!!!!!!!!!!!!!!! Interrupted: 4 errors during collection !!!!!!!!!!!!!!!!!!!!\n4 errors in 0.13s\n",
+ "turns": 1,
+ "tokens_in": 2354,
+ "tokens_out": 359,
+ "calls": {},
+ "parse_errors": 0,
+ "claimed_done": true,
+ "prompt_tokens_first": 2354,
+ "transcript": [
+  {
+   "role": "assistant",
+   "content": "### invoicing/discount.py\n```python\nfrom .errors import InvoiceError\n\n# code -> (kind, value, expiry). \"percent\" values are whole percent; \"flat\" values are paise.\nDISCOUNTS = {\n    \"WELCOME10\": (\"percent\", 10, date(2026, 12, 31)),\n    \"FLAT500\": (\"flat\", 50000, None),\n}\n\n\ndef apply_discount(subtotal, code, today=None):\n    \"\"\"Return the discount in paise for `code` on `subtotal` paise. No code means 0.\"\"\"\n    if not code:\n        return 0\n    key = code.strip().upper()\n    if key not in DISCOUNTS:\n        raise InvoiceError(\"UNKNOWN_DISCOUNT\", code)\n    kind, value, expiry = DISCOUNTS[key]\n    if expiry and today > expiry:\n        raise InvoiceError(\"EXPIRED\", code)\n    off = subtotal * value // 100 if kind == \"percent\" else value\n    return min(off, subtotal)\n```\n\n### tests/test_discount.py\n```python\nfrom datetime import date\nfrom invoicing.discount import apply_discount\n\ndef test_percent():\n    assert apply_discount(100000, \"WELCOME10\") == 10000\n\ndef test_flat():\n    assert apply_discount(100000, \"FLAT500\") == 50000\n\ndef test_expired():\n    with pytest.raises(InvoiceError):\n        apply_discount(100000, \"WELCOME10\", date(2027, 1, 1))\n```"
+  }
+ ]
+}

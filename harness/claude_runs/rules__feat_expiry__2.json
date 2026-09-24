@@ -1,0 +1,21 @@
+{
+ "task": "feat_expiry",
+ "kind": "feature",
+ "rules": [
+  "errors"
+ ],
+ "variant": "rules",
+ "rep": 2,
+ "passed": true,
+ "error": false,
+ "turns": 13,
+ "seconds": 30.9,
+ "cost_usd": 0.05358690000000001,
+ "input_tokens": 180219,
+ "output_tokens": 3027,
+ "tests_touched": [],
+ "claimed_pass": true,
+ "denials": 1,
+ "result": "Perfect! I've successfully added expiry support to discount codes. Here's what I implemented:\n\n## Changes Made to `/tmp/h-feat_expiry-zkp_nkli/invoicing/discount.py`:\n\n1. **Added datetime import** for date handling\n2. **Created `EXPIRY` dictionary** mapping discount codes to their last valid dates (inclusive)\n3. **Set WELCOME10 expiry** to 2026-12-31\n4. **Updated `apply_discount()` function**:\n   - Added optional `today` parameter (defaults to `date.today()`)\n   - Added expiry check that raises `InvoiceError(\"EXPIRED\", code)` if a code is past its expiry date\n   - Maintains backward compatibility since `today` is optional\n\nThe implementation:\n- Follows the existing code style and error handling patterns\n- Only raises EXPIRED for codes that are past their expiry date (codes expire the day after the last valid date)\n- Maintains backward compatibility — existing calls to `apply_discount()` without the `today` parameter work unchanged\n- Follows the rule that expired codes raise `InvoiceError` with code \"EXPIRED\"\n\n**All tests pass** ✅",
+ "grade_tail": "...........                                                              [100%]\n11 passed in 0.03s\n"
+}

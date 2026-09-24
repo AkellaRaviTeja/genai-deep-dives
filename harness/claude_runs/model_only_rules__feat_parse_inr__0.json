@@ -1,0 +1,22 @@
+{
+ "task": "feat_parse_inr",
+ "kind": "feature",
+ "rules": [
+  "errors"
+ ],
+ "variant": "model_only_rules",
+ "rep": 0,
+ "passed": true,
+ "error": false,
+ "turns": 1,
+ "seconds": 42.0,
+ "cost_usd": 0.042346999999999996,
+ "input_tokens": 9541,
+ "output_tokens": 4655,
+ "tests_touched": [],
+ "claimed_pass": false,
+ "denials": 0,
+ "result": "I'll add the `parse_inr` function to `invoicing/money.py`. This function will be the inverse of `format_inr`, parsing formatted strings like \"₹1,23,456.78\" back into paise integers.\n\n### invoicing/money.py\n```python\nfrom .errors import InvoiceError\n\n\ndef to_paise(text):\n    \"\"\"Parse a rupee amount such as \"1,234.50\" or \"-20\" into integer paise.\"\"\"\n    s = text.strip().replace(\",\", \"\")\n    neg = s.startswith(\"-\")\n    if neg:\n        s = s[1:]\n    whole, _, frac = s.partition(\".\")\n    if not whole.isdigit() or (frac and not frac.isdigit()) or len(frac) > 2:\n        raise InvoiceError(\"BAD_AMOUNT\", text)\n    paise = int(whole) * 100 + int(frac.ljust(2, \"0\") or 0)\n    return -paise if neg else paise\n\n\ndef parse_inr(text):\n    \"\"\"Parse a formatted rupee amount such as \"₹1,23,456.78\" into integer paise. Requires rupee sign.\"\"\"\n    s = text.strip()\n    \n    neg = s.startswith(\"-\")\n    if neg:\n        s = s[1:]\n    \n    if not s.startswith(\"₹\"):\n        raise InvoiceError(\"BAD_AMOUNT\", text)\n    s = s[1:]  # Remove rupee sign\n    \n    s = s.replace(\",\", \"\")  # Remove Indian grouping commas\n    \n    whole, _, frac = s.partition(\".\")\n    if not whole.isdigit() or (frac and not frac.isdigit()) or len(frac) > 2:\n        raise InvoiceError(\"BAD_AMOUNT\", text)\n    \n    paise = int(whole) * 100 + int(frac.ljust(2, \"0\") or 0)\n    return -paise if neg else paise\n\n\ndef format_inr(paise):\n    \"\"\"Format paise as rupees with Indian digit grouping: 12345678 -> \"₹1,23,456.78\".\"\"\"\n    neg = paise < 0\n    rupees, p = divmod(abs(paise), 100)\n    digits = str(rupees)\n    head, tail = digits[:-3], digits[-3:]\n    groups = []\n    while len(head) > 2:\n        groups.insert(0, head[-2:])\n        head = head[:-2]\n    if head:\n        groups.insert(0, head)\n    body = \",\".join(groups + [tail]) if groups else tail\n    return f\"{'-' if neg else ''}₹{body}.{p:02d}\"\n```\n\nThe `parse_inr` function:\n- Requires the rupee sign (₹), raising `BAD_AMOUNT` if missing\n- Handles negative amounts (e.g., \"-₹1,23,456.78\")\n- Removes Indian grouping commas before parsing\n- Validates the number format (whole digits, max 2 decimal places)\n- Returns paise as an integer, correctly inverting `format_inr`",
+ "visible_passed": true,
+ "grade_tail": "...........                                                              [100%]\n11 passed in 0.02s\n"
+}

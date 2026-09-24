@@ -1,0 +1,24 @@
+{
+ "task": "impl_get_handler",
+ "kind": "implement",
+ "rules": [
+  "layering",
+  "iso",
+  "errors"
+ ],
+ "variant": "model_only_big",
+ "rep": 0,
+ "passed": true,
+ "error": false,
+ "turns": 1,
+ "seconds": 21.6,
+ "cost_usd": 0.152231,
+ "input_tokens": 70783,
+ "output_tokens": 2135,
+ "tests_touched": [],
+ "claimed_pass": false,
+ "denials": 0,
+ "result": "Looking at the task and test, I need to implement `get_invoice_handler` to:\n1. Get the invoice via `service.get()` (which checks permissions and throws on NOT_FOUND/FORBIDDEN)\n2. Calculate the total via `service.total()`\n3. Return the status and formatted response body\n\nThe test expects at least `created` (as string), `total` (in paise), and based on the task description, also `id`, `customer`, and a `display_total`.\n\n### invoicing/api.py\n```python\nfrom .errors import InvoiceError\nfrom .money import format_inr\n\n\ndef _status(err):\n    return {\"NOT_FOUND\": 404, \"FORBIDDEN\": 403}.get(err.code, 400)\n\n\ndef get_invoice_handler(service, invoice_id, user):\n    \"\"\"GET /invoices/{id}: returns (status, body).\"\"\"\n    try:\n        inv = service.get(invoice_id, user)\n        total = service.total(invoice_id, user)\n        return 200, {\n            \"id\": inv.id,\n            \"customer\": inv.customer,\n            \"created\": str(inv.created),\n            \"total\": total,\n            \"display_total\": format_inr(total),\n        }\n    except InvoiceError as err:\n        return _status(err), {\"error\": err.code}\n```",
+ "visible_passed": true,
+ "grade_tail": "...........                                                              [100%]\n11 passed in 0.02s\n"
+}

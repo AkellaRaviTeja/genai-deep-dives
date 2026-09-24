@@ -1,0 +1,21 @@
+{
+ "task": "impl_list_by_customer",
+ "kind": "implement",
+ "rules": [
+  "order"
+ ],
+ "variant": "model_only",
+ "rep": 0,
+ "passed": false,
+ "error": false,
+ "turns": 1,
+ "seconds": 8.9,
+ "cost_usd": 0.022631,
+ "input_tokens": 9153,
+ "output_tokens": 867,
+ "tests_touched": [],
+ "claimed_pass": false,
+ "denials": 0,
+ "result": "Looking at the `InvoiceStore` class, I need to implement `list_by_customer` to filter invoices from `self._rows` by the `customer` field.\n\nThe `Invoice` dataclass has a `customer` attribute, so I'll iterate through the stored invoices and return those matching the given customer.\n\n### invoicing/store.py\n```python\nfrom .errors import InvoiceError\n\n\nclass InvoiceStore:\n    \"\"\"The storage layer. Only InvoiceService may use it.\"\"\"\n\n    def __init__(self):\n        self._rows = {}\n\n    def put(self, invoice):\n        self._rows[invoice.id] = invoice\n\n    def get(self, invoice_id):\n        if invoice_id not in self._rows:\n            raise InvoiceError(\"NOT_FOUND\", invoice_id)\n        return self._rows[invoice_id]\n\n    def list_by_customer(self, customer):\n        return [inv for inv in self._rows.values() if inv.customer == customer]\n```",
+ "grade_tail": "[0] == \"A\" else \"ravi\", [], d))\n>       assert [r.id for r in s.list_by_customer(\"asha\")] == [\"A3\", \"A2\", \"A1\"]\nE       AssertionError: assert ['A1', 'A3', 'A2'] == ['A3', 'A2', 'A1']\nE         \nE         At index 0 diff: 'A1' != 'A3'\nE         Use -v to get more diff\n\ntests/test_hidden.py:9: AssertionError\n=========================== short test summary info ============================\nFAILED tests/test_hidden.py::test_hidden - AssertionError: assert ['A1', 'A3'...\n1 failed, 10 passed in 0.04s\n"
+}

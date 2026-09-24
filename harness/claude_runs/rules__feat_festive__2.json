@@ -1,0 +1,21 @@
+{
+ "task": "feat_festive",
+ "kind": "feature",
+ "rules": [
+  "case"
+ ],
+ "variant": "rules",
+ "rep": 2,
+ "passed": true,
+ "error": false,
+ "turns": 6,
+ "seconds": 15.0,
+ "cost_usd": 0.026793699999999997,
+ "input_tokens": 72838,
+ "output_tokens": 1079,
+ "tests_touched": [],
+ "claimed_pass": true,
+ "denials": 0,
+ "result": "Perfect! All tests pass. The FESTIVE15 discount code (15% off) has been successfully added to the invoicing system. \n\nThe new discount code:\n- Is case-insensitive (handled by the `strip().upper()` call in the `apply_discount` function)\n- Applies 15% off to any invoice subtotal\n- Follows the same pattern as the existing WELCOME10 discount\n- Is capped at the subtotal (won't make the total negative)",
+ "grade_tail": "...........                                                              [100%]\n11 passed in 0.03s\n"
+}

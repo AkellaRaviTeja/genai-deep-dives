@@ -1,0 +1,23 @@
+{
+ "task": "feat_create_handler",
+ "kind": "feature",
+ "rules": [
+  "layering",
+  "iso",
+  "errors"
+ ],
+ "variant": "rules",
+ "rep": 1,
+ "passed": true,
+ "error": false,
+ "turns": 19,
+ "seconds": 55.5,
+ "cost_usd": 0.08215140000000001,
+ "input_tokens": 333184,
+ "output_tokens": 4523,
+ "tests_touched": [],
+ "claimed_pass": true,
+ "denials": 2,
+ "result": "Perfect! The implementation is complete and all tests pass. Here's a summary of what I added:\n\n## Implementation Summary\n\nI added the `create_invoice_handler(service, user, body)` function to `/tmp/h-feat_create_handler-d19ch34l/invoicing/api.py`:\n\n**Key features:**\n- Accepts a service, user (customer), and request body containing \"id\" and \"items\"\n- Creates `LineItem` objects from each item in the body (sku, qty, unit_paise)\n- Creates an `Invoice` with the provided id, customer (user), and items\n- Calls `service.create(invoice)` to persist it\n- Returns **(201, {\"id\": invoice_id, \"created\": ISO8601_date})** on success\n- Returns **(400, {\"error\": code})** if an item is invalid (e.g., BAD_QTY for qty ≤ 0)\n- Uses the existing `_status()` function to map error codes to appropriate HTTP status codes\n\nThe implementation follows the existing patterns in the codebase:\n- Leverages the service layer for all business logic and permission checks\n- Catches `InvoiceError` exceptions and returns appropriate error responses\n- Returns ISO 8601 formatted dates in responses\n\n**All tests pass.** ✓",
+ "grade_tail": "...........                                                              [100%]\n11 passed in 0.02s\n"
+}

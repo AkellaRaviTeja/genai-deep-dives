@@ -1,0 +1,21 @@
+{
+ "task": "bug_layering",
+ "kind": "bugfix",
+ "rules": [
+  "layering"
+ ],
+ "variant": "model_only",
+ "rep": 2,
+ "passed": true,
+ "error": false,
+ "turns": 1,
+ "seconds": 29.8,
+ "cost_usd": 0.032917,
+ "input_tokens": 9181,
+ "output_tokens": 2913,
+ "tests_touched": [],
+ "claimed_pass": false,
+ "denials": 0,
+ "result": "ty issue. In `invoicing/api.py`, the handler calls `service.store.get(invoice_id)` directly without checking ownership, bypassing the permission check in the service layer. Although `service.total()` does check permissions, the invoice data is accessed before that check.\n\nThe fix is to use `service.get(invoice_id, user)` instead, which enforces ownership verification first.\n\n### invoicing/api.py\n```python\nfrom .errors import InvoiceError\nfrom .money import format_inr\n\n\ndef _status(err):\n    return {\"NOT_FOUND\": 404, \"FORBIDDEN\": 403}.get(err.code, 400)\n\n\ndef get_invoice_handler(service, invoice_id, user):\n    \"\"\"GET /invoices/{id}: returns (status, body).\"\"\"\n    try:\n        inv = service.get(invoice_id, user)\n        total = service.total(invoice_id, user)\n    except InvoiceError as e:\n        return _status(e), {\"error\": e.code}\n    return 200, {\n        \"id\": inv.id,\n        \"customer\": inv.customer,\n        \"created\": inv.created.isoformat(),\n        \"total\": total,\n        \"total_display\": format_inr(total),\n    }\n```\n\nThe key change: `service.get(invoice_id, user)` now checks ownership via `_owned()` before the invoice is accessed, ensuring the permission check happens first.",
+ "grade_tail": "...........                                                              [100%]\n11 passed in 0.02s\n"
+}

@@ -1,0 +1,23 @@
+{
+ "task": "impl_apply_discount",
+ "kind": "implement",
+ "rules": [
+  "case",
+  "cap",
+  "errors"
+ ],
+ "variant": "rules",
+ "rep": 1,
+ "passed": true,
+ "error": false,
+ "turns": 19,
+ "seconds": 70.1,
+ "cost_usd": 0.09155900000000002,
+ "input_tokens": 340282,
+ "output_tokens": 5650,
+ "tests_touched": [],
+ "claimed_pass": true,
+ "denials": 0,
+ "result": "Perfect! All tests pass. The implementation of `apply_discount` is complete and working correctly.\n\n**Summary:** The function now:\n- Returns 0 when no code is provided (None or falsy)\n- Normalizes discount codes (case-insensitive, trimmed)\n- Calculates percentage discounts (10% for WELCOME10 code)\n- Handles flat discounts (50000 paise for FLAT500 code)\n- Caps discounts at the subtotal to prevent negative amounts\n- Raises `InvoiceError` for invalid codes (following the error handling pattern)\n\nAll 10 tests pass, including the service and API integration tests that verify the discount logic works correctly in the broader invoicing system.",
+ "grade_tail": "...........                                                              [100%]\n11 passed in 0.03s\n"
+}

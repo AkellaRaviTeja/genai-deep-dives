@@ -1,0 +1,21 @@
+{
+ "task": "impl_gst",
+ "kind": "implement",
+ "rules": [
+  "rounding"
+ ],
+ "variant": "tests",
+ "rep": 0,
+ "passed": true,
+ "error": false,
+ "turns": 7,
+ "seconds": 20.1,
+ "cost_usd": 0.031631099999999995,
+ "input_tokens": 100870,
+ "output_tokens": 1429,
+ "tests_touched": [],
+ "claimed_pass": true,
+ "denials": 0,
+ "result": "All tests pass! ✅\n\nThe `gst` function is now implemented to calculate GST on an amount in paise at a given rate in basis points. It uses the formula:\n- `GST = (amount_paise × rate_bp) / 10000`\n\nThe implementation uses the provided `round_half_even` function to apply banker's rounding for proper decimal handling.",
+ "grade_tail": "...........                                                              [100%]\n11 passed in 0.03s\n"
+}

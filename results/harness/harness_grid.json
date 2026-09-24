@@ -1,0 +1,1168 @@
+{
+ "meta": {
+  "tasks": 24,
+  "max_turns": 16,
+  "decoding": "greedy",
+  "run_at": "2026-09-24T22:50:01",
+  "gpu": "NVIDIA GeForce RTX 5050 Laptop GPU"
+ },
+ "cells": [
+  {
+   "model": "Qwen/Qwen2.5-Coder-3B-Instruct",
+   "variant": "hook",
+   "n": 24,
+   "passed": 1,
+   "tokens_in": 1147103,
+   "tokens_out": 55942,
+   "turns": 356,
+   "seconds": 2376.9,
+   "claimed_but_failed": 2,
+   "tests_edited": 6,
+   "parse_errors": 177,
+   "bloat_calls": 0,
+   "rules_n": 15,
+   "rules_passed": 0
+  },
+  {
+   "model": "Qwen/Qwen2.5-Coder-3B-Instruct",
+   "variant": "oneshot",
+   "n": 24,
+   "passed": 6,
+   "tokens_in": 55236,
+   "tokens_out": 7139,
+   "turns": 24,
+   "seconds": 242.20000000000002,
+   "claimed_but_failed": 18,
+   "tests_edited": 7,
+   "parse_errors": 0,
+   "bloat_calls": 0,
+   "rules_n": 15,
+   "rules_passed": 2
+  }
+ ],
+ "runs": [
+  {
+   "task": "bug_flat_discount",
+   "kind": "bugfix",
+   "rules": [],
+   "variant": "hook",
+   "model": "Qwen/Qwen2.5-Coder-3B-Instruct",
+   "passed": false,
+   "seconds": 16.7,
+   "tests_touched": [],
+   "grade_tail": "7: AssertionError\n_________________________________ test_hidden __________________________________\n\n    def test_hidden():\n>       assert apply_discount(200000, \"FLAT500\") == 50000\nE       AssertionError: assert 200000 == 50000\nE        +  where 200000 = apply_discount(200000, 'FLAT500')\n\ntests/test_hidden.py:4: AssertionError\n=========================== short test summary info ============================\nFAILED tests/test_discount.py::test_flat - AssertionError: assert 100000 == 5...\nFAILED tests/test_hidden.py::test_hidden - AssertionError: assert 200000 == 5...\n2 failed, 9 passed in 0.04s\n",
+   "turns": 16,
+   "tokens_in": 23843,
+   "tokens_out": 237,
+   "calls": {
+    "read_file": 4,
+    "list_files": 5
+   },
+   "parse_errors": 7,
+   "claimed_done": false,
+   "hook_runs": 0,
+   "prompt_tokens_first": 904,
+   "bloat_calls": 0,
+   "last_tests": null
+  },
+  {
+   "task": "bug_grouping",
+   "kind": "bugfix",
+   "rules": [],
+   "variant": "hook",
+   "model": "Qwen/Qwen2.5-Coder-3B-Instruct",
+   "passed": false,
+   "seconds": 31.9,
+   "tests_touched": [],
+   "grade_tail": "__________________ test_format_inr ________________________________\n\n    def test_format_inr():\n>       assert format_inr(12345678) == \"₹1,23,456.78\"\nE       AssertionError: assert '₹123,456.78' == '₹1,23,456.78'\nE         \nE         - ₹1,23,456.78\nE         ?   -\nE         + ₹123,456.78\n\ntests/test_money.py:14: AssertionError\n=========================== short test summary info ============================\nFAILED tests/test_hidden.py::test_hidden - AssertionError: assert '₹123,456.7...\nFAILED tests/test_money.py::test_format_inr - AssertionError: assert '₹123,45...\n2 failed, 9 passed in 0.04s\n",
+   "turns": 16,
+   "tokens_in": 25422,
+   "tokens_out": 817,
+   "calls": {
+    "replace": 4,
+    "read_file": 3
+   },
+   "parse_errors": 9,
+   "claimed_done": false,
+   "hook_runs": 0,
+   "prompt_tokens_first": 937,
+   "bloat_calls": 0,
+   "last_tests": null
+  },
+  {
+   "task": "bug_gst_float",
+   "kind": "bugfix",
+   "rules": [
+    "rounding",
+    "float"
+   ],
+   "variant": "hook",
+   "model": "Qwen/Qwen2.5-Coder-3B-Instruct",
+   "passed": false,
+   "seconds": 134.6,
+   "tests_touched": [],
+   "grade_tail": "...F.......                                                              [100%]\n=================================== FAILURES ===================================\n_________________________________ test_hidden __________________________________\n\n    def test_hidden():\n>       assert gst(25, 1800) == 4\nE       assert 5 == 4\nE        +  where 5 = gst(25, 1800)\n\ntests/test_hidden.py:4: AssertionError\n=========================== short test summary info ============================\nFAILED tests/test_hidden.py::test_hidden - assert 5 == 4\n1 failed, 10 passed in 0.03s\n",
+   "turns": 16,
+   "tokens_in": 59872,
+   "tokens_out": 3984,
+   "calls": {
+    "read_file": 5,
+    "replace": 4
+   },
+   "parse_errors": 7,
+   "claimed_done": false,
+   "hook_runs": 0,
+   "prompt_tokens_first": 904,
+   "bloat_calls": 0,
+   "last_tests": null
+  },
+  {
+   "task": "bug_layering",
+   "kind": "bugfix",
+   "rules": [
+    "layering"
+   ],
+   "variant": "hook",
+   "model": "Qwen/Qwen2.5-Coder-3B-Instruct",
+   "passed": false,
+   "seconds": 18.3,
+   "tests_touched": [],
+   "grade_tail": "\\n'\nE         \nE         '.store' is contained here:\nE           = service.store.get(invoice_id)\nE         ?         ++++++\nE                   total = service.total(invoice_id, user)\nE               except InvoiceError as e:\nE                   return _status(e), {\"error\": e.code}...\nE         \nE         ...Full output truncated (7 lines hidden), use '-vv' to show\n\ntests/test_hidden.py:13: AssertionError\n=========================== short test summary info ============================\nFAILED tests/test_hidden.py::test_hidden - assert '.store' not in 'from .erro...\n1 failed, 10 passed in 0.03s\n",
+   "turns": 8,
+   "tokens_in": 10141,
+   "tokens_out": 552,
+   "calls": {
+    "read_file": 1,
+    "list_files": 1,
+    "replace": 2,
+    "write_file": 1,
+    "done": 1
+   },
+   "parse_errors": 2,
+   "claimed_done": true,
+   "hook_runs": 1,
+   "prompt_tokens_first": 904,
+   "bloat_calls": 0,
+   "last_tests": true
+  },
+  {
+   "task": "bug_negative",
+   "kind": "bugfix",
+   "rules": [],
+   "variant": "hook",
+   "model": "Qwen/Qwen2.5-Coder-3B-Instruct",
+   "passed": false,
+   "seconds": 74.4,
+   "tests_touched": [],
+   "grade_tail": "                                             [100%]\n=================================== FAILURES ===================================\n_________________________________ test_hidden __________________________________\n\n    def test_hidden():\n>       assert to_paise(\"-20.50\") == -2050\nE       AssertionError: assert 2050 == -2050\nE        +  where 2050 = to_paise('-20.50')\n\ntests/test_hidden.py:4: AssertionError\n=========================== short test summary info ============================\nFAILED tests/test_hidden.py::test_hidden - AssertionError: assert 2050 == -2050\n1 failed, 10 passed in 0.03s\n",
+   "turns": 16,
+   "tokens_in": 31875,
+   "tokens_out": 2381,
+   "calls": {
+    "replace": 3,
+    "read_file": 3
+   },
+   "parse_errors": 10,
+   "claimed_done": false,
+   "hook_runs": 0,
+   "prompt_tokens_first": 909,
+   "bloat_calls": 0,
+   "last_tests": null
+  },
+  {
+   "task": "bug_not_found",
+   "kind": "bugfix",
+   "rules": [
+    "errors"
+   ],
+   "variant": "hook",
+   "model": "Qwen/Qwen2.5-Coder-3B-Instruct",
+   "passed": false,
+   "seconds": 13.5,
+   "tests_touched": [],
+   "grade_tail": "pytest.raises(InvoiceError) as e:\n>           InvoiceStore().get(\"nope\")\n\ntests/test_hidden.py:7: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = <invoicing.store.InvoiceStore object at 0x71cd092b6750>\ninvoice_id = 'nope'\n\n    def get(self, invoice_id):\n>       return self._rows[invoice_id]\n               ^^^^^^^^^^^^^^^^^^^^^^\nE       KeyError: 'nope'\n\ninvoicing/store.py:14: KeyError\n=========================== short test summary info ============================\nFAILED tests/test_hidden.py::test_hidden - KeyError: 'nope'\n1 failed, 10 passed in 0.03s\n",
+   "turns": 7,
+   "tokens_in": 8445,
+   "tokens_out": 380,
+   "calls": {
+    "read_file": 1,
+    "list_files": 1,
+    "replace": 1,
+    "write_file": 1,
+    "done": 1
+   },
+   "parse_errors": 2,
+   "claimed_done": true,
+   "hook_runs": 1,
+   "prompt_tokens_first": 907,
+   "bloat_calls": 0,
+   "last_tests": true
+  },
+  {
+   "task": "bug_subtotal",
+   "kind": "bugfix",
+   "rules": [],
+   "variant": "hook",
+   "model": "Qwen/Qwen2.5-Coder-3B-Instruct",
+   "passed": false,
+   "seconds": 250.8,
+   "tests_touched": [],
+   "grade_tail": "oiceService object at 0x741396afeae0>.total\nE        +      where <invoicing.service.InvoiceService object at 0x741396afeae0> = svc()\n\ntests/test_service.py:14: AssertionError\n=========================== short test summary info ============================\nFAILED tests/test_api.py::test_get - AssertionError: assert (200 == 200 and '...\nFAILED tests/test_hidden.py::test_hidden - AssertionError: assert 0 == 100\nFAILED tests/test_invoice.py::test_subtotal - AssertionError: assert 3000 == ...\nFAILED tests/test_service.py::test_total - AssertionError: assert 0 == 106200\n4 failed, 7 passed in 0.04s\n",
+   "turns": 16,
+   "tokens_in": 75012,
+   "tokens_out": 7954,
+   "calls": {
+    "read_file": 3,
+    "run_tests": 6
+   },
+   "parse_errors": 7,
+   "claimed_done": false,
+   "hook_runs": 0,
+   "prompt_tokens_first": 903,
+   "bloat_calls": 0,
+   "last_tests": false
+  },
+  {
+   "task": "bug_tax_order",
+   "kind": "bugfix",
+   "rules": [],
+   "variant": "hook",
+   "model": "Qwen/Qwen2.5-Coder-3B-Instruct",
+   "passed": false,
+   "seconds": 47.6,
+   "tests_touched": [],
+   "grade_tail": "        s = InvoiceService(InvoiceStore())\n        s.create(Invoice(\"A\", \"asha\", [LineItem(\"x\", 1, 100000)], date(2026, 1, 1), \"FLAT500\"))\n>       assert s.total(\"A\", \"asha\") == 59000\nE       AssertionError: assert 68000 == 59000\nE        +  where 68000 = total('A', 'asha')\nE        +    where total = <invoicing.service.InvoiceService object at 0x72db55cba5a0>.total\n\ntests/test_hidden.py:9: AssertionError\n=========================== short test summary info ============================\nFAILED tests/test_hidden.py::test_hidden - AssertionError: assert 68000 == 59000\n1 failed, 10 passed in 0.03s\n",
+   "turns": 16,
+   "tokens_in": 30773,
+   "tokens_out": 1260,
+   "calls": {
+    "read_file": 5,
+    "list_files": 2,
+    "write_file": 1,
+    "run_tests": 1
+   },
+   "parse_errors": 7,
+   "claimed_done": false,
+   "hook_runs": 1,
+   "prompt_tokens_first": 912,
+   "bloat_calls": 0,
+   "last_tests": true
+  },
+  {
+   "task": "feat_create_handler",
+   "kind": "feature",
+   "rules": [
+    "layering",
+    "iso",
+    "errors"
+   ],
+   "variant": "hook",
+   "model": "Qwen/Qwen2.5-Coder-3B-Instruct",
+   "passed": false,
+   "seconds": 448.0,
+   "tests_touched": [
+    "test_api.py"
+   ],
+   "grade_tail": "86_64-gnu/lib/python3.12/importlib/__init__.py:90: in import_module\n    return _bootstrap._gcd_import(name[level:], package, level)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\ntests/test_api.py:2: in <module>\n    from invoicing.api import get_invoice_handler\nE   ImportError: cannot import name 'get_invoice_handler' from 'invoicing.api' (/tmp/grade-58yxs9_p/invoicing/api.py)\n=========================== short test summary info ============================\nERROR tests/test_api.py\n!!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!\n1 error in 0.10s\n",
+   "turns": 16,
+   "tokens_in": 94976,
+   "tokens_out": 12315,
+   "calls": {
+    "write_file": 5
+   },
+   "parse_errors": 11,
+   "claimed_done": false,
+   "hook_runs": 5,
+   "prompt_tokens_first": 963,
+   "bloat_calls": 0,
+   "last_tests": false
+  },
+  {
+   "task": "feat_expiry",
+   "kind": "feature",
+   "rules": [
+    "errors"
+   ],
+   "variant": "hook",
+   "model": "Qwen/Qwen2.5-Coder-3B-Instruct",
+   "passed": false,
+   "seconds": 89.0,
+   "tests_touched": [],
+   "grade_tail": "===================================\n_________________________________ test_hidden __________________________________\n\n    def test_hidden():\n>       assert apply_discount(100000, \"WELCOME10\", date(2026, 12, 31)) == 10000\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       TypeError: apply_discount() takes 2 positional arguments but 3 were given\n\ntests/test_hidden.py:7: TypeError\n=========================== short test summary info ============================\nFAILED tests/test_hidden.py::test_hidden - TypeError: apply_discount() takes ...\n1 failed, 10 passed in 0.04s\n",
+   "turns": 16,
+   "tokens_in": 34831,
+   "tokens_out": 1563,
+   "calls": {
+    "replace": 6
+   },
+   "parse_errors": 10,
+   "claimed_done": false,
+   "hook_runs": 0,
+   "prompt_tokens_first": 952,
+   "bloat_calls": 0,
+   "last_tests": null
+  },
+  {
+   "task": "feat_festive",
+   "kind": "feature",
+   "rules": [
+    "case"
+   ],
+   "variant": "hook",
+   "model": "Qwen/Qwen2.5-Coder-3B-Instruct",
+   "passed": false,
+   "seconds": 69.4,
+   "tests_touched": [],
+   "grade_tail": "   def apply_discount(subtotal, code):\n        \"\"\"Return the discount in paise for `code` on `subtotal` paise. No code means 0.\"\"\"\n        if not code:\n            return 0\n        key = code.strip().upper()\n        if key not in DISCOUNTS:\n>           raise InvoiceError(\"UNKNOWN_DISCOUNT\", code)\nE           invoicing.errors.InvoiceError: UNKNOWN_DISCOUNT: FESTIVE15\n\ninvoicing/discount.py:16: InvoiceError\n=========================== short test summary info ============================\nFAILED tests/test_hidden.py::test_hidden - invoicing.errors.InvoiceError: UNK...\n1 failed, 10 passed in 0.04s\n",
+   "turns": 16,
+   "tokens_in": 40221,
+   "tokens_out": 2008,
+   "calls": {
+    "replace": 1
+   },
+   "parse_errors": 15,
+   "claimed_done": false,
+   "hook_runs": 0,
+   "prompt_tokens_first": 899,
+   "bloat_calls": 0,
+   "last_tests": null
+  },
+  {
+   "task": "feat_gst_split",
+   "kind": "feature",
+   "rules": [
+    "split",
+    "rounding"
+   ],
+   "variant": "hook",
+   "model": "Qwen/Qwen2.5-Coder-3B-Instruct",
+   "passed": false,
+   "seconds": 76.4,
+   "tests_touched": [
+    "test_api.py",
+    "test_service.py",
+    "test_tax.py"
+   ],
+   "grade_tail": "0: in import_module\n    return _bootstrap._gcd_import(name[level:], package, level)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\ntests/test_tax.py:1: in <module>\n    from invoicing.tax import gst\nE   ImportError: cannot import name 'gst' from 'invoicing.tax' (/tmp/grade-f9ac_h7g/invoicing/tax.py)\n=========================== short test summary info ============================\nERROR tests/test_api.py\nERROR tests/test_hidden.py\nERROR tests/test_service.py\nERROR tests/test_tax.py\n!!!!!!!!!!!!!!!!!!! Interrupted: 4 errors during collection !!!!!!!!!!!!!!!!!!!!\n4 errors in 0.11s\n",
+   "turns": 16,
+   "tokens_in": 78158,
+   "tokens_out": 966,
+   "calls": {
+    "write_file": 1,
+    "replace": 10
+   },
+   "parse_errors": 5,
+   "claimed_done": false,
+   "hook_runs": 11,
+   "prompt_tokens_first": 922,
+   "bloat_calls": 0,
+   "last_tests": false
+  },
+  {
+   "task": "feat_line_count",
+   "kind": "feature",
+   "rules": [],
+   "variant": "hook",
+   "model": "Qwen/Qwen2.5-Coder-3B-Instruct",
+   "passed": true,
+   "seconds": 15.8,
+   "tests_touched": [],
+   "grade_tail": "...........                                                              [100%]\n11 passed in 0.03s\n",
+   "turns": 5,
+   "tokens_in": 10045,
+   "tokens_out": 393,
+   "calls": {
+    "read_file": 1,
+    "write_file": 1,
+    "replace": 2,
+    "done": 1
+   },
+   "parse_errors": 0,
+   "claimed_done": true,
+   "hook_runs": 3,
+   "prompt_tokens_first": 894,
+   "bloat_calls": 0,
+   "last_tests": true
+  },
+  {
+   "task": "feat_list_handler",
+   "kind": "feature",
+   "rules": [
+    "layering",
+    "iso",
+    "order"
+   ],
+   "variant": "hook",
+   "model": "Qwen/Qwen2.5-Coder-3B-Instruct",
+   "passed": false,
+   "seconds": 59.6,
+   "tests_touched": [
+    "conftest.py",
+    "test_api.py"
+   ],
+   "grade_tail": "86_64-gnu/lib/python3.12/importlib/__init__.py:90: in import_module\n    return _bootstrap._gcd_import(name[level:], package, level)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\ntests/test_api.py:2: in <module>\n    from invoicing.api import get_invoice_handler\nE   ImportError: cannot import name 'get_invoice_handler' from 'invoicing.api' (/tmp/grade-sqqlr1v5/invoicing/api.py)\n=========================== short test summary info ============================\nERROR tests/test_api.py\n!!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!\n1 error in 0.09s\n",
+   "turns": 16,
+   "tokens_in": 45352,
+   "tokens_out": 855,
+   "calls": {
+    "write_file": 10
+   },
+   "parse_errors": 6,
+   "claimed_done": false,
+   "hook_runs": 10,
+   "prompt_tokens_first": 928,
+   "bloat_calls": 0,
+   "last_tests": false
+  },
+  {
+   "task": "feat_parse_inr",
+   "kind": "feature",
+   "rules": [
+    "errors"
+   ],
+   "variant": "hook",
+   "model": "Qwen/Qwen2.5-Coder-3B-Instruct",
+   "passed": false,
+   "seconds": 123.7,
+   "tests_touched": [],
+   "grade_tail": "n import_module\n    return _bootstrap._gcd_import(name[level:], package, level)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\ntests/test_money.py:2: in <module>\n    from invoicing.money import to_paise, format_inr\nE   ImportError: cannot import name 'to_paise' from 'invoicing.money' (/tmp/grade-zp0chj_a/invoicing/money.py)\n=========================== short test summary info ============================\nERROR tests/test_api.py\nERROR tests/test_hidden.py\nERROR tests/test_money.py\n!!!!!!!!!!!!!!!!!!! Interrupted: 3 errors during collection !!!!!!!!!!!!!!!!!!!!\n3 errors in 0.15s\n",
+   "turns": 16,
+   "tokens_in": 34859,
+   "tokens_out": 2517,
+   "calls": {
+    "write_file": 1,
+    "replace": 4
+   },
+   "parse_errors": 11,
+   "claimed_done": false,
+   "hook_runs": 1,
+   "prompt_tokens_first": 939,
+   "bloat_calls": 0,
+   "last_tests": false
+  },
+  {
+   "task": "feat_void",
+   "kind": "feature",
+   "rules": [
+    "errors"
+   ],
+   "variant": "hook",
+   "model": "Qwen/Qwen2.5-Coder-3B-Instruct",
+   "passed": false,
+   "seconds": 119.6,
+   "tests_touched": [
+    "test_api.py"
+   ],
+   "grade_tail": "hidden():\n        s = InvoiceService(InvoiceStore())\n        s.create(Invoice(\"A\", \"asha\", [], date(2026, 1, 1)))\n        with pytest.raises(InvoiceError) as e:\n>           s.void(\"A\", \"ravi\")\n            ^^^^^^\nE           AttributeError: 'InvoiceService' object has no attribute 'void'\n\ntests/test_hidden.py:12: AttributeError\n=========================== short test summary info ============================\nFAILED tests/test_api.py::test_get - TypeError: get_invoice_handler() takes 0...\nFAILED tests/test_hidden.py::test_hidden - AttributeError: 'InvoiceService' o...\n2 failed, 9 passed in 0.05s\n",
+   "turns": 16,
+   "tokens_in": 71051,
+   "tokens_out": 2804,
+   "calls": {
+    "write_file": 6
+   },
+   "parse_errors": 10,
+   "claimed_done": false,
+   "hook_runs": 6,
+   "prompt_tokens_first": 919,
+   "bloat_calls": 0,
+   "last_tests": false
+  },
+  {
+   "task": "impl_apply_discount",
+   "kind": "implement",
+   "rules": [
+    "case",
+    "cap",
+    "errors"
+   ],
+   "variant": "hook",
+   "model": "Qwen/Qwen2.5-Coder-3B-Instruct",
+   "passed": false,
+   "seconds": 60.6,
+   "tests_touched": [],
+   "grade_tail": "o, module.__dict__)\ntests/test_service.py:4: in <module>\n    from invoicing.service import InvoiceService\ninvoicing/service.py:1: in <module>\n    from .discount import apply_discount\nE     File \"/tmp/grade-irci9z49/invoicing/discount.py\", line 1\nE       <tool_response>\nE       ^\nE   SyntaxError: invalid syntax\n=========================== short test summary info ============================\nERROR tests/test_api.py\nERROR tests/test_discount.py\nERROR tests/test_hidden.py\nERROR tests/test_service.py\n!!!!!!!!!!!!!!!!!!! Interrupted: 4 errors during collection !!!!!!!!!!!!!!!!!!!!\n4 errors in 0.27s\n",
+   "turns": 16,
+   "tokens_in": 62781,
+   "tokens_out": 871,
+   "calls": {
+    "read_file": 1,
+    "write_file": 1,
+    "run_tests": 4
+   },
+   "parse_errors": 10,
+   "claimed_done": false,
+   "hook_runs": 1,
+   "prompt_tokens_first": 919,
+   "bloat_calls": 0,
+   "last_tests": false
+  },
+  {
+   "task": "impl_format_inr",
+   "kind": "implement",
+   "rules": [],
+   "variant": "hook",
+   "model": "Qwen/Qwen2.5-Coder-3B-Instruct",
+   "passed": false,
+   "seconds": 86.8,
+   "tests_touched": [],
+   "grade_tail": " _ _ _ _ _ _ _ _ _ _ _ _ _ \n\npaise = 12345678\n\n    def format_inr(paise):\n        \"\"\"Format paise as rupees with Indian digit grouping: 12345678 -> \"₹1,23,456.78\".\"\"\"\n>       raise NotImplementedError(\"TODO\")\nE       NotImplementedError: TODO\n\ninvoicing/money.py:19: NotImplementedError\n=========================== short test summary info ============================\nFAILED tests/test_api.py::test_get - NotImplementedError: TODO\nFAILED tests/test_hidden.py::test_hidden - NotImplementedError: TODO\nFAILED tests/test_money.py::test_format_inr - NotImplementedError: TODO\n3 failed, 8 passed in 0.05s\n",
+   "turns": 16,
+   "tokens_in": 34904,
+   "tokens_out": 2208,
+   "calls": {},
+   "parse_errors": 16,
+   "claimed_done": false,
+   "hook_runs": 0,
+   "prompt_tokens_first": 944,
+   "bloat_calls": 0,
+   "last_tests": null
+  },
+  {
+   "task": "impl_get_handler",
+   "kind": "implement",
+   "rules": [
+    "layering",
+    "iso",
+    "errors"
+   ],
+   "variant": "hook",
+   "model": "Qwen/Qwen2.5-Coder-3B-Instruct",
+   "passed": false,
+   "seconds": 46.2,
+   "tests_touched": [
+    "test_api.py"
+   ],
+   "grade_tail": "odule\n    return _bootstrap._gcd_import(name[level:], package, level)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\ntests/test_hidden.py:3: in <module>\n    from invoicing.api import get_invoice_handler\ninvoicing/api.py:1: in <module>\n    from .invoice_service import InvoiceService\nE   ModuleNotFoundError: No module named 'invoicing.invoice_service'\n=========================== short test summary info ============================\nERROR tests/test_api.py\nERROR tests/test_hidden.py\n!!!!!!!!!!!!!!!!!!! Interrupted: 2 errors during collection !!!!!!!!!!!!!!!!!!!!\n2 errors in 0.09s\n",
+   "turns": 16,
+   "tokens_in": 48995,
+   "tokens_out": 1011,
+   "calls": {
+    "write_file": 4,
+    "run_tests": 4,
+    "install_packages": 3
+   },
+   "parse_errors": 5,
+   "claimed_done": false,
+   "hook_runs": 4,
+   "prompt_tokens_first": 939,
+   "bloat_calls": 0,
+   "last_tests": false
+  },
+  {
+   "task": "impl_gst",
+   "kind": "implement",
+   "rules": [
+    "rounding"
+   ],
+   "variant": "hook",
+   "model": "Qwen/Qwen2.5-Coder-3B-Instruct",
+   "passed": false,
+   "seconds": 92.2,
+   "tests_touched": [],
+   "grade_tail": "_HALF_EVEN)\n                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       TypeError: optional arg must be an integer\n\ninvoicing/tax.py:9: TypeError\n=========================== short test summary info ============================\nFAILED tests/test_api.py::test_get - TypeError: optional arg must be an integer\nFAILED tests/test_hidden.py::test_hidden - TypeError: optional arg must be an...\nFAILED tests/test_service.py::test_total - TypeError: optional arg must be an...\nFAILED tests/test_tax.py::test_gst - TypeError: optional arg must be an integer\n4 failed, 7 passed in 0.05s\n",
+   "turns": 16,
+   "tokens_in": 80575,
+   "tokens_out": 1242,
+   "calls": {
+    "write_file": 10
+   },
+   "parse_errors": 6,
+   "claimed_done": false,
+   "hook_runs": 10,
+   "prompt_tokens_first": 920,
+   "bloat_calls": 0,
+   "last_tests": false
+  },
+  {
+   "task": "impl_list_by_customer",
+   "kind": "implement",
+   "rules": [
+    "order"
+   ],
+   "variant": "hook",
+   "model": "Qwen/Qwen2.5-Coder-3B-Instruct",
+   "passed": false,
+   "seconds": 68.3,
+   "tests_touched": [],
+   "grade_tail": "ja-studio/research/.venv/lib/python3.12/site-packages/_pytest/assertion/rewrite.py:188: in exec_module\n    exec(co, module.__dict__)\ntests/test_service.py:5: in <module>\n    from invoicing.store import InvoiceStore\nE     File \"/tmp/grade-s1bbxkie/invoicing/store.py\", line 1\nE       <tool_response>\nE       ^\nE   SyntaxError: invalid syntax\n=========================== short test summary info ============================\nERROR tests/test_api.py\nERROR tests/test_hidden.py\nERROR tests/test_service.py\n!!!!!!!!!!!!!!!!!!! Interrupted: 3 errors during collection !!!!!!!!!!!!!!!!!!!!\n3 errors in 0.37s\n",
+   "turns": 16,
+   "tokens_in": 49723,
+   "tokens_out": 643,
+   "calls": {
+    "read_file": 4,
+    "write_file": 3
+   },
+   "parse_errors": 9,
+   "claimed_done": false,
+   "hook_runs": 3,
+   "prompt_tokens_first": 900,
+   "bloat_calls": 0,
+   "last_tests": false
+  },
+  {
+   "task": "impl_subtotal",
+   "kind": "implement",
+   "rules": [],
+   "variant": "hook",
+   "model": "Qwen/Qwen2.5-Coder-3B-Instruct",
+   "passed": false,
+   "seconds": 111.1,
+   "tests_touched": [
+    "test_api.py",
+    "test_invoice.py",
+    "test_service.py"
+   ],
+   "grade_tail": "ap._gcd_import(name[level:], package, level)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\ntests/test_service.py:3: in <module>\n    from invoicing.invoice import Invoice, LineItem\nE   ImportError: cannot import name 'LineItem' from 'invoicing.invoice' (/tmp/grade-5kmsscnx/invoicing/invoice.py)\n=========================== short test summary info ============================\nERROR tests/test_api.py\nERROR tests/test_hidden.py\nERROR tests/test_invoice.py\nERROR tests/test_service.py\n!!!!!!!!!!!!!!!!!!! Interrupted: 4 errors during collection !!!!!!!!!!!!!!!!!!!!\n4 errors in 0.12s\n",
+   "turns": 16,
+   "tokens_in": 68887,
+   "tokens_out": 2302,
+   "calls": {
+    "write_file": 1,
+    "replace": 5,
+    "run_tests": 5
+   },
+   "parse_errors": 5,
+   "claimed_done": false,
+   "hook_runs": 4,
+   "prompt_tokens_first": 906,
+   "bloat_calls": 0,
+   "last_tests": false
+  },
+  {
+   "task": "impl_to_paise",
+   "kind": "implement",
+   "rules": [
+    "errors"
+   ],
+   "variant": "hook",
+   "model": "Qwen/Qwen2.5-Coder-3B-Instruct",
+   "passed": false,
+   "seconds": 95.4,
+   "tests_touched": [],
+   "grade_tail": "portlib/__init__.py:90: in import_module\n    return _bootstrap._gcd_import(name[level:], package, level)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\ntests/test_money.py:2: in <module>\n    from invoicing.money import to_paise, format_inr\nE   ImportError: cannot import name 'format_inr' from 'invoicing.money' (/tmp/grade-xbwle045/invoicing/money.py)\n=========================== short test summary info ============================\nERROR tests/test_api.py\nERROR tests/test_money.py\n!!!!!!!!!!!!!!!!!!! Interrupted: 2 errors during collection !!!!!!!!!!!!!!!!!!!!\n2 errors in 0.13s\n",
+   "turns": 16,
+   "tokens_in": 42561,
+   "tokens_out": 2166,
+   "calls": {
+    "write_file": 4,
+    "replace": 6
+   },
+   "parse_errors": 6,
+   "claimed_done": false,
+   "hook_runs": 4,
+   "prompt_tokens_first": 941,
+   "bloat_calls": 0,
+   "last_tests": false
+  },
+  {
+   "task": "impl_total",
+   "kind": "implement",
+   "rules": [],
+   "variant": "hook",
+   "model": "Qwen/Qwen2.5-Coder-3B-Instruct",
+   "passed": false,
+   "seconds": 227.0,
+   "tests_touched": [],
+   "grade_tail": " self.store.create(invoice)\n        ^^^^^^^^^^^^^^^^^\nE       AttributeError: 'InvoiceStore' object has no attribute 'create'\n\ninvoicing/service.py:10: AttributeError\n=========================== short test summary info ============================\nFAILED tests/test_api.py::test_get - AttributeError: 'InvoiceStore' object ha...\nFAILED tests/test_hidden.py::test_hidden - AttributeError: 'InvoiceStore' obj...\nFAILED tests/test_service.py::test_total - AttributeError: 'InvoiceStore' obj...\nFAILED tests/test_service.py::test_forbidden - AttributeError: 'InvoiceStore'...\n4 failed, 7 passed in 0.12s\n",
+   "turns": 16,
+   "tokens_in": 83801,
+   "tokens_out": 4513,
+   "calls": {
+    "write_file": 15
+   },
+   "parse_errors": 1,
+   "claimed_done": false,
+   "hook_runs": 15,
+   "prompt_tokens_first": 918,
+   "bloat_calls": 0,
+   "last_tests": false
+  },
+  {
+   "task": "bug_flat_discount",
+   "kind": "bugfix",
+   "rules": [],
+   "variant": "oneshot",
+   "model": "Qwen/Qwen2.5-Coder-3B-Instruct",
+   "passed": false,
+   "seconds": 7.4,
+   "tests_touched": [],
+   "grade_tail": "scount.py:7: AssertionError\n_________________________________ test_hidden __________________________________\n\n    def test_hidden():\n>       assert apply_discount(200000, \"FLAT500\") == 50000\nE       AssertionError: assert 500 == 50000\nE        +  where 500 = apply_discount(200000, 'FLAT500')\n\ntests/test_hidden.py:4: AssertionError\n=========================== short test summary info ============================\nFAILED tests/test_discount.py::test_flat - AssertionError: assert 500 == 50000\nFAILED tests/test_hidden.py::test_hidden - AssertionError: assert 500 == 50000\n2 failed, 9 passed in 0.04s\n",
+   "turns": 1,
+   "tokens_in": 2298,
+   "tokens_out": 213,
+   "calls": {},
+   "parse_errors": 0,
+   "claimed_done": true,
+   "prompt_tokens_first": 2298
+  },
+  {
+   "task": "bug_grouping",
+   "kind": "bugfix",
+   "rules": [],
+   "variant": "oneshot",
+   "model": "Qwen/Qwen2.5-Coder-3B-Instruct",
+   "passed": false,
+   "seconds": 11.2,
+   "tests_touched": [],
+   "grade_tail": "__________________ test_format_inr ________________________________\n\n    def test_format_inr():\n>       assert format_inr(12345678) == \"₹1,23,456.78\"\nE       AssertionError: assert '₹123,456.78' == '₹1,23,456.78'\nE         \nE         - ₹1,23,456.78\nE         ?   -\nE         + ₹123,456.78\n\ntests/test_money.py:14: AssertionError\n=========================== short test summary info ============================\nFAILED tests/test_hidden.py::test_hidden - AssertionError: assert '₹123,456.7...\nFAILED tests/test_money.py::test_format_inr - AssertionError: assert '₹123,45...\n2 failed, 9 passed in 0.04s\n",
+   "turns": 1,
+   "tokens_in": 2339,
+   "tokens_out": 335,
+   "calls": {},
+   "parse_errors": 0,
+   "claimed_done": true,
+   "prompt_tokens_first": 2339
+  },
+  {
+   "task": "bug_gst_float",
+   "kind": "bugfix",
+   "rules": [
+    "rounding",
+    "float"
+   ],
+   "variant": "oneshot",
+   "model": "Qwen/Qwen2.5-Coder-3B-Instruct",
+   "passed": false,
+   "seconds": 5.5,
+   "tests_touched": [],
+   "grade_tail": "...F.......                                                              [100%]\n=================================== FAILURES ===================================\n_________________________________ test_hidden __________________________________\n\n    def test_hidden():\n>       assert gst(25, 1800) == 4\nE       assert 5 == 4\nE        +  where 5 = gst(25, 1800)\n\ntests/test_hidden.py:4: AssertionError\n=========================== short test summary info ============================\nFAILED tests/test_hidden.py::test_hidden - assert 5 == 4\n1 failed, 10 passed in 0.05s\n",
+   "turns": 1,
+   "tokens_in": 2309,
+   "tokens_out": 147,
+   "calls": {},
+   "parse_errors": 0,
+   "claimed_done": true,
+   "prompt_tokens_first": 2309
+  },
+  {
+   "task": "bug_layering",
+   "kind": "bugfix",
+   "rules": [
+    "layering"
+   ],
+   "variant": "oneshot",
+   "model": "Qwen/Qwen2.5-Coder-3B-Instruct",
+   "passed": false,
+   "seconds": 17.3,
+   "tests_touched": [],
+   "grade_tail": "\nE         '.store' is contained here:\nE           = service.store.get(invoice_id)\nE         ?         ++++++\nE                   if inv.customer != user:\nE                       raise InvoiceError(\"FORBIDDEN\", invoice_id)\nE                   total = service.total(invoice_id, user)...\nE         \nE         ...Full output truncated (9 lines hidden), use '-vv' to show\n\ntests/test_hidden.py:13: AssertionError\n=========================== short test summary info ============================\nFAILED tests/test_hidden.py::test_hidden - assert '.store' not in 'from .erro...\n1 failed, 10 passed in 0.04s\n",
+   "turns": 1,
+   "tokens_in": 2305,
+   "tokens_out": 526,
+   "calls": {},
+   "parse_errors": 0,
+   "claimed_done": true,
+   "prompt_tokens_first": 2305
+  },
+  {
+   "task": "bug_negative",
+   "kind": "bugfix",
+   "rules": [],
+   "variant": "oneshot",
+   "model": "Qwen/Qwen2.5-Coder-3B-Instruct",
+   "passed": false,
+   "seconds": 6.5,
+   "tests_touched": [],
+   "grade_tail": "portlib/__init__.py:90: in import_module\n    return _bootstrap._gcd_import(name[level:], package, level)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\ntests/test_money.py:2: in <module>\n    from invoicing.money import to_paise, format_inr\nE   ImportError: cannot import name 'format_inr' from 'invoicing.money' (/tmp/grade-b5slkdn2/invoicing/money.py)\n=========================== short test summary info ============================\nERROR tests/test_api.py\nERROR tests/test_money.py\n!!!!!!!!!!!!!!!!!!! Interrupted: 2 errors during collection !!!!!!!!!!!!!!!!!!!!\n2 errors in 0.13s\n",
+   "turns": 1,
+   "tokens_in": 2305,
+   "tokens_out": 183,
+   "calls": {},
+   "parse_errors": 0,
+   "claimed_done": true,
+   "prompt_tokens_first": 2305
+  },
+  {
+   "task": "bug_not_found",
+   "kind": "bugfix",
+   "rules": [
+    "errors"
+   ],
+   "variant": "oneshot",
+   "model": "Qwen/Qwen2.5-Coder-3B-Instruct",
+   "passed": false,
+   "seconds": 18.0,
+   "tests_touched": [
+    "test_api.py",
+    "test_service.py"
+   ],
+   "grade_tail": "pytest.raises(InvoiceError) as e:\n>           InvoiceStore().get(\"nope\")\n\ntests/test_hidden.py:7: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = <invoicing.store.InvoiceStore object at 0x7332aeaba450>\ninvoice_id = 'nope'\n\n    def get(self, invoice_id):\n>       return self._rows[invoice_id]\n               ^^^^^^^^^^^^^^^^^^^^^^\nE       KeyError: 'nope'\n\ninvoicing/store.py:14: KeyError\n=========================== short test summary info ============================\nFAILED tests/test_hidden.py::test_hidden - KeyError: 'nope'\n1 failed, 10 passed in 0.04s\n",
+   "turns": 1,
+   "tokens_in": 2288,
+   "tokens_out": 589,
+   "calls": {},
+   "parse_errors": 0,
+   "claimed_done": true,
+   "prompt_tokens_first": 2288
+  },
+  {
+   "task": "bug_subtotal",
+   "kind": "bugfix",
+   "rules": [],
+   "variant": "oneshot",
+   "model": "Qwen/Qwen2.5-Coder-3B-Instruct",
+   "passed": true,
+   "seconds": 7.4,
+   "tests_touched": [],
+   "grade_tail": "...........                                                              [100%]\n11 passed in 0.02s\n",
+   "turns": 1,
+   "tokens_in": 2307,
+   "tokens_out": 221,
+   "calls": {},
+   "parse_errors": 0,
+   "claimed_done": true,
+   "prompt_tokens_first": 2307
+  },
+  {
+   "task": "bug_tax_order",
+   "kind": "bugfix",
+   "rules": [],
+   "variant": "oneshot",
+   "model": "Qwen/Qwen2.5-Coder-3B-Instruct",
+   "passed": false,
+   "seconds": 8.4,
+   "tests_touched": [],
+   "grade_tail": "== 106200\nE       AssertionError: assert 91800 == 106200\nE        +  where 91800 = total('A1', 'asha')\nE        +    where total = <invoicing.service.InvoiceService object at 0x7999a40bad50>.total\nE        +      where <invoicing.service.InvoiceService object at 0x7999a40bad50> = svc()\n\ntests/test_service.py:14: AssertionError\n=========================== short test summary info ============================\nFAILED tests/test_api.py::test_get - AssertionError: assert (200 == 200 and '...\nFAILED tests/test_service.py::test_total - AssertionError: assert 91800 == 10...\n2 failed, 9 passed in 0.04s\n",
+   "turns": 1,
+   "tokens_in": 2315,
+   "tokens_out": 241,
+   "calls": {},
+   "parse_errors": 0,
+   "claimed_done": true,
+   "prompt_tokens_first": 2315
+  },
+  {
+   "task": "feat_create_handler",
+   "kind": "feature",
+   "rules": [
+    "layering",
+    "iso",
+    "errors"
+   ],
+   "variant": "oneshot",
+   "model": "Qwen/Qwen2.5-Coder-3B-Instruct",
+   "passed": false,
+   "seconds": 19.6,
+   "tests_touched": [
+    "test_api.py"
+   ],
+   "grade_tail": ", body):\n        \"\"\"POST /invoices: creates an invoice for `user` from `body`. Returns (status, body).\"\"\"\n        try:\n>           invoice = Invoice(\n                      ^^^^^^^\n                id=body[\"id\"],\n                customer=user,\n                items=[LineItem(**item) for item in body[\"items\"]],\n            )\nE           NameError: name 'Invoice' is not defined\n\ninvoicing/api.py:28: NameError\n=========================== short test summary info ============================\nFAILED tests/test_hidden.py::test_hidden - NameError: name 'Invoice' is not d...\n1 failed, 10 passed in 0.05s\n",
+   "turns": 1,
+   "tokens_in": 2365,
+   "tokens_out": 633,
+   "calls": {},
+   "parse_errors": 0,
+   "claimed_done": true,
+   "prompt_tokens_first": 2365
+  },
+  {
+   "task": "feat_expiry",
+   "kind": "feature",
+   "rules": [
+    "errors"
+   ],
+   "variant": "oneshot",
+   "model": "Qwen/Qwen2.5-Coder-3B-Instruct",
+   "passed": false,
+   "seconds": 12.0,
+   "tests_touched": [
+    "test_discount.py"
+   ],
+   "grade_tail": "py:5: in <module>\n    \"WELCOME10\": (\"percent\", 10, date(2026, 12, 31)),\n                                 ^^^^\nE   NameError: name 'date' is not defined\n=========================== short test summary info ============================\nERROR tests/test_api.py - NameError: name 'date' is not defined\nERROR tests/test_discount.py - NameError: name 'date' is not defined\nERROR tests/test_hidden.py - NameError: name 'date' is not defined\nERROR tests/test_service.py - NameError: name 'date' is not defined\n!!!!!!!!!!!!!!!!!!! Interrupted: 4 errors during collection !!!!!!!!!!!!!!!!!!!!\n4 errors in 0.13s\n",
+   "turns": 1,
+   "tokens_in": 2354,
+   "tokens_out": 359,
+   "calls": {},
+   "parse_errors": 0,
+   "claimed_done": true,
+   "prompt_tokens_first": 2354
+  },
+  {
+   "task": "feat_festive",
+   "kind": "feature",
+   "rules": [
+    "case"
+   ],
+   "variant": "oneshot",
+   "model": "Qwen/Qwen2.5-Coder-3B-Instruct",
+   "passed": true,
+   "seconds": 8.9,
+   "tests_touched": [
+    "test_discount.py"
+   ],
+   "grade_tail": "...........                                                              [100%]\n11 passed in 0.03s\n",
+   "turns": 1,
+   "tokens_in": 2301,
+   "tokens_out": 256,
+   "calls": {},
+   "parse_errors": 0,
+   "claimed_done": true,
+   "prompt_tokens_first": 2301
+  },
+  {
+   "task": "feat_gst_split",
+   "kind": "feature",
+   "rules": [
+    "split",
+    "rounding"
+   ],
+   "variant": "oneshot",
+   "model": "Qwen/Qwen2.5-Coder-3B-Instruct",
+   "passed": false,
+   "seconds": 7.2,
+   "tests_touched": [],
+   "grade_tail": "\n_________________________________ test_hidden __________________________________\n\n    def test_hidden():\n        assert gst_split(10000, 1800) == (900, 900)\n        c, s = gst_split(10050, 1800)          # gst 1809\n>       assert (c, s) == (905, 904)\nE       assert (904, 904) == (905, 904)\nE         \nE         At index 0 diff: 904 != 905\nE         Use -v to get more diff\n\ntests/test_hidden.py:6: AssertionError\n=========================== short test summary info ============================\nFAILED tests/test_hidden.py::test_hidden - assert (904, 904) == (905, 904)\n1 failed, 10 passed in 0.04s\n",
+   "turns": 1,
+   "tokens_in": 2324,
+   "tokens_out": 200,
+   "calls": {},
+   "parse_errors": 0,
+   "claimed_done": true,
+   "prompt_tokens_first": 2324
+  },
+  {
+   "task": "feat_line_count",
+   "kind": "feature",
+   "rules": [],
+   "variant": "oneshot",
+   "model": "Qwen/Qwen2.5-Coder-3B-Instruct",
+   "passed": true,
+   "seconds": 9.2,
+   "tests_touched": [
+    "test_invoice.py"
+   ],
+   "grade_tail": "...........                                                              [100%]\n11 passed in 0.03s\n",
+   "turns": 1,
+   "tokens_in": 2296,
+   "tokens_out": 271,
+   "calls": {},
+   "parse_errors": 0,
+   "claimed_done": true,
+   "prompt_tokens_first": 2296
+  },
+  {
+   "task": "feat_list_handler",
+   "kind": "feature",
+   "rules": [
+    "layering",
+    "iso",
+    "order"
+   ],
+   "variant": "oneshot",
+   "model": "Qwen/Qwen2.5-Coder-3B-Instruct",
+   "passed": false,
+   "seconds": 16.6,
+   "tests_touched": [
+    "test_api.py"
+   ],
+   "grade_tail": "   invoices = service.list(user)\n        except InvoiceError as e:\n            return _status(e), {\"error\": e.code}\n>       return 200, [{\"id\": i.id, \"created\": i.created.isoformat(), \"total\": i.total} for i in invoices]\n                                                                             ^^^^^^^\nE       AttributeError: 'Invoice' object has no attribute 'total'\n\ninvoicing/api.py:31: AttributeError\n=========================== short test summary info ============================\nFAILED tests/test_hidden.py::test_hidden - AttributeError: 'Invoice' object h...\n1 failed, 10 passed in 0.05s\n",
+   "turns": 1,
+   "tokens_in": 2330,
+   "tokens_out": 508,
+   "calls": {},
+   "parse_errors": 0,
+   "claimed_done": true,
+   "prompt_tokens_first": 2330
+  },
+  {
+   "task": "feat_parse_inr",
+   "kind": "feature",
+   "rules": [
+    "errors"
+   ],
+   "variant": "oneshot",
+   "model": "Qwen/Qwen2.5-Coder-3B-Instruct",
+   "passed": false,
+   "seconds": 13.4,
+   "tests_touched": [],
+   "grade_tail": "/test_hidden.py:7: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\ntext = '-₹2.50'\n\n    def parse_inr(text):\n        \"\"\"Parse a rupee amount such as \"₹1,23,456.78\" into integer paise.\"\"\"\n        if not text.startswith(\"₹\"):\n>           raise InvoiceError(\"BAD_AMOUNT\", text)\nE           invoicing.errors.InvoiceError: BAD_AMOUNT: -₹2.50\n\ninvoicing/money.py:36: InvoiceError\n=========================== short test summary info ============================\nFAILED tests/test_hidden.py::test_hidden - invoicing.errors.InvoiceError: BAD...\n1 failed, 10 passed in 0.04s\n",
+   "turns": 1,
+   "tokens_in": 2341,
+   "tokens_out": 397,
+   "calls": {},
+   "parse_errors": 0,
+   "claimed_done": true,
+   "prompt_tokens_first": 2341
+  },
+  {
+   "task": "feat_void",
+   "kind": "feature",
+   "rules": [
+    "errors"
+   ],
+   "variant": "oneshot",
+   "model": "Qwen/Qwen2.5-Coder-3B-Instruct",
+   "passed": true,
+   "seconds": 15.4,
+   "tests_touched": [
+    "test_service.py"
+   ],
+   "grade_tail": "...........                                                              [100%]\n11 passed in 0.02s\n",
+   "turns": 1,
+   "tokens_in": 2321,
+   "tokens_out": 475,
+   "calls": {},
+   "parse_errors": 0,
+   "claimed_done": true,
+   "prompt_tokens_first": 2321
+  },
+  {
+   "task": "impl_apply_discount",
+   "kind": "implement",
+   "rules": [
+    "case",
+    "cap",
+    "errors"
+   ],
+   "variant": "oneshot",
+   "model": "Qwen/Qwen2.5-Coder-3B-Instruct",
+   "passed": false,
+   "seconds": 6.5,
+   "tests_touched": [],
+   "grade_tail": "____________________________ test_hidden __________________________________\n\n    def test_hidden():\n        assert apply_discount(100000, None) == 0\n        assert apply_discount(100000, \"WELCOME10\") == 10000\n>       assert apply_discount(100000, \" welcome10 \") == 10000\nE       AssertionError: assert 0 == 10000\nE        +  where 0 = apply_discount(100000, ' welcome10 ')\n\ntests/test_hidden.py:8: AssertionError\n=========================== short test summary info ============================\nFAILED tests/test_hidden.py::test_hidden - AssertionError: assert 0 == 10000\n1 failed, 10 passed in 0.04s\n",
+   "turns": 1,
+   "tokens_in": 2252,
+   "tokens_out": 184,
+   "calls": {},
+   "parse_errors": 0,
+   "claimed_done": true,
+   "prompt_tokens_first": 2252
+  },
+  {
+   "task": "impl_format_inr",
+   "kind": "implement",
+   "rules": [],
+   "variant": "oneshot",
+   "model": "Qwen/Qwen2.5-Coder-3B-Instruct",
+   "passed": false,
+   "seconds": 11.3,
+   "tests_touched": [],
+   "grade_tail": "_______________ test_format_inr ________________________________\n\n    def test_format_inr():\n>       assert format_inr(12345678) == \"₹1,23,456.78\"\nE       AssertionError: assert '₹12345678' == '₹1,23,456.78'\nE         \nE         - ₹1,23,456.78\nE         ?   -  -   -\nE         + ₹12345678\n\ntests/test_money.py:14: AssertionError\n=========================== short test summary info ============================\nFAILED tests/test_hidden.py::test_hidden - AssertionError: assert '₹12345678'...\nFAILED tests/test_money.py::test_format_inr - AssertionError: assert '₹123456...\n2 failed, 9 passed in 0.04s\n",
+   "turns": 1,
+   "tokens_in": 2226,
+   "tokens_out": 297,
+   "calls": {},
+   "parse_errors": 0,
+   "claimed_done": true,
+   "prompt_tokens_first": 2226
+  },
+  {
+   "task": "impl_get_handler",
+   "kind": "implement",
+   "rules": [
+    "layering",
+    "iso",
+    "errors"
+   ],
+   "variant": "oneshot",
+   "model": "Qwen/Qwen2.5-Coder-3B-Instruct",
+   "passed": false,
+   "seconds": 8.4,
+   "tests_touched": [],
+   "grade_tail": "          \"created\": inv.created.isoformat(),\n>                   \"total\": inv.total(),\n                             ^^^^^^^^^\n                    \"display_total\": format_inr(inv.total()),\n                },\n            )\nE           AttributeError: 'Invoice' object has no attribute 'total'\n\ninvoicing/api.py:19: AttributeError\n=========================== short test summary info ============================\nFAILED tests/test_api.py::test_get - AttributeError: 'Invoice' object has no ...\nFAILED tests/test_hidden.py::test_hidden - AttributeError: 'Invoice' object h...\n2 failed, 9 passed in 0.04s\n",
+   "turns": 1,
+   "tokens_in": 2254,
+   "tokens_out": 256,
+   "calls": {},
+   "parse_errors": 0,
+   "claimed_done": true,
+   "prompt_tokens_first": 2254
+  },
+  {
+   "task": "impl_gst",
+   "kind": "implement",
+   "rules": [
+    "rounding"
+   ],
+   "variant": "oneshot",
+   "model": "Qwen/Qwen2.5-Coder-3B-Instruct",
+   "passed": false,
+   "seconds": 6.2,
+   "tests_touched": [],
+   "grade_tail": "_gst ___________________________________\n\n    def test_gst():\n>       assert gst(10000, 1800) == 1800\nE       assert 18.0 == 1800\nE        +  where 18.0 = gst(10000, 1800)\n\ntests/test_tax.py:4: AssertionError\n=========================== short test summary info ============================\nFAILED tests/test_api.py::test_get - ValueError: Unknown format code 'd' for ...\nFAILED tests/test_hidden.py::test_hidden - assert 18.0 == 1800\nFAILED tests/test_service.py::test_total - AssertionError: assert 90162.0 == ...\nFAILED tests/test_tax.py::test_gst - assert 18.0 == 1800\n4 failed, 7 passed in 0.07s\n",
+   "turns": 1,
+   "tokens_in": 2309,
+   "tokens_out": 162,
+   "calls": {},
+   "parse_errors": 0,
+   "claimed_done": true,
+   "prompt_tokens_first": 2309
+  },
+  {
+   "task": "impl_list_by_customer",
+   "kind": "implement",
+   "rules": [
+    "order"
+   ],
+   "variant": "oneshot",
+   "model": "Qwen/Qwen2.5-Coder-3B-Instruct",
+   "passed": false,
+   "seconds": 4.9,
+   "tests_touched": [],
+   "grade_tail": ", 1)), (\"A2\", date(2026, 3, 1)), (\"B1\", date(2026, 5, 1))]:\n            s.put(Invoice(i, \"asha\" if i[0] == \"A\" else \"ravi\", [], d))\n>       assert [r.id for r in s.list_by_customer(\"asha\")] == [\"A3\", \"A2\", \"A1\"]\nE       AssertionError: assert ['A1', 'A3', 'A2'] == ['A3', 'A2', 'A1']\nE         \nE         At index 0 diff: 'A1' != 'A3'\nE         Use -v to get more diff\n\ntests/test_hidden.py:9: AssertionError\n=========================== short test summary info ============================\nFAILED tests/test_hidden.py::test_hidden - AssertionError: assert ['A1', 'A3'...\n1 failed, 10 passed in 0.04s\n",
+   "turns": 1,
+   "tokens_in": 2270,
+   "tokens_out": 131,
+   "calls": {},
+   "parse_errors": 0,
+   "claimed_done": true,
+   "prompt_tokens_first": 2270
+  },
+  {
+   "task": "impl_subtotal",
+   "kind": "implement",
+   "rules": [],
+   "variant": "oneshot",
+   "model": "Qwen/Qwen2.5-Coder-3B-Instruct",
+   "passed": true,
+   "seconds": 6.6,
+   "tests_touched": [],
+   "grade_tail": "...........                                                              [100%]\n11 passed in 0.03s\n",
+   "turns": 1,
+   "tokens_in": 2302,
+   "tokens_out": 181,
+   "calls": {},
+   "parse_errors": 0,
+   "claimed_done": true,
+   "prompt_tokens_first": 2302
+  },
+  {
+   "task": "impl_to_paise",
+   "kind": "implement",
+   "rules": [
+    "errors"
+   ],
+   "variant": "oneshot",
+   "model": "Qwen/Qwen2.5-Coder-3B-Instruct",
+   "passed": false,
+   "seconds": 5.3,
+   "tests_touched": [],
+   "grade_tail": "portlib/__init__.py:90: in import_module\n    return _bootstrap._gcd_import(name[level:], package, level)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\ntests/test_money.py:2: in <module>\n    from invoicing.money import to_paise, format_inr\nE   ImportError: cannot import name 'format_inr' from 'invoicing.money' (/tmp/grade-n852gtq_/invoicing/money.py)\n=========================== short test summary info ============================\nERROR tests/test_api.py\nERROR tests/test_money.py\n!!!!!!!!!!!!!!!!!!! Interrupted: 2 errors during collection !!!!!!!!!!!!!!!!!!!!\n2 errors in 0.11s\n",
+   "turns": 1,
+   "tokens_in": 2239,
+   "tokens_out": 133,
+   "calls": {},
+   "parse_errors": 0,
+   "claimed_done": true,
+   "prompt_tokens_first": 2239
+  },
+  {
+   "task": "impl_total",
+   "kind": "implement",
+   "rules": [],
+   "variant": "oneshot",
+   "model": "Qwen/Qwen2.5-Coder-3B-Instruct",
+   "passed": true,
+   "seconds": 9.0,
+   "tests_touched": [],
+   "grade_tail": "...........                                                              [100%]\n11 passed in 0.02s\n",
+   "turns": 1,
+   "tokens_in": 2286,
+   "tokens_out": 241,
+   "calls": {},
+   "parse_errors": 0,
+   "claimed_done": true,
+   "prompt_tokens_first": 2286
+  }
+ ]
+}

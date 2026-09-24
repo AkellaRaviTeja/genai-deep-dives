@@ -1,0 +1,30 @@
+{
+ "task": "feat_list_handler",
+ "kind": "feature",
+ "rules": [
+  "layering",
+  "iso",
+  "order"
+ ],
+ "variant": "oneshot",
+ "model": "Qwen/Qwen2.5-Coder-3B-Instruct",
+ "passed": false,
+ "seconds": 16.6,
+ "tests_touched": [
+  "test_api.py"
+ ],
+ "grade_tail": "   invoices = service.list(user)\n        except InvoiceError as e:\n            return _status(e), {\"error\": e.code}\n>       return 200, [{\"id\": i.id, \"created\": i.created.isoformat(), \"total\": i.total} for i in invoices]\n                                                                             ^^^^^^^\nE       AttributeError: 'Invoice' object has no attribute 'total'\n\ninvoicing/api.py:31: AttributeError\n=========================== short test summary info ============================\nFAILED tests/test_hidden.py::test_hidden - AttributeError: 'Invoice' object h...\n1 failed, 10 passed in 0.05s\n",
+ "turns": 1,
+ "tokens_in": 2330,
+ "tokens_out": 508,
+ "calls": {},
+ "parse_errors": 0,
+ "claimed_done": true,
+ "prompt_tokens_first": 2330,
+ "transcript": [
+  {
+   "role": "assistant",
+   "content": "### invoicing/api.py\n```python\nfrom .errors import InvoiceError\nfrom .money import format_inr\n\n\ndef _status(err):\n    return {\"NOT_FOUND\": 404, \"FORBIDDEN\": 403}.get(err.code, 400)\n\n\ndef get_invoice_handler(service, invoice_id, user):\n    \"\"\"GET /invoices/{id}: returns (status, body).\"\"\"\n    try:\n        inv = service.get(invoice_id, user)\n        total = service.total(invoice_id, user)\n    except InvoiceError as e:\n        return _status(e), {\"error\": e.code}\n    return 200, {\n        \"id\": inv.id,\n        \"customer\": inv.customer,\n        \"created\": inv.created.isoformat(),\n        \"total\": total,\n        \"total_display\": format_inr(total),\n    }\n\n\ndef list_invoices_handler(service, user):\n    \"\"\"GET /invoices: returns (status, body).\"\"\"\n    try:\n        invoices = service.list(user)\n    except InvoiceError as e:\n        return _status(e), {\"error\": e.code}\n    return 200, [{\"id\": i.id, \"created\": i.created.isoformat(), \"total\": i.total} for i in invoices]\n```\n\n### tests/test_api.py\n```python\nfrom datetime import date\nfrom invoicing.api import get_invoice_handler, list_invoices_handler\nfrom invoicing.invoice import Invoice, LineItem\nfrom invoicing.service import InvoiceService\nfrom invoicing.store import InvoiceStore\n\ndef test_list_invoices():\n    s = InvoiceService(InvoiceStore())\n    s.create(Invoice(\"A1\", \"asha\", [LineItem(\"pen\", 1, 10000)], date(2026, 9, 1)))\n    s.create(Invoice(\"A2\", \"asha\", [LineItem(\"pad\", 1, 9900)], date(2026, 9, 2)))\n    status, body = list_invoices_handler(s, \"asha\")\n    assert status == 200 and body == [\n        {\"id\": \"A1\", \"created\": \"2026-09-01\", \"total\": 11800},\n        {\"id\": \"A2\", \"created\": \"2026-09-02\", \"total\": 9900},\n    ]\n```"
+  }
+ ]
+}

@@ -1,0 +1,102 @@
+{
+ "meta": {
+  "model": "Qwen/Qwen2.5-1.5B",
+  "torch": "2.14.0+cu130",
+  "transformers": "5.17.0",
+  "device": "NVIDIA GeForce RTX 5050 Laptop GPU",
+  "dtype": "bfloat16",
+  "run_at": "2026-09-24T19:05:57",
+  "seed": 1234
+ },
+ "prompt": "The invoice total is",
+ "temperature": 0.8,
+ "n": 200,
+ "first_token": [
+  {
+   "text": "␣",
+   "observed": 61,
+   "predicted": 72.9
+  },
+  {
+   "text": "␣the",
+   "observed": 44,
+   "predicted": 43.3
+  },
+  {
+   "text": "␣$",
+   "observed": 28,
+   "predicted": 21.8
+  },
+  {
+   "text": "␣calculated",
+   "observed": 8,
+   "predicted": 8.2
+  },
+  {
+   "text": "␣a",
+   "observed": 6,
+   "predicted": 5.2
+  },
+  {
+   "text": "␣____",
+   "observed": 6,
+   "predicted": 4.2
+  },
+  {
+   "text": "␣displayed",
+   "observed": 5,
+   "predicted": 3.2
+  },
+  {
+   "text": "␣made",
+   "observed": 3,
+   "predicted": 0.3
+  },
+  {
+   "text": "␣for",
+   "observed": 3,
+   "predicted": 2.3
+  },
+  {
+   "text": "␣usually",
+   "observed": 2,
+   "predicted": 1.5
+  }
+ ],
+ "distinct_first_tokens": 39,
+ "greedy": " 1000 yuan",
+ "greedy_pieces": [
+  "␣",
+  "1",
+  "0",
+  "0",
+  "0",
+  "␣yuan"
+ ],
+ "examples": [
+  " the sum of the invoice amount",
+  " usually split into two items:",
+  " $58, and the",
+  " often used to calculate the tax",
+  " typically composed of ( ). ____",
+  " 85,00",
+  " made up of three parts:",
+  " the total of the three debit",
+  " $3,998",
+  " ￥ ____ yuan.\nA",
+  " $1,380",
+  " 1382.",
+  " calculated based on the price of",
+  " incorrect, and the tax amount",
+  " based on the ticket price,",
+  " subject to VAT, calculated in",
+  " 210 yuan,",
+  " 300 yuan,",
+  " mainly composed of ____.\nA",
+  " a comprehensive accounting term that refers",
+  " composed of ____. A.",
+  " 1000 and",
+  " the sum of the invoice amounts",
+  " 44 yuan, and"
+ ]
+}

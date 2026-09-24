@@ -1,0 +1,21 @@
+{
+ "task": "feat_festive",
+ "kind": "feature",
+ "rules": [
+  "case"
+ ],
+ "variant": "rules",
+ "rep": 0,
+ "passed": true,
+ "error": false,
+ "turns": 6,
+ "seconds": 16.6,
+ "cost_usd": 0.028030399999999997,
+ "input_tokens": 87466,
+ "output_tokens": 978,
+ "tests_touched": [],
+ "claimed_pass": true,
+ "denials": 0,
+ "result": "All tests pass! I've successfully added the FESTIVE15 discount code with 15% off. The code is now available in the DISCOUNTS dictionary and follows the same pattern as the existing WELCOME10 discount code.",
+ "grade_tail": "...........                                                              [100%]\n11 passed in 0.04s\n"
+}

@@ -1,0 +1,23 @@
+{
+ "task": "feat_create_handler",
+ "kind": "feature",
+ "rules": [
+  "layering",
+  "iso",
+  "errors"
+ ],
+ "variant": "model_only",
+ "rep": 1,
+ "passed": true,
+ "error": false,
+ "turns": 1,
+ "seconds": 47.0,
+ "cost_usd": 0.043426,
+ "input_tokens": 9248,
+ "output_tokens": 4988,
+ "tests_touched": [],
+ "claimed_pass": false,
+ "denials": 0,
+ "result": "Error as e:\n        return _status(e), {\"error\": e.code}\n    return 200, {\n        \"id\": inv.id,\n        \"customer\": inv.customer,\n        \"created\": inv.created.isoformat(),\n        \"total\": total,\n        \"total_display\": format_inr(total),\n    }\n\n\ndef create_invoice_handler(service, user, body):\n    \"\"\"POST /invoices: returns (status, body).\"\"\"\n    try:\n        items = []\n        for item_data in body.get(\"items\", []):\n            items.append(LineItem(\n                sku=item_data[\"sku\"],\n                qty=item_data[\"qty\"],\n                unit_paise=item_data[\"unit_paise\"]\n            ))\n        \n        inv = Invoice(\n            id=body[\"id\"],\n            customer=user,\n            items=items\n        )\n        service.create(inv)\n        return 201, {\n            \"id\": inv.id,\n            \"created\": inv.created.isoformat()\n        }\n    except InvoiceError as e:\n        return _status(e), {\"error\": e.code}\n```\n\nThe handler creates LineItem objects from each item in the request body, constructs an Invoice with the user as the customer, and delegates storage to the service. Any validation errors (like invalid qty) will be caught and return a 400 status with the error code.",
+ "grade_tail": "...........                                                              [100%]\n11 passed in 0.04s\n"
+}

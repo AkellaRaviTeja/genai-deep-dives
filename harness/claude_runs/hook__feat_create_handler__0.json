@@ -1,0 +1,23 @@
+{
+ "task": "feat_create_handler",
+ "kind": "feature",
+ "rules": [
+  "layering",
+  "iso",
+  "errors"
+ ],
+ "variant": "hook",
+ "rep": 0,
+ "passed": true,
+ "error": false,
+ "turns": 18,
+ "seconds": 55.2,
+ "cost_usd": 0.0781764,
+ "input_tokens": 313614,
+ "output_tokens": 4323,
+ "tests_touched": [],
+ "claimed_pass": true,
+ "denials": 0,
+ "result": "Perfect! I've added the `create_invoice_handler` function to `invoicing/api.py`. Here's what it does:\n\n1. **Validates and creates LineItem objects** from the body's items list (qty must be > 0, otherwise raises `BAD_QTY` error)\n2. **Creates an Invoice** with the provided id, assigns it to the user (customer), and includes the items\n3. **Persists via service.create()** which handles all business logic\n4. **Returns (201, {\"id\", \"created\"})** with ISO 8601 formatted date on success\n5. **Returns (400, {\"error\": code})** if any `InvoiceError` occurs during creation\n\nThe function follows the same error handling pattern as `get_invoice_handler`, catching `InvoiceError` and mapping codes to HTTP status codes (NOT_FOUND → 404, FORBIDDEN → 403, others → 400).\n\n**All tests pass** ✅ (10/10 passing)",
+ "grade_tail": "...........                                                              [100%]\n11 passed in 0.04s\n"
+}

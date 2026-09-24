@@ -1,0 +1,22 @@
+{
+ "task": "bug_layering",
+ "kind": "bugfix",
+ "rules": [
+  "layering"
+ ],
+ "variant": "model_only_rules",
+ "rep": 1,
+ "passed": true,
+ "error": false,
+ "turns": 1,
+ "seconds": 11.2,
+ "cost_usd": 0.025807,
+ "input_tokens": 9511,
+ "output_tokens": 1359,
+ "tests_touched": [],
+ "claimed_pass": false,
+ "denials": 0,
+ "result": "Looking at the issue: `api.py` is calling `service.store.get()` directly, which bypasses the permission check in `InvoiceService._owned()`. This violates the layering rule: \"Permission checks live in the service, so skipping it skips them.\"\n\nThe fix is to use `service.get()` instead, which enforces permissions:\n\n### invoicing/api.py\n```python\nfrom .errors import InvoiceError\nfrom .money import format_inr\n\n\ndef _status(err):\n    return {\"NOT_FOUND\": 404, \"FORBIDDEN\": 403}.get(err.code, 400)\n\n\ndef get_invoice_handler(service, invoice_id, user):\n    \"\"\"GET /invoices/{id}: returns (status, body).\"\"\"\n    try:\n        inv = service.get(invoice_id, user)\n        total = service.total(invoice_id, user)\n    except InvoiceError as e:\n        return _status(e), {\"error\": e.code}\n    return 200, {\n        \"id\": inv.id,\n        \"customer\": inv.customer,\n        \"created\": inv.created.isoformat(),\n        \"total\": total,\n        \"total_display\": format_inr(total),\n    }\n```\n\nThe change replaces `service.store.get(invoice_id)` with `service.get(invoice_id, user)`, ensuring the ownership check in `service._owned()` is enforced before returning the invoice data.",
+ "visible_passed": true,
+ "grade_tail": "...........                                                              [100%]\n11 passed in 0.02s\n"
+}

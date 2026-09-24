@@ -1,0 +1,24 @@
+{
+ "task": "impl_total",
+ "kind": "implement",
+ "rules": [],
+ "variant": "oneshot",
+ "model": "Qwen/Qwen2.5-Coder-3B-Instruct",
+ "passed": true,
+ "seconds": 9.0,
+ "tests_touched": [],
+ "grade_tail": "...........                                                              [100%]\n11 passed in 0.02s\n",
+ "turns": 1,
+ "tokens_in": 2286,
+ "tokens_out": 241,
+ "calls": {},
+ "parse_errors": 0,
+ "claimed_done": true,
+ "prompt_tokens_first": 2286,
+ "transcript": [
+  {
+   "role": "assistant",
+   "content": "### invoicing/service.py\n```python\nfrom .discount import apply_discount\nfrom .errors import InvoiceError\nfrom .tax import gst\n\nGST_BP = 1800\n\n\nclass InvoiceService:\n    \"\"\"All business rules and permission checks live here.\"\"\"\n\n    def __init__(self, store):\n        self.store = store\n\n    def _owned(self, invoice_id, user):\n        inv = self.store.get(invoice_id)\n        if inv.customer != user:\n            raise InvoiceError(\"FORBIDDEN\", invoice_id)\n        return inv\n\n    def get(self, invoice_id, user):\n        return self._owned(invoice_id, user)\n\n    def create(self, invoice):\n        self.store.put(invoice)\n        return invoice\n\n    def list(self, user):\n        return self.store.list_by_customer(user)\n\n    def total(self, invoice_id, user):\n        \"\"\"Subtotal, minus the discount, plus GST on the discounted amount.\"\"\"\n        inv = self._owned(invoice_id, user)\n        subtotal = inv.subtotal()\n        discount = apply_discount(subtotal, inv.discount_code)\n        return subtotal - discount + gst(subtotal - discount, GST_BP)\n```"
+  }
+ ]
+}

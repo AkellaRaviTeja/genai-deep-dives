@@ -1,0 +1,26 @@
+{
+ "task": "impl_gst",
+ "kind": "implement",
+ "rules": [
+  "rounding"
+ ],
+ "variant": "oneshot",
+ "model": "Qwen/Qwen2.5-Coder-3B-Instruct",
+ "passed": false,
+ "seconds": 6.2,
+ "tests_touched": [],
+ "grade_tail": "_gst ___________________________________\n\n    def test_gst():\n>       assert gst(10000, 1800) == 1800\nE       assert 18.0 == 1800\nE        +  where 18.0 = gst(10000, 1800)\n\ntests/test_tax.py:4: AssertionError\n=========================== short test summary info ============================\nFAILED tests/test_api.py::test_get - ValueError: Unknown format code 'd' for ...\nFAILED tests/test_hidden.py::test_hidden - assert 18.0 == 1800\nFAILED tests/test_service.py::test_total - AssertionError: assert 90162.0 == ...\nFAILED tests/test_tax.py::test_gst - assert 18.0 == 1800\n4 failed, 7 passed in 0.07s\n",
+ "turns": 1,
+ "tokens_in": 2309,
+ "tokens_out": 162,
+ "calls": {},
+ "parse_errors": 0,
+ "claimed_done": true,
+ "prompt_tokens_first": 2309,
+ "transcript": [
+  {
+   "role": "assistant",
+   "content": "### invoicing/tax.py\n```python\ndef round_half_even(numerator, denominator):\n    \"\"\"Integer division rounded to nearest, ties to even (banker's rounding).\"\"\"\n    q, r = divmod(numerator, denominator)\n    if 2 * r > denominator or (2 * r == denominator and q % 2 == 1):\n        q += 1\n    return q\n\n\ndef gst(amount_paise, rate_bp):\n    \"\"\"GST on `amount_paise` at `rate_bp` basis points (1800 = 18%), in paise.\"\"\"\n    rate = rate_bp / 10000.0\n    tax_amount = round_half_even(amount_paise * rate, 100)\n    return tax_amount\n```"
+  }
+ ]
+}

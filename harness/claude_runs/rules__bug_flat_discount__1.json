@@ -1,0 +1,19 @@
+{
+ "task": "bug_flat_discount",
+ "kind": "bugfix",
+ "rules": [],
+ "variant": "rules",
+ "rep": 1,
+ "passed": true,
+ "error": false,
+ "turns": 7,
+ "seconds": 20.3,
+ "cost_usd": 0.0362779,
+ "input_tokens": 106027,
+ "output_tokens": 1906,
+ "tests_touched": [],
+ "claimed_pass": true,
+ "denials": 0,
+ "result": "Perfect! **All tests pass.** \n\nThe bug was in the `apply_discount` function—it was treating both percent and flat discounts the same way by multiplying them with the subtotal. The fix distinguishes between the two discount types:\n- **Percent discounts**: `off = subtotal * value // 100` (e.g., 10% of ₹1000 = ₹100)\n- **Flat discounts**: `off = value` (e.g., FLAT500 = ₹500 directly)\n\nNow FLAT500 correctly applies a ₹500 discount instead of a huge percentage-based discount.",
+ "grade_tail": "...........                                                              [100%]\n11 passed in 0.02s\n"
+}

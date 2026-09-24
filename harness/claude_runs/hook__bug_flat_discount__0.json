@@ -1,0 +1,19 @@
+{
+ "task": "bug_flat_discount",
+ "kind": "bugfix",
+ "rules": [],
+ "variant": "hook",
+ "rep": 0,
+ "passed": true,
+ "error": false,
+ "turns": 9,
+ "seconds": 26.6,
+ "cost_usd": 0.0403939,
+ "input_tokens": 137788,
+ "output_tokens": 1884,
+ "tests_touched": [],
+ "claimed_pass": true,
+ "denials": 0,
+ "result": "Perfect! All tests pass. The bug was that the `apply_discount` function was applying the same calculation to both percent and flat discounts. For a flat ₹500 discount (50000 paise), it was incorrectly multiplying by the subtotal instead of just using the flat value directly. The fix checks the discount kind and handles flat discounts separately.",
+ "grade_tail": "...........                                                              [100%]\n11 passed in 0.05s\n"
+}

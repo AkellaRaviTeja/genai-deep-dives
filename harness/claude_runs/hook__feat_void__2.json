@@ -1,0 +1,21 @@
+{
+ "task": "feat_void",
+ "kind": "feature",
+ "rules": [
+  "errors"
+ ],
+ "variant": "hook",
+ "rep": 2,
+ "passed": true,
+ "error": false,
+ "turns": 13,
+ "seconds": 34.8,
+ "cost_usd": 0.04746739999999999,
+ "input_tokens": 162938,
+ "output_tokens": 2176,
+ "tests_touched": [],
+ "claimed_pass": true,
+ "denials": 0,
+ "result": "**All tests pass!** ✓\n\nThe `void` method has been successfully added to `InvoiceService`. It:\n- Checks ownership via `_owned()` (raises `FORBIDDEN` if the user isn't the owner)\n- Prevents voiding an already-void invoice (raises `ALREADY_VOID`)\n- Sets the invoice status to \"void\" and persists it via the store\n- Returns the updated invoice\n\nThe implementation follows all the project conventions: proper layering through the service, error handling via `InvoiceError` with uppercase codes, and permission checks before state changes.",
+ "grade_tail": "...........                                                              [100%]\n11 passed in 0.05s\n"
+}

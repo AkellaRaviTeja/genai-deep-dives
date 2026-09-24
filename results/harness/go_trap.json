@@ -1,0 +1,22 @@
+{
+ "go": "go version go1.25.0 linux/amd64",
+ "files": {
+  "go.mod": "module example.com/billing\n\ngo 1.25\n",
+  "internal/invoice/discount.go": "package invoice\n\nfunc Discount(subtotal, pct int64) int64 { return subtotal * pct / 100 }\n",
+  "internal/invoice/discount_test.go": "package invoice\n\nimport \"testing\"\n\nfunc TestDiscount(t *testing.T) {\n\tif got := Discount(100000, 10); got != 9000 {\n\t\tt.Fatalf(\"Discount = %d, want 9000\", got)\n\t}\n}\n",
+  "internal/api/handler.go": "package api\n\nfunc Handler() string { return \"ok\" }\n"
+ },
+ "runs": [
+  {
+   "cmd": "go test ./internal/api",
+   "exit": 0,
+   "output": "?   \texample.com/billing/internal/api\t[no test files]"
+  },
+  {
+   "cmd": "go test ./...",
+   "exit": 1,
+   "output": "?   \texample.com/billing/internal/api\t[no test files]\n--- FAIL: TestDiscount (0.00s)\n    discount_test.go:7: Discount = 10000, want 9000\nFAIL\nFAIL\texample.com/billing/internal/invoice\t0.002s\nFAIL"
+  }
+ ],
+ "run_at": "2026-09-24T20:37:58"
+}
